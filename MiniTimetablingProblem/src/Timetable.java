@@ -7,6 +7,7 @@ public class Timetable {
 	private Employee[][] table;
 	private List<Employee> employees = new ArrayList<>();
 	
+	
 	public Timetable(int employeesNeeded, int daysInTable) {
 		this.employeesNeeded = employeesNeeded;
 		this.daysInTable = daysInTable;

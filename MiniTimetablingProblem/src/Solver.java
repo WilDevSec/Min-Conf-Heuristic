@@ -6,6 +6,7 @@ public class Solver {
 
 	}
 
+	
 	public boolean employeesDoubleBooked(Timetable timetable) {
 		Employee[][] table = timetable.getTable();
 		for (int i = 0; i < table[0].length; i++) {

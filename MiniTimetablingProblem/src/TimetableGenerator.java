@@ -6,6 +6,7 @@ public class TimetableGenerator {
 		
 	}
 	
+	
 	public Timetable createTable(){
 		Timetable timetable = new Timetable(5, 7);
 		Employee[] employees = createEmployees();

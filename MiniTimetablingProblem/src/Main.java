@@ -6,6 +6,7 @@ public class Main {
 		Timetable table = tg.createTable();
 		Employee[][] showEmployees = table.getTable();
 
+		
 		System.out.println("Initial permutation: ");
 		System.out.println("Mon     Tue     Wed     Thu     Fri     Sat     Sun");
 		System.out.println("--      --      --      --      --      --      -- ");
