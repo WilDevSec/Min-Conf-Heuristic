@@ -49,6 +49,7 @@ public class Solver {
 				Employee e = table[i][j];
 				if (employeeCount.containsKey(e) && employeeCount.get(e) >= 5) {
 					timetable.editEmployeeInTable(getFreeEmployee(timetable, j), i, j);
+					System.out.println(e.getName());
 					return true;
 				} else if (employeeCount.containsKey(e)) {
 					employeeCount.put(e, employeeCount.get(e) + 1);
@@ -57,6 +58,7 @@ public class Solver {
 				}
 			}
 		}
+		
 		return false;
 	}
 

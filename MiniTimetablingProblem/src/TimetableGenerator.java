@@ -26,7 +26,7 @@ public class TimetableGenerator {
 	private Employee[] createEmployees() {
 		Employee[] employees = {new Employee("Sam"), new Employee("Tom"), new Employee("Dav"),
 				new Employee("Pam"), new Employee("Sue"), new Employee("Rex"),
-				new Employee("Joe"), new Employee("Xia"), new Employee("Lil")};
+				new Employee("Joe"), new Employee("Kai"), new Employee("Lil")};
 		/* Employee[] employees = new Employee[10];
 		
 		for (int i = 0; i < 10; i++) {
