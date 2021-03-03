@@ -8,27 +8,22 @@ public class Location {
 	private final int DAYS_IN_TABLE = 7;
 	// Using 6 employees per day for every location - as explained in documentation.
 	private final int EMPLOYEES_PER_DAY = 6;
-	private Employee[][] table;
-	private List<Employee> employees = new ArrayList<>();
+	private Employee[][] timetable;
 	
 	
-	public Location(int daysInTable) {
-		table = new Employee[EMPLOYEES_PER_DAY][DAYS_IN_TABLE];
+	public Location(int employeeID, int rank4Req, int rank3Req, int rank2Req, int boatDriversReq, int crewmanReq, int jetSkiUsersReq) {
+		timetable = new Employee[EMPLOYEES_PER_DAY][DAYS_IN_TABLE];
 	}
 	
 	public void editEmployeeInTable(Employee newEmployee, int employee, int day) {
-		table[employee][day] = newEmployee;
+		timetable[employee][day] = newEmployee;
 	}
 	
-	public Employee[][] getTable(){
-		return table;
+	public void setTimetable(Employee[][] ttable) {
+		timetable = ttable;
 	}
 	
-	public void addEmployeeToList(Employee e) {
-		employees.add(e);
-	}
-
-	public List<Employee> getEmployees() {
-		return employees;
+	public Employee[][] getTimetable(){
+		return timetable;
 	}
 }

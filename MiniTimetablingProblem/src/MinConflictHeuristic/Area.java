@@ -13,6 +13,7 @@ public class Area {
 		this.employees = employees;
 	}
 
+	
 	public List<Location> getLocations() {
 		return locations;
 	}

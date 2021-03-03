@@ -4,9 +4,8 @@ import Dataset.LocationsGenerator;;
 public class Main {
 
 	public static void main(String[] args) {
-		LocationsGenerator dg = new LocationsGenerator();
-		dg.generateLocations();
-		System.out.println("done");
+		ReadData rd = new ReadData();
+		rd.getAllAreas();
 	}
 
 	private static void sortEmployees(Employee[][] showEmployees) {

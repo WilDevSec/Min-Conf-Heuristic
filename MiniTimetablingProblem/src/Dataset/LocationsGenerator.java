@@ -5,7 +5,7 @@ import java.util.List;
 
 public class LocationsGenerator {
 
-	// Employee ID -- Required rank 4 -- Required rank 3 --  Required rank 2 -- Required Boat driver --  Required Crew mate -- Required Jet Ski
+	// Employee ID -- Required rank 4 -- Required rank 3 --  Required rank 2 -- Required Boat drivers --  Required Crew mates -- Required Jet Ski users
 	public void generateLocations() {
 		List<String> locations = new ArrayList<String>();
 		for (int i = 0; i <= 1500; i++) {

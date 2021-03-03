@@ -1,15 +1,15 @@
 package MinConflictHeuristic;
 import java.util.*;
 
-public class Solver {
+public class AreaSolver {
 
-	public Solver() {
+	public AreaSolver() {
 
 	}
 
 	
 	public boolean employeesDoubleBooked(Location timetable) {
-		Employee[][] table = timetable.getTable();
+		Employee[][] table = timetable.getTimetable();
 		for (int i = 0; i < table[0].length; i++) {
 			Map<Employee, Integer> employeeCount = new HashMap<>();
 			for (int j = 0; j < table.length; j++) {
@@ -26,7 +26,7 @@ public class Solver {
 
 	private Employee getFreeEmployee(Location timetable, int day) {
 		Employee ret = null;
-		Employee[][] table = timetable.getTable();
+		Employee[][] table = timetable.getTimetable();
 		List<Employee> employees = timetable.getEmployees();
 		Collections.shuffle(employees);
 		for (Employee e : employees) {
@@ -43,7 +43,7 @@ public class Solver {
 	}
 
 	public boolean employeesWorkingTooMuch(Location timetable) {
-		Employee[][] table = timetable.getTable();
+		Employee[][] table = timetable.getTimetable();
 		Map<Employee, Integer> employeeCount = new HashMap<>();
 		for (int i = 0; i < table.length; i++) {
 			for (int j = 0; j < table[i].length; j++) {
