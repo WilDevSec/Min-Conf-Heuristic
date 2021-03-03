@@ -3,10 +3,16 @@ import java.util.*;
 
 public class AreaSolver {
 
-	public AreaSolver() {
-
+	ArrayList<Employee> employees = new ArrayList<Employee>();
+	ArrayList<Location> locations = new ArrayList<Location>();
+	public AreaSolver(Area currentArea) {
+		employees = currentArea.getEmployees();
+		locations = currentArea.getLocations();
 	}
-
+	
+	public int[] getConstraintLocation(Location location) {
+		return new int[] {2, 3};
+	}
 	
 	public boolean employeesDoubleBooked(Location timetable) {
 		Employee[][] table = timetable.getTimetable();
@@ -27,7 +33,6 @@ public class AreaSolver {
 	private Employee getFreeEmployee(Location timetable, int day) {
 		Employee ret = null;
 		Employee[][] table = timetable.getTimetable();
-		List<Employee> employees = timetable.getEmployees();
 		Collections.shuffle(employees);
 		for (Employee e : employees) {
 			boolean freeOnDay = true;

@@ -19,19 +19,19 @@ public class Employee {
 		return rank;
 	}
 	
-	public boolean getBoatDriver() {
+	public boolean isBoatDriver() {
 		return boatDriver;
 	}
 	
-	public boolean getBoatCrewman() {
+	public boolean isBoatCrewman() {
 		return boatCrewman;
 	}
 	
-	public boolean getjetSki() {
+	public boolean isjetSkiUser() {
 		return jetSki;
 	}
 	
-	public boolean getfullTime() {
+	public boolean isfullTime() {
 		return fullTime;
 	}
 	

@@ -1,6 +1,4 @@
 package MinConflictHeuristic;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Location {
 
@@ -9,10 +7,34 @@ public class Location {
 	// Using 6 employees per day for every location - as explained in documentation.
 	private final int EMPLOYEES_PER_DAY = 6;
 	private Employee[][] timetable;
+	private int locationID, rank4Req, rank3Req, rank2Req, boatDriversReq, crewmenReq, jetSkiUsersReq;
 	
+	public Location(int locationID, int rank4Req, int rank3Req, int rank2Req, int boatDriversReq, int crewmenReq, int jetSkiUsersReq) {
+		this.locationID = locationID;
+	}
 	
-	public Location(int employeeID, int rank4Req, int rank3Req, int rank2Req, int boatDriversReq, int crewmanReq, int jetSkiUsersReq) {
-		timetable = new Employee[EMPLOYEES_PER_DAY][DAYS_IN_TABLE];
+	public int getrank4Req() {
+		return rank4Req;
+	}
+	
+	public int getrank3Req() {
+		return rank3Req;
+	}
+	
+	public int getrank2Req() {
+		return rank2Req;
+	}
+	
+	public int getBoatDriversReq() {
+		return boatDriversReq;
+	}
+	
+	public int getCrewmenReq() {
+		return crewmenReq;
+	}
+	
+	public int getJetSkiUsersReq() {
+		return jetSkiUsersReq;
 	}
 	
 	public void editEmployeeInTable(Employee newEmployee, int employee, int day) {

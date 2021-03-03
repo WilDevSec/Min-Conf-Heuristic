@@ -5,20 +5,20 @@ import java.util.List;
 
 public class Area {
 
-	private List<Location> locations = new ArrayList<Location>();
-	private List<Employee> employees = new ArrayList<Employee>();
+	private ArrayList<Location> locations = new ArrayList<Location>();
+	private ArrayList<Employee> employees = new ArrayList<Employee>();
 
-	public Area(List<Location> locations, List<Employee> employees) {
+	public Area(ArrayList<Location> locations, ArrayList<Employee> employees) {
 		this.locations = locations;
 		this.employees = employees;
 	}
 
 	
-	public List<Location> getLocations() {
+	public ArrayList<Location> getLocations() {
 		return locations;
 	}
 
-	public List<Employee> getEmployees() {
+	public ArrayList<Employee> getEmployees() {
 		return employees;
 	}
 	
