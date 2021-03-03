@@ -1,17 +1,19 @@
+package MinConflictHeuristic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Timetable {
+public class Location {
 
-	private int employeesNeeded, daysInTable;
+	// 7 days in a week and this is a weekly timetable
+	private final int DAYS_IN_TABLE = 7;
+	// Using 6 employees per day for every location - as explained in documentation.
+	private final int EMPLOYEES_PER_DAY = 6;
 	private Employee[][] table;
 	private List<Employee> employees = new ArrayList<>();
 	
 	
-	public Timetable(int employeesNeeded, int daysInTable) {
-		this.employeesNeeded = employeesNeeded;
-		this.daysInTable = daysInTable;
-		table = new Employee[employeesNeeded][daysInTable];
+	public Location(int daysInTable) {
+		table = new Employee[EMPLOYEES_PER_DAY][DAYS_IN_TABLE];
 	}
 	
 	public void editEmployeeInTable(Employee newEmployee, int employee, int day) {

@@ -1,3 +1,4 @@
+package MinConflictHeuristic;
 import java.util.*;
 
 public class Solver {
@@ -7,7 +8,7 @@ public class Solver {
 	}
 
 	
-	public boolean employeesDoubleBooked(Timetable timetable) {
+	public boolean employeesDoubleBooked(Location timetable) {
 		Employee[][] table = timetable.getTable();
 		for (int i = 0; i < table[0].length; i++) {
 			Map<Employee, Integer> employeeCount = new HashMap<>();
@@ -23,7 +24,7 @@ public class Solver {
 		return false;
 	}
 
-	private Employee getFreeEmployee(Timetable timetable, int day) {
+	private Employee getFreeEmployee(Location timetable, int day) {
 		Employee ret = null;
 		Employee[][] table = timetable.getTable();
 		List<Employee> employees = timetable.getEmployees();
@@ -41,7 +42,7 @@ public class Solver {
 		return ret;
 	}
 
-	public boolean employeesWorkingTooMuch(Timetable timetable) {
+	public boolean employeesWorkingTooMuch(Location timetable) {
 		Employee[][] table = timetable.getTable();
 		Map<Employee, Integer> employeeCount = new HashMap<>();
 		for (int i = 0; i < table.length; i++) {
