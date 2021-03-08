@@ -1,20 +1,81 @@
 package MinConflictHeuristic;
+
 import java.util.*;
 
 public class AreaSolver {
 
 	ArrayList<Employee> employees = new ArrayList<Employee>();
 	ArrayList<Location> locations = new ArrayList<Location>();
+
 	public AreaSolver(Area currentArea) {
 		employees = currentArea.getEmployees();
 		locations = currentArea.getLocations();
 	}
-	
-	public int[] getConstraintLocation(Location location) {
-		return new int[] {2, 3};
+
+	public void initialiseEmployeesRandomly() {
+		int employeesPerDay = 6;
+		int daysInWeek = 7;
+		for (Location l : locations) {
+			Collections.shuffle(employees);
+			int index = 0;
+			Employee[][] timetable = new Employee[employeesPerDay][daysInWeek];
+			for (int i = 0; i <= timetable[0].length; i++) {
+				for (int j = 0; j <= timetable.length; i++) {
+					timetable[i][j] = employees.get(index++);
+				}
+			}
+			l.setTimetable(timetable);
+		}
+	}
+
+	public int[] getRankOrQualViolationPosition(Location location) {
+		//Start at random point loop through whole array using Modulo
+		int employeesPerDay = 6;
+		int daysInWeek = 7;
+		int randomStartPointI = (int) Math.random() * employeesPerDay;
+		int randomStartPointJ = (int) Math.random() * daysInWeek;
+		Employee[][] timetable = location.getTimetable();
+		// Find which constraints are violated
+		for (int i = 0; i < daysInWeek; i++) {
+			int rank4Count = 0;
+			int rank3Count = 0;
+			int rank2Count = 0;
+			int boatDriverCount = 0;
+			int crewmenCount = 0;
+			int jetSkiUsersCount = 0;
+			for (int j = 0; j < employeesPerDay; j++) {
+				Employee e = timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek];
+				int rank = e.getRank();
+				if (rank == 4)
+					rank4Count++;
+				else if (rank == 3)
+					rank3Count++;
+				else if (rank == 2)
+					rank2Count++;
+				if (e.isBoatDriver())
+					boatDriverCount++;
+				if (e.isBoatCrewman())
+					crewmenCount++;
+				if (e.isjetSkiUser())
+					jetSkiUsersCount++;
+			}
+			// If there are not enough employees of any rank 4,3,2 then return the position of a rank 1.
+			if (rank4Count < location.getrank4Req() || rank3Count < location.getrank3Req() || rank2Count < location.getrank2Req()) {
+				for (int j = 0;j<employeesPerDay;j++) {
+					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek].getRank() == 1) {
+						return new int[] {(j + randomStartPointJ) % employeesPerDay, (i + randomStartPointI) % daysInWeek};
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
-	public boolean employeesDoubleBooked(Location timetable) {
+	private int[] getDoubleBookedConstraintPosition(Location location) {
+		
+	}
+
+	private boolean employeesDoubleBooked(Location timetable) {
 		Employee[][] table = timetable.getTimetable();
 		for (int i = 0; i < table[0].length; i++) {
 			Map<Employee, Integer> employeeCount = new HashMap<>();
@@ -64,7 +125,7 @@ public class AreaSolver {
 				}
 			}
 		}
-		
+
 		return false;
 	}
 

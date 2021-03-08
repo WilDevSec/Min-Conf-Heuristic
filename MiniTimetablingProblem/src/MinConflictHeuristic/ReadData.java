@@ -9,6 +9,26 @@ public class ReadData {
 
 	}
 
+	public ArrayList<Area> getAllAreas() {
+		ArrayList<Area> allAreas = new ArrayList<Area>();
+		ArrayList<Location> allLocations = InitialiseLocations();
+		ArrayList<Employee> allEmployees = InitialiseEmployees();
+		int locationsAddedMarker = 0;
+		int employeesAddedMarker = 0;
+		for (int i = 0; i < 60; i++) {
+			ArrayList<Location> locationsInArea = new ArrayList<Location>();
+			for (int j = 0; j < 5; j++) {
+				locationsInArea.add(allLocations.get(locationsAddedMarker++));
+			}
+			ArrayList<Employee> employeesInArea = new ArrayList<Employee>();
+			for (int j = 0; j < 60; j++) {
+				employeesInArea.add(allEmployees.get(employeesAddedMarker++));
+			}
+			allAreas.add(new Area(locationsInArea, employeesInArea));
+		}
+		return allAreas;
+	}
+	
 	// Name, rank, Boat Driver, Boat Crewman, Jet Ski, Full time
 	private ArrayList<Employee> InitialiseEmployees() {
 		ArrayList<String> employeesString = CSVIO.readCSV("/home/will/Studies/Diss/Dataset/employeeList.csv");
@@ -46,26 +66,6 @@ public class ReadData {
 			locations.add(l);
 		}
 		return locations;
-	}
-
-	public ArrayList<Area> getAllAreas() {
-		ArrayList<Area> allAreas = new ArrayList<Area>();
-		ArrayList<Location> allLocations = InitialiseLocations();
-		ArrayList<Employee> allEmployees = InitialiseEmployees();
-		int locationsAddedMarker = 0;
-		int employeesAddedMarker = 0;
-		for (int i = 0; i < 60; i++) {
-			ArrayList<Location> locationsInArea = new ArrayList<Location>();
-			for (int j = 0; j < 5; j++) {
-				locationsInArea.add(allLocations.get(locationsAddedMarker++));
-			}
-			ArrayList<Employee> employeesInArea = new ArrayList<Employee>();
-			for (int j = 0; j < 60; j++) {
-				employeesInArea.add(allEmployees.get(employeesAddedMarker++));
-			}
-			allAreas.add(new Area(locationsInArea, employeesInArea));
-		}
-		return allAreas;
 	}
 
 }
