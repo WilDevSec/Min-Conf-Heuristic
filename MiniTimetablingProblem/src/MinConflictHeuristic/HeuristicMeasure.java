@@ -19,6 +19,10 @@ public class HeuristicMeasure {
 		count += fullTimeEmployeesNotWorking5Days(area);
 		return count;
 	}
+	
+	public int locationScore(Location location) {
+		return rankAndQualificationMissing(location);
+	}
 
 	private int rankAndQualificationMissing(Location location) {
 		Employee[][] employees = location.getTimetable();
@@ -57,6 +61,7 @@ public class HeuristicMeasure {
 		}
 		return score;
 	}
+	
 
 	private int employeesDoubleBookedCount(Area area) {
 		int count = 0;

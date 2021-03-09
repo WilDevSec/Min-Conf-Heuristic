@@ -6,13 +6,47 @@ public class AreaSolver {
 
 	ArrayList<Employee> employees = new ArrayList<Employee>();
 	ArrayList<Location> locations = new ArrayList<Location>();
+	Area currentArea;
 
 	public AreaSolver(Area currentArea) {
 		employees = currentArea.getEmployees();
 		locations = currentArea.getLocations();
+		this.currentArea = currentArea;
 	}
 
-	public void initialiseEmployeesRandomly() {
+	
+	public Area attemptSolve() {
+		initialiseEmployeesRandomly();
+		HeuristicMeasure hm = new HeuristicMeasure();
+		int iterationCount = 0;
+		int heuristicScore = hm.heuristicScore(currentArea);
+		while (heuristicScore != 0 && iterationCount < 1000) {
+			for (Location l : locations) {
+				Employee[][] timetable = l.getTimetable();
+				// Needs to try many different locations for each violation positions
+				int[] violationPosition = getRankOrQualViolationPosition(l);
+				//Then needs to try all the violation positions, maybe 50 times each limit.
+				int[] positionToSwitch = {(int) (Math.random() * timetable.length), (int) (Math.random() * timetable[0].length)};
+				Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
+				Employee temp = copy[violationPosition[0]][violationPosition[1]];
+				copy[violationPosition[0]][violationPosition[1]] = copy[positionToSwitch[0]][positionToSwitch[1]];
+				copy[positionToSwitch[0]][positionToSwitch[1]] = temp;
+				Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(), l.getrank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
+				if (hm.locationScore(lCopy) < hm.locationScore(l)) {
+					l = lCopy;
+				}
+			}
+			
+			iterationCount++;
+		}
+		return currentArea;
+	}
+	
+	public Employee[][] getEmployeesFreeEachDay() {
+		return null;
+	}
+	
+	private void initialiseEmployeesRandomly() {
 		int employeesPerDay = 6;
 		int daysInWeek = 7;
 		for (Location l : locations) {
@@ -28,7 +62,10 @@ public class AreaSolver {
 		}
 	}
 
-	public int[] getRankOrQualViolationPosition(Location location) {
+	
+	//Hard constraint 
+	// Finding the position of where the minimum number of employees with a rank is not met
+	private int[] getRankOrQualViolationPosition(Location location) {
 		//Start at random point loop through whole array using Modulo
 		int employeesPerDay = 6;
 		int daysInWeek = 7;
@@ -67,66 +104,77 @@ public class AreaSolver {
 					}
 				}
 			}
+			// Need to return position to be switch to add boat drivers, crewmen and jet ski users
+			if (boatDriverCount < location.getBoatDriversReq()) {
+				
+			}
+			if (crewmenCount < location.getCrewmenReq()) {
+				
+			}
+			if (jetSkiUsersCount < location.getJetSkiUsersReq()) {
+				
+			}
 		}
 		return null;
 	}
 	
-	private int[] getDoubleBookedConstraintPosition(Location location) {
-		
-	}
-
-	private boolean employeesDoubleBooked(Location timetable) {
-		Employee[][] table = timetable.getTimetable();
-		for (int i = 0; i < table[0].length; i++) {
-			Map<Employee, Integer> employeeCount = new HashMap<>();
-			for (int j = 0; j < table.length; j++) {
-				if (employeeCount.containsKey(table[j][i])) {
-					timetable.editEmployeeInTable(getFreeEmployee(timetable, i), j, i);
-					return true;
-				} else {
-					employeeCount.put(table[j][i], 1);
+	private int[] getDoubleBookedConstraintPosition(Area area) {
+		Map<Employee, Integer> timetable = new HashMap<>();
+		int employeesPerDay = 6;
+		int daysInWeek = 7;
+		int randomStartPointI = (int) Math.random() * employeesPerDay;
+		int randomStartPointJ = (int) Math.random() * daysInWeek;
+		for (int i = 0; i < area.getLocations().get(0).getTimetable().length; i++) {
+			for (Location l : area.getLocations()) {
+				Employee[][] table = l.getTimetable();
+				for (int j = 0; j < table.length; j++) {
+					if (timetable.containsKey(table[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek])) {
+						return new int[] {(j + randomStartPointJ) % employeesPerDay, (i + randomStartPointI) % daysInWeek};
+					} else {
+						timetable.put(table[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek], 1);
+					}
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 
-	private Employee getFreeEmployee(Location timetable, int day) {
-		Employee ret = null;
-		Employee[][] table = timetable.getTimetable();
-		Collections.shuffle(employees);
-		for (Employee e : employees) {
-			boolean freeOnDay = true;
-			for (int i = 0; i < table.length; i++) {
-				if (e.equals(table[i][day])) {
-					freeOnDay = false;
-				}
-			}
-			if (freeOnDay)
-				return e;
-		}
-		return ret;
-	}
+//	private Employee getFreeEmployee(Location timetable, int day) {
+//		Employee ret = null;
+//		Employee[][] table = timetable.getTimetable();
+//		Collections.shuffle(employees);
+//		for (Employee e : employees) {
+//			boolean freeOnDay = true;
+//			for (int i = 0; i < table.length; i++) {
+//				if (e.equals(table[i][day])) {
+//					freeOnDay = false;
+//				}
+//			}
+//			if (freeOnDay)
+//				return e;
+//		}
+//		return ret;
+//	}
 
-	public boolean employeesWorkingTooMuch(Location timetable) {
-		Employee[][] table = timetable.getTimetable();
-		Map<Employee, Integer> employeeCount = new HashMap<>();
-		for (int i = 0; i < table.length; i++) {
-			for (int j = 0; j < table[i].length; j++) {
-				Employee e = table[i][j];
-				if (employeeCount.containsKey(e) && employeeCount.get(e) >= 5) {
-					timetable.editEmployeeInTable(getFreeEmployee(timetable, j), i, j);
-					System.out.println(e.getName());
-					return true;
-				} else if (employeeCount.containsKey(e)) {
-					employeeCount.put(e, employeeCount.get(e) + 1);
-				} else {
-					employeeCount.put(e, 1);
-				}
-			}
-		}
-
-		return false;
-	}
+//	public boolean employeesWorkingTooMuch(Location timetable) {
+//		Employee[][] table = timetable.getTimetable();
+//		Map<Employee, Integer> employeeCount = new HashMap<>();
+//		for (int i = 0; i < table.length; i++) {
+//			for (int j = 0; j < table[i].length; j++) {
+//				Employee e = table[i][j];
+//				if (employeeCount.containsKey(e) && employeeCount.get(e) >= 5) {
+//					timetable.editEmployeeInTable(getFreeEmployee(timetable, j), i, j);
+//					System.out.println(e.getName());
+//					return true;
+//				} else if (employeeCount.containsKey(e)) {
+//					employeeCount.put(e, employeeCount.get(e) + 1);
+//				} else {
+//					employeeCount.put(e, 1);
+//				}
+//			}
+//		}
+//
+//		return false;
+//	}
 
 }

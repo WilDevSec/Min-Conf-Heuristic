@@ -13,6 +13,9 @@ public class Location {
 		this.locationID = locationID;
 	}
 	
+	public int getLocationID() {
+		return locationID;
+	}
 	public int getrank4Req() {
 		return rank4Req;
 	}

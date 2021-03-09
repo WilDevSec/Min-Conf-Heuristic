@@ -1,11 +1,19 @@
 package MinConflictHeuristic;
-import Dataset.LocationsGenerator;;
+import java.util.ArrayList;
+import java.util.List;
+
+import Dataset.LocationsGenerator;
 
 public class Main {
 
 	public static void main(String[] args) {
 		ReadData rd = new ReadData();
-		rd.getAllAreas();
+		List<Area> solvedAreas = new ArrayList<>();
+		for (Area a : rd.getAllAreas()) {
+			AreaSolver as = new AreaSolver(a);
+			as.attemptSolve();
+			solvedAreas.add(a);
+		}
 	}
 
 	private static void sortEmployees(Employee[][] showEmployees) {
