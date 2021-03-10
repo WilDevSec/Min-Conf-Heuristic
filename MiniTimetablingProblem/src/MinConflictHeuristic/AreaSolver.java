@@ -14,7 +14,6 @@ public class AreaSolver {
 		this.currentArea = currentArea;
 	}
 
-	
 	public Area attemptSolve() {
 		initialiseEmployeesRandomly();
 		HeuristicMeasure hm = new HeuristicMeasure();
@@ -25,48 +24,102 @@ public class AreaSolver {
 				Employee[][] timetable = l.getTimetable();
 				// Needs to try many different locations for each violation positions
 				int[] violationPosition = getRankOrQualViolationPosition(l);
-				//Then needs to try all the violation positions, maybe 50 times each limit.
-				int[] positionToSwitch = {(int) (Math.random() * timetable.length), (int) (Math.random() * timetable[0].length)};
-				Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
-				Employee temp = copy[violationPosition[0]][violationPosition[1]];
-				copy[violationPosition[0]][violationPosition[1]] = copy[positionToSwitch[0]][positionToSwitch[1]];
-				copy[positionToSwitch[0]][positionToSwitch[1]] = temp;
-				Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(), l.getrank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
-				if (hm.locationScore(lCopy) < hm.locationScore(l)) {
-					l = lCopy;
+				int rankOrQualAttemptCounter = 0;
+				while (violationPosition != null && rankOrQualAttemptCounter < 5000) {
+					if (Math.random() > 0.5) {
+						int[] positionToSwitch = { (int) (Math.random() * timetable.length),
+								(int) (Math.random() * timetable[0].length) };
+						Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
+						Employee temp = copy[violationPosition[0]][violationPosition[1]];
+						copy[violationPosition[0]][violationPosition[1]] = copy[positionToSwitch[0]][positionToSwitch[1]];
+						copy[positionToSwitch[0]][positionToSwitch[1]] = temp;
+						Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(),
+								l.getrank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
+						if (hm.locationScore(lCopy) < hm.locationScore(l)) {
+							l = lCopy;
+						}
+					} else {
+						// Switch with an employee not working that day
+
+					}
 				}
+				rankOrQualAttemptCounter++;
 			}
-			
-			iterationCount++;
+			// Then needs to try all the violation positions, maybe 50 times each limit.
+
+		}
+
+		int[] areaViolationPosition = getDoubleBookedConstraintPosition();
+		if (areaViolationPosition != null) {
+			boolean exit = false;
+			// Attempt different positional switches until a new set of timetables is found
+			// with a lower heuristic.
+//			while (!exit) {
+//				int[] positionToSwitch = { (int) (Math.random() * timetable.length),
+//						(int) (Math.random() * timetable[0].length) };
+//				Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
+//				Employee temp = copy[violationPosition[0]][violationPosition[1]];
+//				copy[violationPosition[0]][violationPosition[1]] = copy[positionToSwitch[0]][positionToSwitch[1]];
+//				copy[positionToSwitch[0]][positionToSwitch[1]] = temp;
+//				Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(), l.getrank2Req(),
+//						l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
+//				if (hm.locationScore(lCopy) < hm.locationScore(l)) {
+//					l = lCopy;
+//					exit = true;
+//				}
+//			}
+
 		}
 		return currentArea;
 	}
-	
-	public Employee[][] getEmployeesFreeEachDay() {
+
+	public ArrayList<Employee[]> getEmployeesFreeEachDay() {
+		List<Employee[]> employeesFree = new ArrayList<Employee[]>();
+		int daysInWeek = 7;
+		int employeesPerDay = 6;
+		for (int i = 0; i < daysInWeek; i++) {
+			List<Employee> employeesLocal = new ArrayList<>(employees);
+			for (Location l : locations) {
+				Employee[][] timetable = l.getTimetable();
+				for (int j = 0; j < employeesPerDay; j++) {
+					if (employeesLocal.contains(timetable[j][i])) {
+						
+					}
+				}
+			}
+		}
 		return null;
 	}
-	
+
 	private void initialiseEmployeesRandomly() {
 		int employeesPerDay = 6;
 		int daysInWeek = 7;
-		for (Location l : locations) {
+		List<Employee[][]> locationTimetables = new ArrayList<Employee[][]>();
+		int numberOfLocations = 5;
+		for (int i = 0; i < numberOfLocations; i++) {
+			locationTimetables.add(new Employee[employeesPerDay][daysInWeek]);
+		}
+		for (int i = 0; i < daysInWeek; i++) {
 			Collections.shuffle(employees);
-			int index = 0;
-			Employee[][] timetable = new Employee[employeesPerDay][daysInWeek];
-			for (int i = 0; i <= timetable[0].length; i++) {
-				for (int j = 0; j <= timetable.length; i++) {
-					timetable[i][j] = employees.get(index++);
+			for (Employee[][] e : locationTimetables) {
+				int index = 0;
+				for (int j = 0; j <= e.length; i++) {
+					e[j][i] = employees.get(index++);
 				}
 			}
-			l.setTimetable(timetable);
 		}
+		int index = 0;
+		for (Location l : locations) {
+			l.setTimetable(locationTimetables.get(index++));
+		}
+
 	}
 
-	
-	//Hard constraint 
-	// Finding the position of where the minimum number of employees with a rank is not met
+	// Hard constraint
+	// Finding the position of where the minimum number of employees with a rank is
+	// not met
 	private int[] getRankOrQualViolationPosition(Location location) {
-		//Start at random point loop through whole array using Modulo
+		// Start at random point loop through whole array using Modulo
 		int employeesPerDay = 6;
 		int daysInWeek = 7;
 		int randomStartPointI = (int) Math.random() * employeesPerDay;
@@ -96,42 +149,92 @@ public class AreaSolver {
 				if (e.isjetSkiUser())
 					jetSkiUsersCount++;
 			}
-			// If there are not enough employees of any rank 4,3,2 then return the position of a rank 1.
-			if (rank4Count < location.getrank4Req() || rank3Count < location.getrank3Req() || rank2Count < location.getrank2Req()) {
-				for (int j = 0;j<employeesPerDay;j++) {
-					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek].getRank() == 1) {
-						return new int[] {(j + randomStartPointJ) % employeesPerDay, (i + randomStartPointI) % daysInWeek};
+			// If there are not enough employees of any rank 4,3,2 then return the position
+			// of a rank 1.
+			if (rank4Count < location.getrank4Req() || rank3Count < location.getrank3Req()
+					|| rank2Count < location.getrank2Req()) {
+				for (int j = 0; j < employeesPerDay; j++) {
+					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
+							.getRank() == 1) {
+						return new int[] { (j + randomStartPointJ) % employeesPerDay,
+								(i + randomStartPointI) % daysInWeek };
 					}
 				}
 			}
-			// Need to return position to be switch to add boat drivers, crewmen and jet ski users
+			// If not enough boat drivers then return position of someone who isn't one.
 			if (boatDriverCount < location.getBoatDriversReq()) {
-				
+				for (int j = 0; j < employeesPerDay; j++) {
+					if (!timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
+							.isBoatDriver()) {
+						return new int[] { (j + randomStartPointJ) % employeesPerDay,
+								(i + randomStartPointI) % daysInWeek };
+					}
+				}
 			}
 			if (crewmenCount < location.getCrewmenReq()) {
-				
+				for (int j = 0; j < employeesPerDay; j++) {
+					if (!timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
+							.isBoatCrewman()) {
+						return new int[] { (j + randomStartPointJ) % employeesPerDay,
+								(i + randomStartPointI) % daysInWeek };
+					}
+				}
 			}
 			if (jetSkiUsersCount < location.getJetSkiUsersReq()) {
-				
+				for (int j = 0; j < employeesPerDay; j++) {
+					if (!timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
+							.isjetSkiUser()) {
+						return new int[] { (j + randomStartPointJ) % employeesPerDay,
+								(i + randomStartPointI) % daysInWeek };
+					}
+				}
 			}
 		}
 		return null;
 	}
-	
-	private int[] getDoubleBookedConstraintPosition(Area area) {
+
+	private int[] getDoubleBookedConstraintPosition() {
 		Map<Employee, Integer> timetable = new HashMap<>();
 		int employeesPerDay = 6;
 		int daysInWeek = 7;
 		int randomStartPointI = (int) Math.random() * employeesPerDay;
 		int randomStartPointJ = (int) Math.random() * daysInWeek;
-		for (int i = 0; i < area.getLocations().get(0).getTimetable().length; i++) {
-			for (Location l : area.getLocations()) {
+		for (int i = 0; i < currentArea.getLocations().get(0).getTimetable().length; i++) {
+			for (Location l : currentArea.getLocations()) {
 				Employee[][] table = l.getTimetable();
 				for (int j = 0; j < table.length; j++) {
-					if (timetable.containsKey(table[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek])) {
-						return new int[] {(j + randomStartPointJ) % employeesPerDay, (i + randomStartPointI) % daysInWeek};
+					if (timetable.containsKey(
+							table[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek])) {
+						return new int[] { (j + randomStartPointJ) % employeesPerDay,
+								(i + randomStartPointI) % daysInWeek };
 					} else {
-						timetable.put(table[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek], 1);
+						timetable.put(
+								table[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek],
+								1);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	private int[] employeeWorkingMoreThan5DaysLocation() {
+		Map<Employee, Integer> workingDaysCount = new HashMap<>();
+		int employeesPerDay = 6;
+		int daysInWeek = 7;
+		for (int i = 0; i < currentArea.getLocations().get(0).getTimetable().length; i++) {
+			for (Location l : currentArea.getLocations()) {
+				Employee[][] table = l.getTimetable();
+				for (int j = 0; j < table.length; j++) {
+					if (workingDaysCount.containsKey(table[j][i])) {
+						int value = workingDaysCount.get(table[j][i]);
+						if (value == 5) {
+							return new int[] { j, i };
+						} else {
+							workingDaysCount.put(table[j][i], value);
+						}
+					} else {
+						workingDaysCount.put(table[j][i], 1);
 					}
 				}
 			}
