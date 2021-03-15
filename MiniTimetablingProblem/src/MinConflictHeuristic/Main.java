@@ -1,5 +1,6 @@
 package MinConflictHeuristic;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import Dataset.LocationsGenerator;
@@ -8,10 +9,12 @@ public class Main {
 
 	public static void main(String[] args) {
 		ReadData rd = new ReadData();
-		List<Area> solvedAreas = new ArrayList<>();
+		List<Area> solvedAreas = new ArrayList<>(); 
 		for (Area a : rd.getAllAreas()) {
 			AreaSolver as = new AreaSolver(a);
+			as.populateTimetablesRandomly();
 			as.attemptSolve();
+			System.out.println("Area Solved");
 			solvedAreas.add(a);
 		}
 	}

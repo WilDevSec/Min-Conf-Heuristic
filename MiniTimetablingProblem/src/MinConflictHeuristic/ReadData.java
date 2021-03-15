@@ -15,7 +15,7 @@ public class ReadData {
 		ArrayList<Employee> allEmployees = InitialiseEmployees();
 		int locationsAddedMarker = 0;
 		int employeesAddedMarker = 0;
-		for (int i = 0; i < 60; i++) {
+		for (int i = 0; i < 50; i++) {
 			ArrayList<Location> locationsInArea = new ArrayList<Location>();
 			for (int j = 0; j < 5; j++) {
 				locationsInArea.add(allLocations.get(locationsAddedMarker++));
@@ -54,14 +54,14 @@ public class ReadData {
 		ArrayList<Location> locations = new ArrayList<Location>();
 		for (String s : locationsString) {
 			String[] locationsAsArray = s.split(",");
-			int employeeID = Integer.parseInt(locationsAsArray[0]);
+			int locationID = Integer.parseInt(locationsAsArray[0]);
 			int rank4Req = Integer.parseInt(locationsAsArray[1]);
 			int rank3Req = Integer.parseInt(locationsAsArray[2]);
 			int rank2Req = Integer.parseInt(locationsAsArray[3]);
 			int boatDriversReq = Integer.parseInt(locationsAsArray[4]);
 			int crewmanReq = Integer.parseInt(locationsAsArray[5]);
 			int jetSkiUsersReq = Integer.parseInt(locationsAsArray[6]);
-			Location l = new Location(employeeID, rank4Req, rank3Req, rank2Req, boatDriversReq, crewmanReq,
+			Location l = new Location(locationID, rank4Req, rank3Req, rank2Req, boatDriversReq, crewmanReq,
 					jetSkiUsersReq);
 			locations.add(l);
 		}

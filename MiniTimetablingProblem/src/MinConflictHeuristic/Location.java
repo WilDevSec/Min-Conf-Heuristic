@@ -11,6 +11,12 @@ public class Location {
 	
 	public Location(int locationID, int rank4Req, int rank3Req, int rank2Req, int boatDriversReq, int crewmenReq, int jetSkiUsersReq) {
 		this.locationID = locationID;
+		this.rank4Req = rank4Req;
+		this.rank3Req = rank3Req;
+		this.rank2Req = rank2Req;
+		this.boatDriversReq = boatDriversReq;
+		this.crewmenReq = crewmenReq;
+		this.jetSkiUsersReq = jetSkiUsersReq;
 	}
 	
 	public int getLocationID() {

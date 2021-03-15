@@ -21,7 +21,7 @@ public class HeuristicMeasure {
 	}
 	
 	public int locationScore(Location location) {
-		return rankAndQualificationMissing(location);
+		return rankAndQualificationMissing(location); 
 	}
 
 	private int rankAndQualificationMissing(Location location) {
