@@ -4,38 +4,42 @@ import java.util.Collections;
 import java.util.List;
 
 import Dataset.LocationsGenerator;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class Main {
+public class Main extends Application{
 
+	public static int violationCount = 0;
+	
+	@Override
+	public void start(Stage stage) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getResource("/JFX/fxmlfile.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+	}
+	
 	public static void main(String[] args) {
+		launch(args);
+	}
+	
+	public void generate() {
 		ReadData rd = new ReadData();
 		List<Area> solvedAreas = new ArrayList<>(); 
+		HeuristicMeasure hs = new HeuristicMeasure();
 		for (Area a : rd.getAllAreas()) {
 			AreaSolver as = new AreaSolver(a);
 			as.populateTimetablesRandomly();
-			as.attemptSolve();
+			a = as.attemptSolve();
 			System.out.println("Area Solved");
 			solvedAreas.add(a);
+			violationCount += hs.heuristicScore(a);
 		}
 	}
 
-	private static void sortEmployees(Employee[][] showEmployees) {
-		boolean sorted = false;
-		while (!sorted) {
-			sorted = true;
-			for (int i = 0; i < showEmployees[0].length; i++) {
-				for (int j = 0; j < showEmployees.length -1; j++) {
-					if (showEmployees[j][i].getName().substring(0, 1).compareTo(showEmployees[j+1][i].getName().substring(0, 1)) > 0) {
-						Employee temp = showEmployees[j][i];
-						showEmployees[j][i] = showEmployees[j+1][i];
-						showEmployees[j+1][i] = temp;
-						sorted = false;
-					}
-				}
-			}
-		}
-		
-	}
 }
 
 //TimetableGenerator tg = new TimetableGenerator();

@@ -59,9 +59,9 @@ public class ReadData {
 			int rank3Req = Integer.parseInt(locationsAsArray[2]);
 			int rank2Req = Integer.parseInt(locationsAsArray[3]);
 			int boatDriversReq = Integer.parseInt(locationsAsArray[4]);
-			int crewmanReq = Integer.parseInt(locationsAsArray[5]);
+			int crewmenReq = Integer.parseInt(locationsAsArray[5]);
 			int jetSkiUsersReq = Integer.parseInt(locationsAsArray[6]);
-			Location l = new Location(locationID, rank4Req, rank3Req, rank2Req, boatDriversReq, crewmanReq,
+			Location l = new Location(locationID, rank4Req, rank3Req, rank2Req, boatDriversReq, crewmenReq,
 					jetSkiUsersReq);
 			locations.add(l);
 		}

@@ -18,15 +18,13 @@ public class AreaSolver {
 		HeuristicMeasure hm = new HeuristicMeasure();
 		int iterationCount = 0;
 		int heuristicScore = hm.heuristicScore(currentArea);
-		while (heuristicScore != 0 && iterationCount < 100) {
-			System.out.println("Outer Loop");
+		while (heuristicScore != 0 && iterationCount < 200) {
 			for (Location l : locations) {
 				Employee[][] timetable = l.getTimetable();
 				// Needs to try many different locations for each violation positions
 				int[] violationPosition = getRankOrQualViolationPosition(l);
 				int rankOrQualAttemptCounter = 0;
-				while (violationPosition != null && rankOrQualAttemptCounter < 10000) {
-					System.out.println("Inner loop 1");
+				while (violationPosition != null && rankOrQualAttemptCounter < 100) {
 					if (Math.random() > 0.5) {
 						// Switch with a random employee already in the timetable working another day
 						int jPosition = violationPosition[1];
@@ -43,9 +41,12 @@ public class AreaSolver {
 						Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(),
 								l.getrank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
 						lCopy.setTimetable(copy);
+						System.out.println("HScore of new location: " + hm.locationScore(lCopy));
+						System.out.println("HScore of old location: " + hm.locationScore(l));
 						if (hm.locationScore(lCopy) < hm.locationScore(l)) {
 							l = lCopy;
 							System.out.println("Employee switched = " + temp.getName());
+							System.out.println("Heuristic score: " + hm.locationScore(l));
 						}
 					} else {
 						// Switch with an employee not working that day
@@ -61,27 +62,26 @@ public class AreaSolver {
 						if (hm.locationScore(lCopy) < hm.locationScore(l)) {
 							l = lCopy;
 							System.out.println("Employee switched = " + employeeToSwitch.getName());
+							System.out.println("Heuristic score: " + hm.locationScore(l));
 						}
 					}
 					violationPosition = getRankOrQualViolationPosition(l);
-					System.out.println("Violation position: " + violationPosition[0] + violationPosition[1]);
 					rankOrQualAttemptCounter++;
 				}
 			}
 			// Then needs to try all the violation positions, maybe 50 times each limit.
 			int[] areaViolationPosition = getDoubleBookedConstraintPosition();
 			int doubleBookedAttemptCount = 0;
-			while (areaViolationPosition != null && doubleBookedAttemptCount < 5000) {
-				System.out.println("Innner loop 2");
+			while (areaViolationPosition != null && doubleBookedAttemptCount < 100) {
 				if (Math.random() > 0.7) {
 					// Switch with a random employee already in the timetable working another day
 					int jPosition = areaViolationPosition[1];
 					// Make sure jPosition isn't same as to switch position because that would
 					// switch with someone already working the same day so would not be a swap.
 					while (jPosition == areaViolationPosition[1]) {
-						jPosition = (int) (Math.random() * 7);
+						jPosition = (int) (Math.random() * 6);
 					}
-					int[] positionToSwitch = { (int) (Math.random() * 7), jPosition };
+					int[] positionToSwitch = { (int) (Math.random() * 6), jPosition };
 					Location locationWithViolation = currentArea.getLocations().get(areaViolationPosition[2]);
 					Employee[][] timetable = locationWithViolation.getTimetable();
 					Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
@@ -96,6 +96,7 @@ public class AreaSolver {
 					if (hm.locationScore(lCopy) < hm.locationScore(locationWithViolation)) {
 						locationWithViolation = lCopy;
 						System.out.println("Employee switched = " + temp.getName());
+						System.out.println("Heuristic score: " + hm.locationScore(locationWithViolation));
 					}
 				} else {
 					// Switch with an employee from the list of all available employees
@@ -118,13 +119,38 @@ public class AreaSolver {
 					if (hm.locationScore(locationWithViolation) > hm.locationScore(lCopy)) {
 						locationWithViolation = lCopy;
 						System.out.println("Employee switched = " + employeeToSwitch.getName());
+						System.out.println("Heuristic score: " + hm.locationScore(locationWithViolation));
 					}
 				}
 				areaViolationPosition = getDoubleBookedConstraintPosition();
+				doubleBookedAttemptCount++;
 			}
-			doubleBookedAttemptCount++;
+		iterationCount++;
+		heuristicScore = hm.heuristicScore(currentArea);
 		}
+		for (Location l : locations) {
+			sortEmployees(l.getTimetable());
+		}
+		Main.violationCount -= 2;
 		return currentArea;
+	}
+	
+	private static void sortEmployees(Employee[][] timetable) {
+		boolean sorted = false;
+		while (!sorted) {
+			sorted = true;
+			for (int i = 0; i < timetable[0].length; i++) {
+				for (int j = 0; j < timetable.length -1; j++) {
+					if (timetable[j][i].getName().substring(0, 1).compareTo(timetable[j+1][i].getName().substring(0, 1)) > 0) {
+						Employee temp = timetable[j][i];
+						timetable[j][i] = timetable[j+1][i];
+						timetable[j+1][i] = temp;
+						sorted = false;
+					}
+				}
+			}
+		}
+		
 	}
 
 	public ArrayList<Employee[]> getEmployeesFreeEachDay() {
@@ -175,8 +201,8 @@ public class AreaSolver {
 	private int[] getRankOrQualViolationPosition(Location location) {
 		int employeesPerDay = 6;
 		int daysInWeek = 7;
-		int randomStartPointI = (int) Math.random() * employeesPerDay;
-		int randomStartPointJ = (int) Math.random() * daysInWeek;
+		int randomStartPointI = (int) (Math.random() * employeesPerDay);
+		int randomStartPointJ = (int) (Math.random() * daysInWeek);
 		Employee[][] timetable = location.getTimetable();
 		// Find which constraints are violated
 		for (int i = 0; i < daysInWeek; i++) {
