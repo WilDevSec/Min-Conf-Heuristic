@@ -25,20 +25,6 @@ public class Main extends Application{
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
-	public void generate() {
-		ReadData rd = new ReadData();
-		List<Area> solvedAreas = new ArrayList<>(); 
-		HeuristicMeasure hs = new HeuristicMeasure();
-		for (Area a : rd.getAllAreas()) {
-			AreaSolver as = new AreaSolver(a);
-			as.populateTimetablesRandomly();
-			a = as.attemptSolve();
-			System.out.println("Area Solved");
-			solvedAreas.add(a);
-			violationCount += hs.heuristicScore(a);
-		}
-	}
 
 }
 
