@@ -34,13 +34,13 @@ public class MCHillClimb {
 		AreaSolver as = new AreaSolver(area);
 		int iterationCount = 0;
 		int heuristicScore = hm.heuristicScore(area);
-		while (heuristicScore != 0 ) {
+		while (heuristicScore != 0 && iterationCount < 300) {
 			for (Location l : locations) {
 				Employee[][] timetable = l.getTimetable();
 				// Needs to try many different locations for each violation positions
 				int[] violationPosition = getRankOrQualViolationPosition(l);
 				int rankOrQualAttemptCounter = 0;
-				while (violationPosition != null) {
+				while (violationPosition != null && rankOrQualAttemptCounter < 100) {
 					if (Math.random() > 0.5) {
 						// Switch with a random employee already in the timetable working another day
 						int jPosition = violationPosition[1];
@@ -88,7 +88,7 @@ public class MCHillClimb {
 			// Then needs to try all the violation positions, maybe 50 times each limit.
 			int[] areaViolationPosition = getDoubleBookedConstraintPosition();
 			int doubleBookedAttemptCount = 0;
-			while (areaViolationPosition != null) {
+			while (areaViolationPosition != null && doubleBookedAttemptCount < 100) {
 				if (Math.random() > 0.7) {
 					// Switch with a random employee already in the timetable working another day
 					int jPosition = areaViolationPosition[1];
@@ -97,7 +97,7 @@ public class MCHillClimb {
 					while (jPosition == areaViolationPosition[1]) {
 						jPosition = (int) (Math.random() * 7);
 					}
-					int[] positionToSwitch = { (int) (Math.random() * 7), jPosition };
+					int[] positionToSwitch = { (int) (Math.random() * 6), jPosition };
 					Location locationWithViolation = area.getLocations().get(areaViolationPosition[2]);
 					Employee[][] timetable = locationWithViolation.getTimetable();
 					Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
@@ -139,8 +139,9 @@ public class MCHillClimb {
 					}
 				}
 				areaViolationPosition = getDoubleBookedConstraintPosition();
+				doubleBookedAttemptCount++;
 			}
-			doubleBookedAttemptCount++;
+			iterationCount++;
 		}
 		return area;
 	}

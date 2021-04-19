@@ -24,7 +24,7 @@ public class AreaSolver {
 				// Needs to try many different locations for each violation positions
 				int[] violationPosition = getRankOrQualViolationPosition(l);
 				int rankOrQualAttemptCounter = 0;
-				while (violationPosition != null && rankOrQualAttemptCounter < 100) {
+				while (violationPosition != null && rankOrQualAttemptCounter < 200) {
 					if (Math.random() > 0.5) {
 						// Switch with a random employee already in the timetable working another day
 						int jPosition = violationPosition[1];
@@ -72,7 +72,7 @@ public class AreaSolver {
 			// Then needs to try all the violation positions, maybe 50 times each limit.
 			int[] areaViolationPosition = getDoubleBookedConstraintPosition();
 			int doubleBookedAttemptCount = 0;
-			while (areaViolationPosition != null && doubleBookedAttemptCount < 100) {
+			while (areaViolationPosition != null && doubleBookedAttemptCount < 200) {
 				if (Math.random() > 0.7) {
 					// Switch with a random employee already in the timetable working another day
 					int jPosition = areaViolationPosition[1];
@@ -131,7 +131,7 @@ public class AreaSolver {
 		for (Location l : locations) {
 			sortEmployees(l.getTimetable());
 		}
-		Main.violationCount -= 2;
+		Main.violationCount = 0;
 		return currentArea;
 	}
 	

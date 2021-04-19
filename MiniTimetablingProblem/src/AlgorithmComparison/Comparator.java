@@ -13,12 +13,14 @@ public class Comparator {
 		Area a = rd.getAllAreas().get(0);
 		AreaSolver as = new AreaSolver(a);
 		as.populateTimetablesRandomly();
-		Location l = a.getLocations().get(0);
-		for(Employee[] e: l.getTimetable()) {
-			for (Employee ee : e) {
-				System.out.println(ee.getName());
-			}
-		}
+		
+		MCHillClimb mchc = new MCHillClimb(a);
+		long startTime  = System.nanoTime();
+		Area mchcSolved = mchc.solve();
+		long timeElapsed = System.nanoTime() - startTime;
+		System.out.println(" Min conflicts heuristic runtime:" + timeElapsed);
+		
+		
 	}
 	
 }
