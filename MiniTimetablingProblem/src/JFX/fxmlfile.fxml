@@ -16,7 +16,7 @@
 
 <VBox prefHeight="908.0" prefWidth="1188.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.ViewController">
     <children>
-        <Label text="Hello world FXML" />
+        <Label text="RNLI Timetable Generator" />
       <MenuBar>
         <menus>
           <Menu mnemonicParsing="false" text="File">

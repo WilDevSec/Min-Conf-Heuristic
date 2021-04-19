@@ -5,10 +5,13 @@ import java.util.ArrayList;
 
 public class ReadData {
 
+	private ArrayList<Area> areasInitialised;
+	
 	public ReadData() {
 
 	}
-
+	
+	// Puts all data from csv files into area, location and employee classes and return all as list of areas
 	public ArrayList<Area> getAllAreas() {
 		ArrayList<Area> allAreas = new ArrayList<Area>();
 		ArrayList<Location> allLocations = InitialiseLocations();
@@ -26,7 +29,13 @@ public class ReadData {
 			}
 			allAreas.add(new Area(locationsInArea, employeesInArea));
 		}
+		areasInitialised = allAreas;
 		return allAreas;
+	}
+	
+	// Returns areas after they have been initialised. For use after getAllAreas() has been run (optimising for soft constraint).
+	public ArrayList<Area> getAreasInitialised() {
+		return areasInitialised;
 	}
 	
 	// Name, rank, Boat Driver, Boat Crewman, Jet Ski, Full time

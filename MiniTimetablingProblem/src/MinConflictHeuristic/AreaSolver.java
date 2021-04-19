@@ -24,6 +24,7 @@ public class AreaSolver {
 				// Needs to try many different locations for each violation positions
 				int[] violationPosition = getRankOrQualViolationPosition(l);
 				int rankOrQualAttemptCounter = 0;
+				// 200 attempts at trying to solve each location's conflcits
 				while (violationPosition != null && rankOrQualAttemptCounter < 200) {
 					if (Math.random() > 0.5) {
 						// Switch with a random employee already in the timetable working another day
@@ -69,8 +70,8 @@ public class AreaSolver {
 					rankOrQualAttemptCounter++;
 				}
 			}
-			// Then needs to try all the violation positions, maybe 50 times each limit.
-			int[] areaViolationPosition = getDoubleBookedConstraintPosition();
+			// 200 Attempts to minimise the area's conflicts
+			int[] areaViolationPosition = getAreaConstraintViolationPosition();
 			int doubleBookedAttemptCount = 0;
 			while (areaViolationPosition != null && doubleBookedAttemptCount < 200) {
 				if (Math.random() > 0.7) {
@@ -122,7 +123,7 @@ public class AreaSolver {
 						System.out.println("Heuristic score: " + hm.locationScore(locationWithViolation));
 					}
 				}
-				areaViolationPosition = getDoubleBookedConstraintPosition();
+				areaViolationPosition = getAreaConstraintViolationPosition();
 				doubleBookedAttemptCount++;
 			}
 		iterationCount++;
@@ -150,7 +151,6 @@ public class AreaSolver {
 				}
 			}
 		}
-		
 	}
 
 	public ArrayList<Employee[]> getEmployeesFreeEachDay() {
@@ -307,6 +307,16 @@ public class AreaSolver {
 		return null;
 	}
 
+	//Can return either double booked employee or employee working too many days randomly.
+	private int[] getAreaConstraintViolationPosition() {
+		if(Math.random() < 0.5) {
+			return getDoubleBookedConstraintPosition();
+		}
+		else {
+			return employeeWorkingMoreThan5DaysLocation();
+		}
+	}
+	
 	private int[] getDoubleBookedConstraintPosition() {
 		Map<Employee, Integer> timetable = new HashMap<>();
 		int employeesPerDay = 6;
@@ -361,43 +371,5 @@ public class AreaSolver {
 		}
 		return null;
 	}
-
-//	private Employee getFreeEmployee(Location timetable, int day) {
-//		Employee ret = null;
-//		Employee[][] table = timetable.getTimetable();
-//		Collections.shuffle(employees);
-//		for (Employee e : employees) {
-//			boolean freeOnDay = true;
-//			for (int i = 0; i < table.length; i++) {
-//				if (e.equals(table[i][day])) {
-//					freeOnDay = false;
-//				}
-//			}
-//			if (freeOnDay)
-//				return e;
-//		}
-//		return ret;
-//	}
-
-//	public boolean employeesWorkingTooMuch(Location timetable) {
-//		Employee[][] table = timetable.getTimetable();
-//		Map<Employee, Integer> employeeCount = new HashMap<>();
-//		for (int i = 0; i < table.length; i++) {
-//			for (int j = 0; j < table[i].length; j++) {
-//				Employee e = table[i][j];
-//				if (employeeCount.containsKey(e) && employeeCount.get(e) >= 5) {
-//					timetable.editEmployeeInTable(getFreeEmployee(timetable, j), i, j);
-//					System.out.println(e.getName());
-//					return true;
-//				} else if (employeeCount.containsKey(e)) {
-//					employeeCount.put(e, employeeCount.get(e) + 1);
-//				} else {
-//					employeeCount.put(e, 1);
-//				}
-//			}
-//		}
-//
-//		return false;
-//	}
 
 }
