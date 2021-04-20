@@ -116,6 +116,7 @@ public class AreaOptimiser {
 				}
 				locationIndex++;
 			}
+			ftEmployeesWorkingEachDay.add(ftEmployeesOnDay);
 		}
 		return null;
 	}

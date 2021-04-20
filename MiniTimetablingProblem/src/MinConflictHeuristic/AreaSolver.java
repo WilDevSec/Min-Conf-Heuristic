@@ -4,8 +4,8 @@ import java.util.*;
 
 public class AreaSolver {
 
-	ArrayList<Employee> employees = new ArrayList<Employee>();
-	ArrayList<Location> locations = new ArrayList<Location>();
+	private ArrayList<Employee> employees = new ArrayList<Employee>();
+	private ArrayList<Location> locations = new ArrayList<Location>();
 	Area currentArea;
 
 	public AreaSolver(Area currentArea) {
@@ -18,13 +18,13 @@ public class AreaSolver {
 		HeuristicMeasure hm = new HeuristicMeasure();
 		int iterationCount = 0;
 		int heuristicScore = hm.heuristicScore(currentArea);
-		while (heuristicScore != 0 && iterationCount < 200) {
+		while (heuristicScore != 0 && iterationCount < 2000) {
 			for (Location l : locations) {
 				Employee[][] timetable = l.getTimetable();
 				// Needs to try many different locations for each violation positions
 				int[] violationPosition = getRankOrQualViolationPosition(l);
 				int rankOrQualAttemptCounter = 0;
-				// 200 attempts at trying to solve each location's conflcits
+				// 200 attempts at trying to solve each location's conflicts
 				while (violationPosition != null && rankOrQualAttemptCounter < 200) {
 					if (Math.random() > 0.5) {
 						// Switch with a random employee already in the timetable working another day
@@ -42,12 +42,8 @@ public class AreaSolver {
 						Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(),
 								l.getrank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
 						lCopy.setTimetable(copy);
-						System.out.println("HScore of new location: " + hm.locationScore(lCopy));
-						System.out.println("HScore of old location: " + hm.locationScore(l));
 						if (hm.locationScore(lCopy) < hm.locationScore(l)) {
 							l = lCopy;
-							System.out.println("Employee switched = " + temp.getName());
-							System.out.println("Heuristic score: " + hm.locationScore(l));
 						}
 					} else {
 						// Switch with an employee not working that day
@@ -62,8 +58,6 @@ public class AreaSolver {
 						lCopy.setTimetable(copy);
 						if (hm.locationScore(lCopy) < hm.locationScore(l)) {
 							l = lCopy;
-							System.out.println("Employee switched = " + employeeToSwitch.getName());
-							System.out.println("Heuristic score: " + hm.locationScore(l));
 						}
 					}
 					violationPosition = getRankOrQualViolationPosition(l);
@@ -96,8 +90,6 @@ public class AreaSolver {
 					lCopy.setTimetable(copy);
 					if (hm.locationScore(lCopy) < hm.locationScore(locationWithViolation)) {
 						locationWithViolation = lCopy;
-						System.out.println("Employee switched = " + temp.getName());
-						System.out.println("Heuristic score: " + hm.locationScore(locationWithViolation));
 					}
 				} else {
 					// Switch with an employee from the list of all available employees
@@ -119,8 +111,6 @@ public class AreaSolver {
 					lCopy.setTimetable(copy);
 					if (hm.locationScore(locationWithViolation) > hm.locationScore(lCopy)) {
 						locationWithViolation = lCopy;
-						System.out.println("Employee switched = " + employeeToSwitch.getName());
-						System.out.println("Heuristic score: " + hm.locationScore(locationWithViolation));
 					}
 				}
 				areaViolationPosition = getAreaConstraintViolationPosition();
@@ -181,7 +171,10 @@ public class AreaSolver {
 			locationTimetables.add(new Employee[employeesPerDay][daysInWeek]);
 		}
 		for (int i = 0; i < daysInWeek; i++) {
-			Collections.shuffle(employees);
+			List<Employee> employeesCopy = employees;
+			System.out.println("0th employee" + employeesCopy.get(0).getName() + " 1st emp" + employeesCopy.get(1).getName());
+			Collections.shuffle(employeesCopy);
+			System.out.println("0th employee" + employeesCopy.get(0).getName() + "1st emp" + employeesCopy.get(1).getName());
 			for (Employee[][] e : locationTimetables) {
 				int index = 0;
 				for (int j = 0; j < employeesPerDay; j++) {
@@ -193,6 +186,7 @@ public class AreaSolver {
 		for (Location l : locations) {
 			l.setTimetable(locationTimetables.get(index++));
 		}
+		
 	}
 
 	// Hard constraint

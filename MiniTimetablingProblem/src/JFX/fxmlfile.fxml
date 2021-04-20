@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -13,8 +12,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="908.0" prefWidth="1188.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.ViewController">
+<VBox prefHeight="908.0" prefWidth="1333.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.ViewController">
     <children>
         <Label text="RNLI Timetable Generator" />
       <MenuBar>
@@ -40,45 +40,83 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="162.0" prefWidth="164.0">
                <children>
-                  <Button layoutX="10.0" layoutY="21.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="80.0" text="Generate" onAction="#generateTT"/>
+                  <Button layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#generateTT" prefHeight="24.0" prefWidth="80.0" text="Generate" />
+                  <Button layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#optimiseTT" prefHeight="24.0" prefWidth="80.0" text="Optimise" />
                </children>
             </AnchorPane>
             <ScrollPane prefHeight="410.0" prefWidth="1002.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="825.0" prefWidth="1007.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="825.0" prefWidth="1211.0">
                      <children>
-                        <TableView layoutX="7.0" layoutY="9.0" prefHeight="384.0" prefWidth="352.0">
+                        <TableView fx:id="location1" layoutX="212.0" layoutY="106.0" prefHeight="219.0" prefWidth="744.0">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                              <TableColumn fx:id="mon1" prefWidth="150.0" text="Mon" />
+                              <TableColumn fx:id="tue1" prefWidth="150.0" text="Tue" />
+                              <TableColumn fx:id="wed1" prefWidth="150.0" text="Wed" />
+                              <TableColumn fx:id="thu1" prefWidth="150.0" text="Thu" />
+                              <TableColumn fx:id="fri1" prefWidth="150.0" text="Fri" />
+                              <TableColumn fx:id="sat1" prefWidth="150.0" text="Sat" />
+                              <TableColumn fx:id="sun1" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView layoutX="8.0" layoutY="407.0" prefHeight="387.0" prefWidth="322.0">
+                        <Label layoutX="503.0" layoutY="31.0" text="Label" underline="true">
+                           <font>
+                              <Font size="15.0" />
+                           </font></Label>
+                        <Button layoutX="78.0" layoutY="203.0" mnemonicParsing="false" onAction="#generateTT" prefHeight="24.0" prefWidth="101.0" text="Previous Area">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="978.0" layoutY="191.0" mnemonicParsing="false" onAction="#generateTT" prefHeight="24.0" prefWidth="101.0" text="Next Area">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Button>
+                        <TableView fx:id="location2" layoutX="14.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                              <TableColumn fx:id="mon2" prefWidth="150.0" text="Mon" />
+                              <TableColumn fx:id="tue2" prefWidth="150.0" text="Tue" />
+                              <TableColumn fx:id="wed2" prefWidth="150.0" text="Wed" />
+                              <TableColumn fx:id="thu2" prefWidth="150.0" text="Thu" />
+                              <TableColumn fx:id="fri2" prefWidth="150.0" text="Fri" />
+                              <TableColumn fx:id="sat2" prefWidth="150.0" text="Sat" />
+                              <TableColumn fx:id="sun2" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView layoutX="674.0" layoutY="406.0" prefHeight="389.0" prefWidth="318.0">
+                        <TableView fx:id="location3" layoutX="616.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                              <TableColumn fx:id="mon3" prefWidth="150.0" text="Mon" />
+                              <TableColumn fx:id="tue3" prefWidth="150.0" text="Tue" />
+                              <TableColumn fx:id="wed3" prefWidth="150.0" text="Wed" />
+                              <TableColumn fx:id="thu3" prefWidth="150.0" text="Thu" />
+                              <TableColumn fx:id="fri3" prefWidth="150.0" text="Fri" />
+                              <TableColumn fx:id="sat3" prefWidth="150.0" text="Sat" />
+                              <TableColumn fx:id="sun3" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView layoutX="339.0" layoutY="408.0" prefHeight="388.0" prefWidth="328.0">
+                        <TableView fx:id="location4" layoutX="14.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                              <TableColumn fx:id="mon4" prefWidth="150.0" text="Mon" />
+                              <TableColumn fx:id="tue4" prefWidth="150.0" text="Tue" />
+                              <TableColumn fx:id="wed4" prefWidth="150.0" text="Wed" />
+                              <TableColumn fx:id="thu4" prefWidth="150.0" text="Thu" />
+                              <TableColumn fx:id="fri4" prefWidth="150.0" text="Fri" />
+                              <TableColumn fx:id="sat4" prefWidth="150.0" text="Sat" />
+                              <TableColumn fx:id="sun4" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView layoutX="640.0" layoutY="13.0" prefHeight="381.0" prefWidth="348.0">
+                        <TableView fx:id="location5" layoutX="616.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                              <TableColumn fx:id="mon5" prefWidth="150.0" text="Mon" />
+                              <TableColumn fx:id="tue5" prefWidth="150.0" text="Tue" />
+                              <TableColumn fx:id="wed5" prefWidth="150.0" text="Wed" />
+                              <TableColumn fx:id="thu5" prefWidth="150.0" text="Thu" />
+                              <TableColumn fx:id="fri5" prefWidth="150.0" text="Fri" />
+                              <TableColumn fx:id="sat5" prefWidth="150.0" text="Sat" />
+                              <TableColumn fx:id="sun5" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <Pagination pageCount="60" prefHeight="839.0" prefWidth="1008.0" />
-                        <Label layoutX="485.0" layoutY="29.0" text="Label" />
                      </children>
                   </AnchorPane>
               </content>
