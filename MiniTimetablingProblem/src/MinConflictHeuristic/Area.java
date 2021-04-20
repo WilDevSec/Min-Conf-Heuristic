@@ -22,6 +22,10 @@ public class Area {
 		return employees;
 	}
 	
+	public void setLocations(ArrayList<Location> locations) {
+		this.locations = locations;
+	}
+	
 	
 	
 }

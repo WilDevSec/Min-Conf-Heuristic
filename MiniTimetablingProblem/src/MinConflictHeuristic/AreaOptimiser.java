@@ -20,9 +20,10 @@ public class AreaOptimiser {
 
 	public Area attemptOptimise() {
 		HeuristicMeasure hm = new HeuristicMeasure();
-		int iterationCount = 0;
+		SoftHeuristic sh = new SoftHeuristic();
+		int noChangeCount = 0;
 		int heuristicScore = hm.heuristicScore(currentArea);
-		while (heuristicScore != 0 && iterationCount < 200) {
+		while (heuristicScore != 0 && noChangeCount < 1000) {
 			int[] areaViolationPosition = violationPosition();
 			int attemptsAtViolation = 0;
 			while (areaViolationPosition != null && attemptsAtViolation < 200) {
@@ -46,10 +47,23 @@ public class AreaOptimiser {
 							locationWithViolation.getrank2Req(), locationWithViolation.getBoatDriversReq(),
 							locationWithViolation.getCrewmenReq(), locationWithViolation.getJetSkiUsersReq());
 					lCopy.setTimetable(copy);
-					if (hm.locationScore(lCopy) < hm.locationScore(locationWithViolation)) {
+					
+					// Create new area with the changed location to compare if a change brings a
+					// better score
+					ArrayList<Location> locationsCopy = new ArrayList<>();
+					for (Location l : locations) {
+						locationsCopy.add(l);
+					}
+					locationsCopy.set(areaViolationPosition[2], lCopy);
+					Area areaCopy = new Area(locationsCopy, employees);
+					
+					if (hm.heuristicScore(areaCopy) <= hm.heuristicScore(currentArea) && sh.heuristicScore(areaCopy) < sh.heuristicScore(currentArea)) {
 						locationWithViolation = lCopy;
-						System.out.println("Employee switched = " + temp.getName());
-						System.out.println("Heuristic score: " + hm.locationScore(locationWithViolation));
+						locations.set(areaViolationPosition[2], lCopy);
+						currentArea.setLocations(locations);
+						noChangeCount = 0;
+					} else {
+						noChangeCount++;
 					}
 				} else {
 					// Switch with an employee from the list of all available employees
@@ -69,22 +83,36 @@ public class AreaOptimiser {
 							locationWithViolation.getrank2Req(), locationWithViolation.getBoatDriversReq(),
 							locationWithViolation.getCrewmenReq(), locationWithViolation.getJetSkiUsersReq());
 					lCopy.setTimetable(copy);
-					if (hm.locationScore(locationWithViolation) > hm.locationScore(lCopy)) {
+					
+					// Create new area with the changed location to compare if a change brings a
+					// better score
+					ArrayList<Location> locationsCopy = new ArrayList<>();
+					for (Location l : locations) {
+						locationsCopy.add(l);
+					}
+					locationsCopy.set(areaViolationPosition[2], lCopy);
+					Area areaCopy = new Area(locationsCopy, employees);
+					
+					if (hm.heuristicScore(areaCopy) <= hm.heuristicScore(currentArea) && sh.heuristicScore(areaCopy) < sh.heuristicScore(currentArea)) {
 						locationWithViolation = lCopy;
-						System.out.println("Employee switched = " + employeeToSwitch.getName());
-						System.out.println("Heuristic score: " + hm.locationScore(locationWithViolation));
+						locations.set(areaViolationPosition[2], lCopy);
+						currentArea.setLocations(locations);
+						noChangeCount = 0;
+					} else {
+						noChangeCount++;
 					}
 				}
 				areaViolationPosition = violationPosition();
 				attemptsAtViolation++;
 			}
-			iterationCount++;
 			heuristicScore = hm.heuristicScore(currentArea);
 		}
-		for (Location l : locations) {
+		for (int i = 0; i < locations.size(); i++) {
+			Location l = locations.get(i);
 			sortEmployees(l.getTimetable());
 		}
 		Main.violationCount = 0;
+		currentArea.setLocations(locations);
 		return currentArea;
 	}
 	
@@ -121,6 +149,35 @@ public class AreaOptimiser {
 		return null;
 	}
 	
+	private int[] partTimeNotWorking2or3DaysPosition() {
+		Map<Employee, Integer> workingDaysCount = new HashMap<>();
+		int employeesPerDay = 6;
+		int daysInWeek = 7;
+		for (int i = 0; i < currentArea.getLocations().get(0).getTimetable().length; i++) {
+			int locationIndex = 0;
+			for (Location l : currentArea.getLocations()) {
+				Employee[][] table = l.getTimetable();
+				for (int j = 0; j < table.length; j++) {
+					Employee e = table[j][i];
+					if (e.isfullTime()) {
+						if (workingDaysCount.containsKey(e)) {
+							int value = workingDaysCount.get(e);
+							if (value == 3) {
+								return new int[] { j, i, locationIndex };
+							} else {
+								workingDaysCount.put(e, value);
+							}
+						} else {
+							workingDaysCount.put(e, 1);
+						}
+					}
+				}
+				locationIndex++;
+			}
+		}
+		return null;
+	}
+	
 	public ArrayList<Employee[]> getEmployeesFreeEachDay() {
 		ArrayList<Employee[]> employeesFree = new ArrayList<Employee[]>();
 		int daysInWeek = 7;
@@ -138,32 +195,6 @@ public class AreaOptimiser {
 			employeesFree.add(employeesLocalPerDay.toArray(new Employee[employeesLocalPerDay.size()]));
 		}
 		return employeesFree;
-	}
-	
-	private int[] partTimeNotWorking2or3DaysPosition() {
-		Map<Employee, Integer> workingDaysCount = new HashMap<>();
-		int employeesPerDay = 6;
-		int daysInWeek = 7;
-		for (int i = 0; i < currentArea.getLocations().get(0).getTimetable().length; i++) {
-			int locationIndex = 0;
-			for (Location l : currentArea.getLocations()) {
-				Employee[][] table = l.getTimetable();
-				for (int j = 0; j < table.length; j++) {
-					if (workingDaysCount.containsKey(table[j][i])) {
-						int value = workingDaysCount.get(table[j][i]);
-						if (value == 3) {
-							return new int[] { j, i, locationIndex };
-						} else {
-							workingDaysCount.put(table[j][i], value);
-						}
-					} else {
-						workingDaysCount.put(table[j][i], 1);
-					}
-				}
-				locationIndex++;
-			}
-		}
-		return null;
 	}
 	
 	private static void sortEmployees(Employee[][] timetable) {

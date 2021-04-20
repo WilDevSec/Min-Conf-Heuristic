@@ -59,16 +59,16 @@
                               <TableColumn fx:id="sun1" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <Label layoutX="503.0" layoutY="31.0" text="Label" underline="true">
+                        <Label layoutX="501.0" layoutY="31.0" text="RNLI timetables for area:" underline="true">
                            <font>
                               <Font size="15.0" />
                            </font></Label>
-                        <Button layoutX="78.0" layoutY="203.0" mnemonicParsing="false" onAction="#generateTT" prefHeight="24.0" prefWidth="101.0" text="Previous Area">
+                        <Button layoutX="78.0" layoutY="203.0" mnemonicParsing="false" onAction="#previousArea" prefHeight="24.0" prefWidth="101.0" text="Previous Area">
                            <font>
                               <Font size="12.0" />
                            </font>
                         </Button>
-                        <Button layoutX="978.0" layoutY="191.0" mnemonicParsing="false" onAction="#generateTT" prefHeight="24.0" prefWidth="101.0" text="Next Area">
+                        <Button layoutX="978.0" layoutY="191.0" mnemonicParsing="false" onAction="#nextArea" prefHeight="24.0" prefWidth="101.0" text="Next Area">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -117,6 +117,9 @@
                               <TableColumn fx:id="sun5" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
+                        <Label layoutX="14.0" layoutY="50.0" text="Hard Constraint Violations:" />
+                        <Label fx:id="hardViolationCount" layoutX="200.0" layoutY="50.0" text="_" />
+                        <Label fx:id="areaPointer" layoutX="706.0" layoutY="33.0" text="_" />
                      </children>
                   </AnchorPane>
               </content>

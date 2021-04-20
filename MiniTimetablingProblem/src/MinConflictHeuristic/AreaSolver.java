@@ -6,7 +6,7 @@ public class AreaSolver {
 
 	private ArrayList<Employee> employees = new ArrayList<Employee>();
 	private ArrayList<Location> locations = new ArrayList<Location>();
-	Area currentArea;
+	private Area currentArea;
 
 	public AreaSolver(Area currentArea) {
 		employees = currentArea.getEmployees();
@@ -16,16 +16,17 @@ public class AreaSolver {
 
 	public Area attemptSolve() {
 		HeuristicMeasure hm = new HeuristicMeasure();
-		int iterationCount = 0;
+		int noChangeCount = 0;
 		int heuristicScore = hm.heuristicScore(currentArea);
-		while (heuristicScore != 0 && iterationCount < 2000) {
-			for (Location l : locations) {
+		while (heuristicScore != 0 && noChangeCount < 10000) {
+			for (int i = 0; i < locations.size(); i++) {
+				Location l = locations.get(i);
 				Employee[][] timetable = l.getTimetable();
 				// Needs to try many different locations for each violation positions
 				int[] violationPosition = getRankOrQualViolationPosition(l);
 				int rankOrQualAttemptCounter = 0;
 				// 200 attempts at trying to solve each location's conflicts
-				while (violationPosition != null && rankOrQualAttemptCounter < 200) {
+				while (violationPosition != null) {
 					if (Math.random() > 0.5) {
 						// Switch with a random employee already in the timetable working another day
 						int jPosition = violationPosition[1];
@@ -35,15 +36,22 @@ public class AreaSolver {
 							jPosition = (int) (Math.random() * timetable[0].length);
 						}
 						int[] positionToSwitch = { (int) (Math.random() * timetable.length), jPosition };
-						Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
-						Employee temp = copy[violationPosition[0]][violationPosition[1]];
-						copy[violationPosition[0]][violationPosition[1]] = copy[positionToSwitch[0]][positionToSwitch[1]];
-						copy[positionToSwitch[0]][positionToSwitch[1]] = temp;
-						Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(),
-								l.getrank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
-						lCopy.setTimetable(copy);
+//						Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
+//						Employee temp = copy[violationPosition[0]][violationPosition[1]];
+//						copy[violationPosition[0]][violationPosition[1]] = copy[positionToSwitch[0]][positionToSwitch[1]];
+//						copy[positionToSwitch[0]][positionToSwitch[1]] = temp;
+//						Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(),
+//								l.getrank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
+						
+						Location lCopy = switchEmployee(positionToSwitch[0],positionToSwitch[1], l);
+						
+//						lCopy.setTimetable(copy);
 						if (hm.locationScore(lCopy) < hm.locationScore(l)) {
 							l = lCopy;
+							locations.set(i, l);
+							noChangeCount = 0;
+						} else {
+							noChangeCount++;
 						}
 					} else {
 						// Switch with an employee not working that day
@@ -56,18 +64,23 @@ public class AreaSolver {
 						Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(),
 								l.getrank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
 						lCopy.setTimetable(copy);
+						
 						if (hm.locationScore(lCopy) < hm.locationScore(l)) {
 							l = lCopy;
+							locations.set(i, l);
+							noChangeCount = 0;
+						} else {
+							noChangeCount++;
 						}
 					}
 					violationPosition = getRankOrQualViolationPosition(l);
 					rankOrQualAttemptCounter++;
 				}
 			}
-			// 200 Attempts to minimise the area's conflicts
+			// 2000 Attempts to minimise the area's conflicts per iteration
 			int[] areaViolationPosition = getAreaConstraintViolationPosition();
 			int doubleBookedAttemptCount = 0;
-			while (areaViolationPosition != null && doubleBookedAttemptCount < 200) {
+			while (areaViolationPosition != null) {
 				if (Math.random() > 0.7) {
 					// Switch with a random employee already in the timetable working another day
 					int jPosition = areaViolationPosition[1];
@@ -76,6 +89,9 @@ public class AreaSolver {
 					while (jPosition == areaViolationPosition[1]) {
 						jPosition = (int) (Math.random() * 6);
 					}
+
+					// Create a copy of location and make a change from a violation position to
+					// another position
 					int[] positionToSwitch = { (int) (Math.random() * 6), jPosition };
 					Location locationWithViolation = currentArea.getLocations().get(areaViolationPosition[2]);
 					Employee[][] timetable = locationWithViolation.getTimetable();
@@ -88,8 +104,24 @@ public class AreaSolver {
 							locationWithViolation.getrank2Req(), locationWithViolation.getBoatDriversReq(),
 							locationWithViolation.getCrewmenReq(), locationWithViolation.getJetSkiUsersReq());
 					lCopy.setTimetable(copy);
-					if (hm.locationScore(lCopy) < hm.locationScore(locationWithViolation)) {
+
+					// Create new area with the changed location to compare if a change brings a
+					// better score
+					ArrayList<Location> locationsCopy = new ArrayList<>();
+					for (Location l : locations) {
+						locationsCopy.add(l);
+					}
+					locationsCopy.set(areaViolationPosition[2], lCopy);
+					Area areaCopy = new Area(locationsCopy, employees);
+
+					// If heuristic score of area is less in the copy then set copy as new area.
+					if (hm.heuristicScore(areaCopy) < hm.heuristicScore(currentArea)) {
 						locationWithViolation = lCopy;
+						locations.set(areaViolationPosition[2], lCopy);
+						currentArea.setLocations(locations);
+						noChangeCount = 0;
+					} else {
+						noChangeCount++;
 					}
 				} else {
 					// Switch with an employee from the list of all available employees
@@ -109,36 +141,66 @@ public class AreaSolver {
 							locationWithViolation.getrank2Req(), locationWithViolation.getBoatDriversReq(),
 							locationWithViolation.getCrewmenReq(), locationWithViolation.getJetSkiUsersReq());
 					lCopy.setTimetable(copy);
-					if (hm.locationScore(locationWithViolation) > hm.locationScore(lCopy)) {
+					
+					// Create new area with the changed location to compare if a change brings a
+					// better score
+					ArrayList<Location> locationsCopy = new ArrayList<>();
+					for (Location l : locations) {
+						locationsCopy.add(l);
+					}
+					locationsCopy.set(areaViolationPosition[2], lCopy);
+					Area areaCopy = new Area(locationsCopy, employees);
+					
+					// If heuristic score of area is less in the copy then set copy as new area.
+					if (hm.heuristicScore(areaCopy) < hm.heuristicScore(currentArea)) {
 						locationWithViolation = lCopy;
+						locations.set(areaViolationPosition[2], lCopy);
+						currentArea.setLocations(locations);
+						noChangeCount = 0;
+					} else {
+						noChangeCount++;
 					}
 				}
 				areaViolationPosition = getAreaConstraintViolationPosition();
 				doubleBookedAttemptCount++;
 			}
-		iterationCount++;
-		heuristicScore = hm.heuristicScore(currentArea);
+			heuristicScore = hm.heuristicScore(currentArea);
 		}
-		for (Location l : locations) {
+		for (int i = 0; i < locations.size(); i++) {
+			Location l = locations.get(i);
 			sortEmployees(l.getTimetable());
 		}
 		Main.violationCount = 0;
+		currentArea.setLocations(locations);
 		return currentArea;
 	}
+
+	private Location switchEmployee(int i, int j, Location l) {
+		Employee[][] timetable = l.getTimetable();
+		// Creating a copy here as the original timetable may be better meaning a change should not occur.
+		Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
+		Employee temp = copy[i][j];
+		copy[i][j] = copy[i][j];
+		copy[i][j] = temp;
+		Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(),
+				l.getrank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
+		lCopy.setTimetable(copy);
+		return lCopy;
+	}
+	
 	
 	private static void sortEmployees(Employee[][] timetable) {
-		boolean sorted = false;
-		while (!sorted) {
-			sorted = true;
-			for (int i = 0; i < timetable[0].length; i++) {
-				for (int j = 0; j < timetable.length -1; j++) {
-					if (timetable[j][i].getName().substring(0, 1).compareTo(timetable[j+1][i].getName().substring(0, 1)) > 0) {
+		for (int i = 0; i < timetable[0].length; i++) {
+			for (int j = 0; j < timetable.length - 1; j++) {
+				for (int k = j; k < timetable.length; k++) {
+					if (timetable[j][i].getName().substring(0, 1)
+							.compareTo(timetable[k][i].getName().substring(0, 1)) > 0) {
 						Employee temp = timetable[j][i];
-						timetable[j][i] = timetable[j+1][i];
-						timetable[j+1][i] = temp;
-						sorted = false;
+						timetable[j][i] = timetable[k][i];
+						timetable[k][i] = temp;
 					}
 				}
+
 			}
 		}
 	}
@@ -162,31 +224,39 @@ public class AreaSolver {
 		return employeesFree;
 	}
 
-	public void populateTimetablesRandomly() {
+	public Area populateTimetablesRandomly() {
 		int employeesPerDay = 6;
 		int daysInWeek = 7;
-		List<Employee[][]> locationTimetables = new ArrayList<Employee[][]>();
-		int numberOfLocations = 5;
-		for (int i = 0; i < numberOfLocations; i++) {
+		List<Employee[][]> locationTimetables = new ArrayList<>();
+		for (int i = 0; i < locations.size(); i++) {
 			locationTimetables.add(new Employee[employeesPerDay][daysInWeek]);
 		}
 		for (int i = 0; i < daysInWeek; i++) {
+			int indexEmployeesUsed = 0;
 			List<Employee> employeesCopy = employees;
-			System.out.println("0th employee" + employeesCopy.get(0).getName() + " 1st emp" + employeesCopy.get(1).getName());
+			System.out.println(
+					"0th employee" + employeesCopy.get(0).getName() + " 1st emp" + employeesCopy.get(1).getName());
 			Collections.shuffle(employeesCopy);
-			System.out.println("0th employee" + employeesCopy.get(0).getName() + "1st emp" + employeesCopy.get(1).getName());
-			for (Employee[][] e : locationTimetables) {
-				int index = 0;
-				for (int j = 0; j < employeesPerDay; j++) {
-					e[j][i] = employees.get(index++);
+			System.out.println(
+					"0th employee" + employeesCopy.get(0).getName() + "1st emp" + employeesCopy.get(1).getName());
+			for (int j = 0; j < locations.size(); j++) {
+				Employee[][] e = locationTimetables.get(j);
+				for (int k = 0; k < employeesPerDay; k++) {
+					e[k][i] = employeesCopy.get(indexEmployeesUsed);
+					indexEmployeesUsed += 1;
 				}
+				locationTimetables.set(j, e);
 			}
 		}
 		int index = 0;
-		for (Location l : locations) {
+		for (int i = 0; i < locations.size(); i++) {
+			Location l = locations.get(i);
 			l.setTimetable(locationTimetables.get(index++));
+			locations.set(i, l);
 		}
-		
+		currentArea.setLocations(locations);
+		return currentArea;
+
 	}
 
 	// Hard constraint
@@ -223,11 +293,12 @@ public class AreaSolver {
 					jetSkiUsersCount++;
 			}
 			// Start at random point loop through whole array using Modulo
-			
-			/* If there are not enough employees of any rank 4,3,2 then return the position
-			of a rank 1 firstly, as they will be least likely to decrease any score by
-			switching out
-			someone of another rank that is required.*/
+
+			/*
+			 * If there are not enough employees of any rank 4,3,2 then return the position
+			 * of a rank 1 firstly, as they will be least likely to decrease any score by
+			 * switching out someone of another rank that is required.
+			 */
 			if (rank4Count < location.getrank4Req() || rank3Count < location.getrank3Req()
 					|| rank2Count < location.getrank2Req()) {
 				for (int j = 0; j < employeesPerDay; j++) {
@@ -238,9 +309,11 @@ public class AreaSolver {
 					}
 				}
 			}
-			/* Then return position of someone who is just not of the rank which is in
-			deficit. May be cases where all employees of one rank are in the same location on the
-			same day */
+			/*
+			 * Then return position of someone who is just not of the rank which is in
+			 * deficit. May be cases where all employees of one rank are in the same
+			 * location on the same day
+			 */
 			if (rank4Count < location.getrank4Req()) {
 				for (int j = 0; j < employeesPerDay; j++) {
 					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
@@ -301,16 +374,16 @@ public class AreaSolver {
 		return null;
 	}
 
-	//Can return either double booked employee or employee working too many days randomly.
+	// Can return either double booked employee or employee working too many days
+	// randomly.
 	private int[] getAreaConstraintViolationPosition() {
-		if(Math.random() < 0.5) {
+		if (Math.random() < 0.5) {
 			return getDoubleBookedConstraintPosition();
-		}
-		else {
+		} else {
 			return employeeWorkingMoreThan5DaysLocation();
 		}
 	}
-	
+
 	private int[] getDoubleBookedConstraintPosition() {
 		Map<Employee, Integer> timetable = new HashMap<>();
 		int employeesPerDay = 6;

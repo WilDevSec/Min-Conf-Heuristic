@@ -14,6 +14,7 @@ import MinConflictHeuristic.Location;
 import MinConflictHeuristic.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -23,6 +24,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ViewController {
 
+	@FXML
+	private Label areaPointer;
+	@FXML
+	private Label hardViolationCount;
+	@FXML
+	private Label softViolationCount;
 	@FXML
 	private TableView<Row> location1;
 	@FXML
@@ -112,34 +119,31 @@ public class ViewController {
 	@FXML
 	public void generateTT(Event e) {
 		rd = new ReadData();
-		
 		HeuristicMeasure hs = new HeuristicMeasure();
-		for (Area a : rd.getAllAreas()) {
+		ArrayList<Area> areas = rd.getAllAreas();
+		for (int i = 0; i < areas.size(); i++) {
+			Area a = areas.get(i);
 			AreaSolver as = new AreaSolver(a);
-			as.populateTimetablesRandomly();
-			for (Location l : a.getLocations()) {
-				for (Employee[] ee : l.getTimetable()) {
-					for (Employee eee : ee) {
-						System.out.println(eee.getName());
-					}
-					System.out.println();
-				}
-				System.out.println("New Loc");
-			}
+			a = as.populateTimetablesRandomly();
+			System.out.println("Area Randomly Populated");
 			a = as.attemptSolve();
 			System.out.println("Area Solved");
 			solvedAreas.add(a);
 			Main.violationCount += hs.heuristicScore(a);
 			populateTT(a);
 		}
-
+		System.out.println("All areas solved");
+		setAreaPointer();
+		setHardViolationCount();
 	}
 
 	@FXML
 	public void optimiseTT(Event e) {
-		for (Area a : solvedAreas) {
+		for (int i = 0; i < solvedAreas.size(); i++) {
+			Area a = solvedAreas.get(i);
 			AreaOptimiser ao = new AreaOptimiser(a);
-			ao.attemptOptimise();
+			a = ao.attemptOptimise();
+			solvedAreas.set(i, a);
 			populateTT(a);
 		}
 	}
@@ -214,17 +218,36 @@ public class ViewController {
 
 	@FXML
 	public void nextArea(Event e) {
-		if (areaBookmark <= 60) {
+		if (areaBookmark < 60) {
 			areaBookmark++;
 			populateTT(solvedAreas.get(areaBookmark));
 		}
+		setAreaPointer();
+	}
+	
+	public void setAreaPointer() {
+		areaPointer.setText(Integer.toString(areaBookmark));
+	}
+	
+	@FXML
+	public void detailsView(ActionEvent e) {
+		
 	}
 
+	public void setHardViolationCount() {
+		hardViolationCount.setText(Integer.toString(Main.violationCount));
+	}
+	
+	public void setSoftViolationCount() {
+		softViolationCount.setText("Hi");
+	}
+	
 	@FXML
 	public void previousArea(Event e) {
-		if (areaBookmark >= 0) {
+		if (areaBookmark > 0) {
 			areaBookmark--;
 			populateTT(solvedAreas.get(areaBookmark));
 		}
+		setAreaPointer();
 	}
 }
