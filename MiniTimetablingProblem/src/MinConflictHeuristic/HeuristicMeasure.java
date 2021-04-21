@@ -57,8 +57,7 @@ public class HeuristicMeasure {
 					jetSkiUsersCount++;
 			}
 			score += rank4Count < location.getrank4Req() ? location.getrank4Req() - rank4Count : 0;
-			score += rank3Count < location.getrank3Req() ? location.getrank3Req() - rank3Count : 0;
-			score += rank2Count < location.getrank2Req() ? location.getrank2Req() - rank2Count : 0;
+			score += rank2Count + rank3Count < location.getrank3Req() ? location.getrank3Req() - (rank3Count + rank2Count) : 0;
 			score += boatDriverCount < location.getBoatDriversReq() ? location.getBoatDriversReq() - boatDriverCount
 					: 0;
 			score += crewmenCount < location.getCrewmenReq() ? location.getCrewmenReq() - crewmenCount : 0;

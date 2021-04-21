@@ -124,8 +124,7 @@ public class ViewController {
 
 	private List<Area> solvedAreas = new ArrayList<>();
 	ArrayList<Stack<Employee>> freeEmployees = new ArrayList<>();
-	
-	
+
 	@FXML
 	public void generateTT(Event e) {
 		rd = new ReadData();
@@ -152,7 +151,7 @@ public class ViewController {
 		for (int i = 0; i < 7; i++) {
 			freeEmployees.add(new Stack<Employee>());
 		}
-		for (int i = areas.size() -1; i >= 0; i--) {
+		for (int i = areas.size() - 1; i >= 0; i--) {
 			Area a = areas.get(i);
 			AreaSolver as = new AreaSolver(a, freeEmployees);
 			a = as.attemptSolve();
@@ -162,7 +161,9 @@ public class ViewController {
 			Main.softViolationCount += sh.heuristicScore(a);
 			setHardViolationCount();
 			setAreaPointer();
-			populateTT(a);
+			Area aSorted = sortEmployees(a);
+			
+			populateTT(aSorted);
 			pushToStack(as.getEmployeesFreeEachDay());
 		}
 		setSoftViolationCount();
@@ -172,20 +173,49 @@ public class ViewController {
 	@FXML
 	public void optimiseTT(Event e) {
 		SoftHeuristic sh = new SoftHeuristic();
-		//Reset to 0 before counting again after optimisation
+		// Reset to 0 before counting again after optimisation
 		Main.softViolationCount = 0;
 		for (int i = 0; i < solvedAreas.size(); i++) {
 			Area a = solvedAreas.get(i);
 			AreaOptimiser ao = new AreaOptimiser(a);
 			a = ao.attemptOptimise();
-			solvedAreas.set(i, a);
 			populateTT(a);
 			Main.softViolationCount += sh.heuristicScore(a);
 			System.out.println("Area optimised");
 		}
 		setSoftViolationCount();
 	}
-	
+
+	private Area sortEmployees(Area a) {
+		ArrayList<Location> locations = a.getLocations();
+		for (int j = 0; j < locations.size(); j++) {
+			Location loc = locations.get(j);
+			Employee[][] tt = loc.getTimetable();
+			for (int k = 0; k < tt[0].length; k++) {
+				for (int l = 0; l < tt.length - 1; l++) {
+					for (int m = l; m < tt.length; m++) {
+						//Char at 4 because all employees have 3 spaces infront of their name for aesthetics in timetable.
+						if ((tt[m][k].getName().charAt(4) < (tt[l][k].getName().charAt(4)))) {
+							Employee temp = tt[l][k];
+							tt[l][k] = tt[m][k];
+							System.out.println("Employee to switch" + tt[l][k]);
+							System.out.println("Other emp to switch" + tt[m][k]);
+							tt[m][k] = temp;
+						}
+					}
+				}
+			}
+			Location l = new Location(loc.getLocationID(), loc.getrank4Req(), loc.getrank3Req(), loc.getrank2Req(),
+					loc.getBoatDriversReq(), loc.getCrewmenReq(), loc.getJetSkiUsersReq());
+			l.setTimetable(tt);
+			locations.set(j, l);
+		}
+		System.out.println("6969" + a.getLocations().get(0).getTimetable()[0][0].getName());
+		Area aSorted = new Area(locations, a.getEmployees());
+		System.out.println("sorted" + aSorted.getLocations().get(0).getTimetable()[0][0].getName());
+		return aSorted;
+	}
+
 	private void pushToStack(ArrayList<Employee[]> employeesOneArea) {
 		for (int i = 0; i < 7; i++) {
 			Employee[] oneDay = employeesOneArea.get(i);
@@ -205,7 +235,7 @@ public class ViewController {
 		fri1.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
 		sat1.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
 		sun1.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
-		
+
 		mon2.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
 		tue2.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
 		wed2.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
@@ -213,7 +243,7 @@ public class ViewController {
 		fri2.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
 		sat2.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
 		sun2.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
-		
+
 		mon3.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
 		tue3.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
 		wed3.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
@@ -221,7 +251,7 @@ public class ViewController {
 		fri3.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
 		sat3.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
 		sun3.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
-		
+
 		mon4.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
 		tue4.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
 		wed4.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
@@ -229,7 +259,7 @@ public class ViewController {
 		fri4.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
 		sat4.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
 		sun4.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
-		
+
 		mon5.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
 		tue5.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
 		wed5.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
@@ -256,30 +286,31 @@ public class ViewController {
 		location5.setItems(getRows(timetable5));
 	}
 
-	public ObservableList<Row> getRows(Employee[][] timetable){
+	public ObservableList<Row> getRows(Employee[][] timetable) {
 		ObservableList<Row> rows = FXCollections.observableArrayList();
-		for (int i = 0; i < timetable.length; i++ ) {
-			rows.add(new Row(timetable[i][0].getName(), timetable[i][1].getName(), timetable[i][2].getName(), timetable[i][3].getName(), 
-					timetable[i][4].getName(), timetable[i][5].getName(), timetable[i][6].getName()));
+		for (int i = 0; i < timetable.length; i++) {
+			rows.add(new Row(timetable[i][0].getName(), timetable[i][1].getName(), timetable[i][2].getName(),
+					timetable[i][3].getName(), timetable[i][4].getName(), timetable[i][5].getName(),
+					timetable[i][6].getName()));
 		}
 		return rows;
 	}
 
 	@FXML
-	public void employeesView(ActionEvent e) throws IOException{
+	public void employeesView(ActionEvent e) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("Employees.fxml"));
 		Parent employeeViewParent = loader.load();
 		Scene employeeViewScene = new Scene(employeeViewParent);
-		
+
 		EmployeeViewController controller = loader.getController();
 		controller.initialise(solvedAreas.get(areaBookmark));
-		Stage window = (Stage)((Node)e.getSource()).getScene().getWindow();
+		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		window.setScene(employeeViewScene);
 		window.show();
-		
+
 	}
-	
+
 	@FXML
 	public void nextArea(Event e) {
 		if (areaBookmark < 60) {
@@ -288,24 +319,24 @@ public class ViewController {
 		}
 		setAreaPointer();
 	}
-	
+
 	public void setAreaPointer() {
 		areaPointer.setText(Integer.toString(areaBookmark));
 	}
-	
+
 	@FXML
 	public void detailsView(ActionEvent e) {
-		
+
 	}
 
 	public void setHardViolationCount() {
 		hardViolationCount.setText(Integer.toString(Main.violationCount));
 	}
-	
+
 	public void setSoftViolationCount() {
 		softViolationCount.setText(Integer.toString(Main.softViolationCount));
 	}
-	
+
 	@FXML
 	public void previousArea(Event e) {
 		if (areaBookmark > 0) {

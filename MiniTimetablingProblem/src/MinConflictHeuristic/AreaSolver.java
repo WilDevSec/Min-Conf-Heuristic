@@ -20,7 +20,7 @@ public class AreaSolver {
 		HeuristicMeasure hm = new HeuristicMeasure();
 		int noChangeCount = 0;
 		int heuristicScore = hm.heuristicScore(currentArea);
-		while (heuristicScore != 0 && noChangeCount < 500) {
+		while (heuristicScore != 0 && noChangeCount < 1000) {
 			for (int i = 0; i < locations.size(); i++) {
 				Location l = locations.get(i);
 				// Needs to try many different locations for each violation position
@@ -31,13 +31,11 @@ public class AreaSolver {
 					l = locations.get(i);
 					Area areaCopy;
 					if (Math.random() > 0.5) {
-						System.out.println("Timetable switch");
 						areaCopy = switchEmployeeTT(violationPosition[0], violationPosition[1], l, i);
 					} else {
-						System.out.println("Free switch");
 						areaCopy = switchEmployeeFree(violationPosition[0], violationPosition[1], l, i);
 					}
-					if (noChangeCount > 4500 && employeesPreviousAreas.size() != 0
+					if (noChangeCount > 800 && employeesPreviousAreas.size() != 0
 							&& employeesPreviousAreas.get(violationPosition[1]).size() != 0) {
 						areaCopy = switchEmployeeStack(violationPosition[0], violationPosition[1], l, i);
 					}
@@ -46,8 +44,9 @@ public class AreaSolver {
 						currentArea = areaCopy;
 						locations = currentArea.getLocations();
 						// Peeks rather than pops in function so if employee used then must be removed:
-						if (noChangeCount >= 5000 && employeesPreviousAreas.get(violationPosition[1]).size() != 0) {
+						if (noChangeCount >= 800 && employeesPreviousAreas.get(violationPosition[1]).size() != 0) {
 							employeesPreviousAreas.get(violationPosition[1]).pop();
+							noChangeCount = 0;
 						}
 //						noChangeCount = 0;
 					} else {
@@ -86,6 +85,7 @@ public class AreaSolver {
 		for (int i = 0; i < locations.size(); i++) {
 			locations.set(i, sortEmployees(locations.get(i)));
 		}
+		currentArea.setLocations(locations);
 //		Main.violationCount = 0;
 		return currentArea;
 	}
@@ -151,7 +151,7 @@ public class AreaSolver {
 		return areaCopy;
 	}
 
-	private static Location sortEmployees(Location location) {
+	private Location sortEmployees(Location location) {
 		Employee[][] timetable = location.getTimetable();
 		for (int i = 0; i < timetable[0].length; i++) {
 			for (int j = 0; j < timetable.length - 1; j++) {
@@ -244,6 +244,12 @@ public class AreaSolver {
 		int daysInWeek = 7;
 		int randomStartPointI = (int) (Math.random() * employeesPerDay);
 		int randomStartPointJ = (int) (Math.random() * daysInWeek);
+		int rank4Req = location.getrank4Req();
+		int rank3Req = location.getrank3Req();
+		int rank2Req = location.getrank2Req();
+		int bDrReq = location.getBoatDriversReq();
+		int bCrReq = location.getCrewmenReq();
+		int jsReq = location.getJetSkiUsersReq();
 		Employee[][] timetable = location.getTimetable();
 		// Find which constraints are violated
 		for (int i = 0; i < daysInWeek; i++) {
@@ -269,82 +275,38 @@ public class AreaSolver {
 				if (e.getJetSki())
 					jetSkiUsersCount++;
 			}
-			// Start at random point loop through whole array using Modulo
-
-			/*
-			 * If there are not enough employees of any rank 4,3,2 then return the position
-			 * of a rank 1 firstly, as they will be least likely to decrease any score by
-			 * switching out someone of another rank that is required.
-			 */
-			if (rank4Count < location.getrank4Req() || rank3Count < location.getrank3Req()
-					|| rank2Count < location.getrank2Req()) {
-				for (int j = 0; j < employeesPerDay; j++) {
-					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
-							.getRank() == 1) {
-						return new int[] { (j + randomStartPointJ) % employeesPerDay,
-								(i + randomStartPointI) % daysInWeek };
+			for (int j = 0; j < employeesPerDay; j++) {
+				Employee e = timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek];
+				int[] pos = new int[] { (j + randomStartPointJ) % employeesPerDay,
+						(i + randomStartPointI) % daysInWeek };
+				
+				if (rank4Count < rank4Req) {
+					if (rank3Count > rank3Req && e.getRank() == 3) {
+						return pos;
+					}
+					else if (rank2Count > rank2Req && e.getRank() == 2) {
+						return pos;
+					}
+					else if (e.getRank() == 1) {
+						return pos;
 					}
 				}
-			}
-			/*
-			 * Then return position of someone who is just not of the rank which is in
-			 * deficit. May be cases where all employees of one rank are in the same
-			 * location on the same day
-			 */
-			if (rank4Count < location.getrank4Req()) {
-				for (int j = 0; j < employeesPerDay; j++) {
-					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
-							.getRank() != 4) {
-						return new int[] { (j + randomStartPointJ) % employeesPerDay,
-								(i + randomStartPointI) % daysInWeek };
+				if (rank2Count + rank3Count < rank3Req) {
+					if (rank4Count > rank4Req && e.getRank() == 2) {
+						return pos;
+					}
+					else if (e.getRank() == 1) {
+						return pos;
 					}
 				}
-			}
-			if (rank3Count < location.getrank3Req()) {
-				for (int j = 0; j < employeesPerDay; j++) {
-					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
-							.getRank() != 3) {
-						return new int[] { (j + randomStartPointJ) % employeesPerDay,
-								(i + randomStartPointI) % daysInWeek };
-					}
+				if (boatDriverCount < bDrReq && e.getBoatDriver()) {
+					return pos;
 				}
-			}
-			if (rank2Count < location.getrank2Req()) {
-				for (int j = 0; j < employeesPerDay; j++) {
-					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
-							.getRank() != 2) {
-						return new int[] { (j + randomStartPointJ) % employeesPerDay,
-								(i + randomStartPointI) % daysInWeek };
-					}
+				if (crewmenCount < bCrReq && e.getBoatCrewman()) {
+					return pos;
 				}
-			}
-			// If not enough each qualification then return position of someone who doesn't
-			// have it.
-			if (boatDriverCount < location.getBoatDriversReq()) {
-				for (int j = 0; j < employeesPerDay; j++) {
-					if (!timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
-							.getBoatDriver()) {
-						return new int[] { (j + randomStartPointJ) % employeesPerDay,
-								(i + randomStartPointI) % daysInWeek };
-					}
-				}
-			}
-			if (crewmenCount < location.getCrewmenReq()) {
-				for (int j = 0; j < employeesPerDay; j++) {
-					if (!timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
-							.getBoatCrewman()) {
-						return new int[] { (j + randomStartPointJ) % employeesPerDay,
-								(i + randomStartPointI) % daysInWeek };
-					}
-				}
-			}
-			if (jetSkiUsersCount < location.getJetSkiUsersReq()) {
-				for (int j = 0; j < employeesPerDay; j++) {
-					if (!timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
-							.getJetSki()) {
-						return new int[] { (j + randomStartPointJ) % employeesPerDay,
-								(i + randomStartPointI) % daysInWeek };
-					}
+				if (jetSkiUsersCount < jsReq && e.getJetSki()) {
+					return pos;
 				}
 			}
 		}

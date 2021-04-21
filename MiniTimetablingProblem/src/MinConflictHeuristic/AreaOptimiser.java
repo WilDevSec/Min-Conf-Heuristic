@@ -41,7 +41,6 @@ public class AreaOptimiser {
 				}
 				locationsCopy.set(areaViolationPosition[2], lCopy);
 				Area areaCopy = new Area(locationsCopy, employees);
-
 				if (hm.heuristicScore(areaCopy) <= hm.heuristicScore(currentArea)
 						&& sh.heuristicScore(areaCopy) < sh.heuristicScore(currentArea)) {
 					locations.set(areaViolationPosition[2], lCopy);
@@ -50,7 +49,6 @@ public class AreaOptimiser {
 				} else {
 					noChangeCount++;
 				}
-
 				areaViolationPosition = violationPosition();
 				noChangeCount++;
 			}
