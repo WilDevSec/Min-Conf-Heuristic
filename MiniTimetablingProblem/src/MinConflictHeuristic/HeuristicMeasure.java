@@ -1,7 +1,9 @@
 package MinConflictHeuristic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class HeuristicMeasure {
@@ -14,9 +16,12 @@ public class HeuristicMeasure {
 		int count = 0;
 		for (Location l : area.getLocations()) {
 			count += rankAndQualificationMissing(l);
+			System.out.println("Rank and qual missing" + rankAndQualificationMissing(l));
 		}
 		count += employeesDoubleBookedCount(area);
+		System.out.println("Employees double booked count" + employeesDoubleBookedCount(area));
 		count += fullTimeEmployeesNotWorking5Days(area);
+		System.out.println("Full time not w 5 days: " + fullTimeEmployeesNotWorking5Days(area));
 		return count;
 	}
 	
@@ -65,15 +70,15 @@ public class HeuristicMeasure {
 
 	private int employeesDoubleBookedCount(Area area) {
 		int count = 0;
-		Map<Employee, Integer> employeeCount = new HashMap<>();
-		for (int i = 0; i < area.getLocations().get(0).getTimetable().length; i++) {
+		for (int i = 0; i < area.getLocations().get(0).getTimetable()[0].length; i++) {
+			List<Employee> employeeCount = new ArrayList<>();
 			for (Location l : area.getLocations()) {
 				Employee[][] table = l.getTimetable();
 				for (int j = 0; j < table.length; j++) {
-					if (employeeCount.containsKey(table[j][i])) {
+					if (employeeCount.contains(table[j][i])) {
 						count++;
 					} else {
-						employeeCount.put(table[j][i], 1);
+						employeeCount.add(table[j][i]);
 					}
 				}
 			}

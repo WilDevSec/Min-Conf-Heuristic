@@ -11,8 +11,8 @@ public class Comparator {
 	public static void main(String[] args) {
 		ReadData rd = new ReadData();
 		Area a = rd.getAllAreas().get(0);
-		AreaSolver as = new AreaSolver(a);
-		as.populateTimetablesRandomly();
+//		AreaSolver as = new AreaSolver(a);
+//		as.populateTimetablesRandomly();
 		
 		MCHillClimb mchc = new MCHillClimb(a);
 		long startTime  = System.nanoTime();

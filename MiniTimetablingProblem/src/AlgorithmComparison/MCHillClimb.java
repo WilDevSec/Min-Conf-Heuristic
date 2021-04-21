@@ -31,7 +31,7 @@ public class MCHillClimb {
 	
 	public Area solve() {
 		HeuristicMeasure hm = new HeuristicMeasure();
-		AreaSolver as = new AreaSolver(area);
+//		AreaSolver as = new AreaSolver(area);
 		int iterationCount = 0;
 		int heuristicScore = hm.heuristicScore(area);
 		while (heuristicScore != 0 && iterationCount < 300) {

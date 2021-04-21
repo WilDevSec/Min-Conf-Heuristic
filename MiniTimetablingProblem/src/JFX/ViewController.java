@@ -4,6 +4,7 @@ import MinConflictHeuristic.ReadData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import MinConflictHeuristic.Area;
 import MinConflictHeuristic.AreaOptimiser;
@@ -115,26 +116,32 @@ public class ViewController {
 	private static int areaBookmark = 0;
 
 	private List<Area> solvedAreas = new ArrayList<>();
+	ArrayList<Stack<Employee>> freeEmployees = new ArrayList<>();
+	
 	
 	@FXML
 	public void generateTT(Event e) {
 		rd = new ReadData();
 		HeuristicMeasure hs = new HeuristicMeasure();
 		ArrayList<Area> areas = rd.getAllAreas();
+		for (int i = 0; i < 7; i++) {
+			freeEmployees.add(new Stack<Employee>());
+		}
 		for (int i = 0; i < areas.size(); i++) {
 			Area a = areas.get(i);
-			AreaSolver as = new AreaSolver(a);
+			AreaSolver as = new AreaSolver(a, freeEmployees);
 			a = as.populateTimetablesRandomly();
 			System.out.println("Area Randomly Populated");
 			a = as.attemptSolve();
 			System.out.println("Area Solved");
 			solvedAreas.add(a);
 			Main.violationCount += hs.heuristicScore(a);
+			setHardViolationCount();
+			setAreaPointer();
 			populateTT(a);
+			pushToStack(as.getEmployeesFreeEachDay());
 		}
 		System.out.println("All areas solved");
-		setAreaPointer();
-		setHardViolationCount();
 	}
 
 	@FXML
@@ -145,6 +152,17 @@ public class ViewController {
 			a = ao.attemptOptimise();
 			solvedAreas.set(i, a);
 			populateTT(a);
+		}
+	}
+	
+	private void pushToStack(ArrayList<Employee[]> employeesOneArea) {
+		for (int i = 0; i < 7; i++) {
+			Employee[] oneDay = employeesOneArea.get(i);
+			Stack<Employee> dayStack = freeEmployees.get(i);
+			for (Employee e : oneDay) {
+				dayStack.push(e);
+			}
+			freeEmployees.set(i, dayStack);
 		}
 	}
 
