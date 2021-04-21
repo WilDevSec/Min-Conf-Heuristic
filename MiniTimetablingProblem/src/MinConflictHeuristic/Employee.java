@@ -4,7 +4,8 @@ public class Employee {
 
 	private String name;
 	private int rank;
-	private boolean boatDriver, boatCrewman, jetSki, fullTime;
+	private boolean boatDriver, boatCrewman;
+	private boolean jetSki, fullTime;
 
 	public Employee(String name, int rank, boolean boatDriver, boolean boatCrewman, boolean jetSki, boolean fullTime) {
 		this.name = name;

@@ -2,6 +2,7 @@ package JFX;
 
 import MinConflictHeuristic.ReadData;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -18,10 +19,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 public class ViewController {
 
@@ -135,7 +141,6 @@ public class ViewController {
 			a = as.attemptSolve();
 			System.out.println("Area Solved");
 			solvedAreas.add(a);
-			Main.violationCount += hs.heuristicScore(a);
 			setHardViolationCount();
 			setAreaPointer();
 			populateTT(a);
@@ -250,6 +255,21 @@ public class ViewController {
 		return rows;
 	}
 
+	@FXML
+	public void employeesView(ActionEvent e) throws IOException{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("Employees.fxml"));
+		Parent employeeViewParent = loader.load();
+		Scene employeeViewScene = new Scene(employeeViewParent);
+		
+		EmployeeViewController controller = loader.getController();
+		controller.initialise(solvedAreas.get(areaBookmark));
+		Stage window = (Stage)((Node)e.getSource()).getScene().getWindow();
+		window.setScene(employeeViewScene);
+		window.show();
+		
+	}
+	
 	@FXML
 	public void nextArea(Event e) {
 		if (areaBookmark < 60) {

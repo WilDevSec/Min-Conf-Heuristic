@@ -26,7 +26,7 @@ public class AreaOptimiser {
 		while (heuristicScore != 0 && noChangeCount < 1000) {
 			int[] areaViolationPosition = violationPosition();
 			int attemptsAtViolation = 0;
-			while (areaViolationPosition != null && noChangeCount < 10000) {
+			while (areaViolationPosition != null && attemptsAtViolation < 100) {
 				Location lCopy;
 				if (Math.random() > 0.5) {
 					lCopy = switchEmployeeTT(areaViolationPosition[0], areaViolationPosition[1],
@@ -61,7 +61,7 @@ public class AreaOptimiser {
 			Location l = locations.get(i);
 			sortEmployees(l.getTimetable());
 		}
-		Main.violationCount = 0;
+//		Main.violationCount = 0;
 		currentArea.setLocations(locations);
 		return currentArea;
 	}

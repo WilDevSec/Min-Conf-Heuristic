@@ -16,11 +16,13 @@ public class HeuristicMeasure {
 		int count = 0;
 		for (Location l : area.getLocations()) {
 			count += rankAndQualificationMissing(l);
+			System.out.println("Rank and qual for a location:" + rankAndQualificationMissing(l));
 		}
 		count += employeesDoubleBookedCount(area);
 		System.out.println("Empl double booked: " + employeesDoubleBookedCount(area));
 		count += fullTimeEmployeesNotWorking5Days(area);
 		System.out.println("Full time: " + fullTimeEmployeesNotWorking5Days(area));
+		System.out.println("Over all count: " + count);
 		return count;
 	}
 	
@@ -96,16 +98,19 @@ public class HeuristicMeasure {
 				Location l = area.getLocations().get(k);
 				Employee[][] table = l.getTimetable();
 				for (int j = 0; j < table.length; j++) {
-					if (employeeCount.containsKey(table[j][i])) {
-						int value = employeeCount.get(table[j][i]);
-						if (value == 5) {
-							count++;
+					if (!employeePerDay.contains(table[j][i])) {
+						if (employeeCount.containsKey(table[j][i])) {
+							int value = employeeCount.get(table[j][i]);
+							if (value == 5) {
+								count++;
+							} else {
+								value += 1;
+								employeeCount.put(table[j][i], value);
+							}
 						} else {
-							value += 1;
-							employeeCount.put(table[j][i], value);
+							employeeCount.put(table[j][i], 1);
 						}
-					} else {
-						employeeCount.put(table[j][i], 1);
+						employeePerDay.add(table[j][i]);
 					}
 				}
 			}

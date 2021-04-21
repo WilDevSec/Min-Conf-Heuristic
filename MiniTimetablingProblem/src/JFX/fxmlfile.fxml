@@ -120,6 +120,7 @@
                         <Label layoutX="14.0" layoutY="50.0" text="Hard Constraint Violations:" />
                         <Label fx:id="hardViolationCount" layoutX="200.0" layoutY="50.0" text="_" />
                         <Label fx:id="areaPointer" layoutX="706.0" layoutY="33.0" text="_" />
+                        <Button layoutX="970.0" layoutY="33.0" mnemonicParsing="false" onAction="#employeesView" text="View Employees" />
                      </children>
                   </AnchorPane>
               </content>
