@@ -22,7 +22,7 @@ public class SoftHeuristic {
 				Employee[][] table = l.getTimetable();
 				for (int j = 0; j < table.length; j++) {
 					Employee e = table[j][i];
-					if (e.isfullTime()) {
+					if (e.getFullTime()) {
 						if (partTimeworkingDaysCount.containsKey(e)) {
 							int value = partTimeworkingDaysCount.get(e);
 							if (value == 3) {
@@ -49,7 +49,7 @@ public class SoftHeuristic {
 				Employee[][] table = l.getTimetable();
 				for (int j = 0; j < table.length; j++) {
 					Employee e = table[j][i];
-					if (e.isfullTime()) {
+					if (e.getFullTime()) {
 						ftEmployeesOnDay.add(e);
 					}
 					if (i > 1) {

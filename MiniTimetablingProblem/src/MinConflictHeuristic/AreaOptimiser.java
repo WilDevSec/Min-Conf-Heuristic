@@ -22,8 +22,8 @@ public class AreaOptimiser {
 		HeuristicMeasure hm = new HeuristicMeasure();
 		SoftHeuristic sh = new SoftHeuristic();
 		int noChangeCount = 0;
-		int heuristicScore = hm.heuristicScore(currentArea);
-		while (heuristicScore != 0 && noChangeCount < 1000) {
+		int softHeuristicScore = sh.heuristicScore(currentArea);
+		while (softHeuristicScore != 0 && noChangeCount < 100) {
 			int[] areaViolationPosition = violationPosition();
 			int attemptsAtViolation = 0;
 			while (areaViolationPosition != null && attemptsAtViolation < 100) {
@@ -44,7 +44,6 @@ public class AreaOptimiser {
 
 				if (hm.heuristicScore(areaCopy) <= hm.heuristicScore(currentArea)
 						&& sh.heuristicScore(areaCopy) < sh.heuristicScore(currentArea)) {
-					System.out.println("Change made1");
 					locations.set(areaViolationPosition[2], lCopy);
 					currentArea.setLocations(locations);
 					noChangeCount = 0;
@@ -55,13 +54,12 @@ public class AreaOptimiser {
 				areaViolationPosition = violationPosition();
 				noChangeCount++;
 			}
-			heuristicScore = hm.heuristicScore(currentArea);
+			softHeuristicScore = sh.heuristicScore(currentArea);
 		}
 		for (int i = 0; i < locations.size(); i++) {
 			Location l = locations.get(i);
 			sortEmployees(l.getTimetable());
 		}
-//		Main.violationCount = 0;
 		currentArea.setLocations(locations);
 		return currentArea;
 	}
@@ -86,7 +84,7 @@ public class AreaOptimiser {
 				Employee[][] table = l.getTimetable();
 				for (int j = 0; j < table.length; j++) {
 					Employee e = table[j][i];
-					if (e.isfullTime()) {
+					if (e.getFullTime()) {
 						ftEmployeesOnDay.add(e);
 					}
 					if (i > 1) {
@@ -113,7 +111,7 @@ public class AreaOptimiser {
 				Employee[][] table = l.getTimetable();
 				for (int j = 0; j < table.length; j++) {
 					Employee e = table[j][i];
-					if (e.isfullTime()) {
+					if (e.getFullTime()) {
 						if (workingDaysCount.containsKey(e)) {
 							int value = workingDaysCount.get(e);
 							if (value == 3) {
@@ -177,14 +175,13 @@ public class AreaOptimiser {
 		private Location switchEmployeeFree(int i, int j, Location l) {
 			Employee[] freeOnDay = getEmployeesFreeEachDay().get(j);
 			// Try random employee
-			int index = (int) (Math.random() * freeOnDay.length);
+			int index = (int) (Math.random() * freeOnDay.length -1);
 			Employee employeeToSwitch = freeOnDay[index];
 			Employee[][] timetable = l.getTimetable();
-			Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
-			copy[i][j] = employeeToSwitch;
+			timetable[i][j] = employeeToSwitch;
 			Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(), l.getrank2Req(),
 					l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
-			lCopy.setTimetable(copy);
+			lCopy.setTimetable(timetable);
 			return lCopy;
 		}
 

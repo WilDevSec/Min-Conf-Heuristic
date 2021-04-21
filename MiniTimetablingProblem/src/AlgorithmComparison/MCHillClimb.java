@@ -188,11 +188,11 @@ public class MCHillClimb {
 					rank3Count++;
 				else if (rank == 2)
 					rank2Count++;
-				if (e.isBoatDriver())
+				if (e.getBoatDriver())
 					boatDriverCount++;
-				if (e.isBoatCrewman())
+				if (e.getBoatCrewman())
 					crewmenCount++;
-				if (e.isjetSkiUser())
+				if (e.getJetSki())
 					jetSkiUsersCount++;
 			}
 			// Start at random point loop through whole array using Modulo
@@ -249,7 +249,7 @@ public class MCHillClimb {
 			if (boatDriverCount < location.getBoatDriversReq()) {
 				for (int j = 0; j < employeesPerDay; j++) {
 					if (!timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
-							.isBoatDriver()) {
+							.getBoatDriver()) {
 						return new int[] { (j + randomStartPointJ) % employeesPerDay,
 								(i + randomStartPointI) % daysInWeek };
 					}
@@ -258,7 +258,7 @@ public class MCHillClimb {
 			if (crewmenCount < location.getCrewmenReq()) {
 				for (int j = 0; j < employeesPerDay; j++) {
 					if (!timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
-							.isBoatCrewman()) {
+							.getBoatCrewman()) {
 						return new int[] { (j + randomStartPointJ) % employeesPerDay,
 								(i + randomStartPointI) % daysInWeek };
 					}
@@ -267,7 +267,7 @@ public class MCHillClimb {
 			if (jetSkiUsersCount < location.getJetSkiUsersReq()) {
 				for (int j = 0; j < employeesPerDay; j++) {
 					if (!timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
-							.isjetSkiUser()) {
+							.getJetSki()) {
 						return new int[] { (j + randomStartPointJ) % employeesPerDay,
 								(i + randomStartPointI) % daysInWeek };
 					}

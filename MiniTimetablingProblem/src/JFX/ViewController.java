@@ -1,6 +1,7 @@
 package JFX;
 
 import MinConflictHeuristic.ReadData;
+import MinConflictHeuristic.SoftHeuristic;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -129,6 +130,7 @@ public class ViewController {
 	public void generateTT(Event e) {
 		rd = new ReadData();
 		HeuristicMeasure hs = new HeuristicMeasure();
+		SoftHeuristic sh = new SoftHeuristic();
 		ArrayList<Area> areas = rd.getAllAreas();
 		for (int i = 0; i < 7; i++) {
 			freeEmployees.add(new Stack<Employee>());
@@ -157,23 +159,31 @@ public class ViewController {
 			System.out.println("Area Solved");
 			solvedAreas.add(a);
 			Main.violationCount += hs.heuristicScore(a);
+			Main.softViolationCount += sh.heuristicScore(a);
 			setHardViolationCount();
 			setAreaPointer();
 			populateTT(a);
 			pushToStack(as.getEmployeesFreeEachDay());
 		}
+		setSoftViolationCount();
 		System.out.println("All areas solved");
 	}
 
 	@FXML
 	public void optimiseTT(Event e) {
+		SoftHeuristic sh = new SoftHeuristic();
+		//Reset to 0 before counting again after optimisation
+		Main.softViolationCount = 0;
 		for (int i = 0; i < solvedAreas.size(); i++) {
 			Area a = solvedAreas.get(i);
 			AreaOptimiser ao = new AreaOptimiser(a);
 			a = ao.attemptOptimise();
 			solvedAreas.set(i, a);
 			populateTT(a);
+			Main.softViolationCount += sh.heuristicScore(a);
+			System.out.println("Area optimised");
 		}
+		setSoftViolationCount();
 	}
 	
 	private void pushToStack(ArrayList<Employee[]> employeesOneArea) {
@@ -293,7 +303,7 @@ public class ViewController {
 	}
 	
 	public void setSoftViolationCount() {
-		softViolationCount.setText("Hi");
+		softViolationCount.setText(Integer.toString(Main.softViolationCount));
 	}
 	
 	@FXML

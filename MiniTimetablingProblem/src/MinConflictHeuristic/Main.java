@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 public class Main extends Application{
 
 	public static int violationCount = 0;
+	public static int softViolationCount = 0;
 	
 	@Override
 	public void start(Stage stage) throws Exception {

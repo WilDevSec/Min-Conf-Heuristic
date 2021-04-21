@@ -49,11 +49,11 @@ public class HeuristicMeasure {
 					rank3Count++;
 				else if (rank == 2)
 					rank2Count++;
-				if (e.isBoatDriver())
+				if (e.getBoatDriver())
 					boatDriverCount++;
-				if (e.isBoatCrewman())
+				if (e.getBoatCrewman())
 					crewmenCount++;
-				if (e.isjetSkiUser())
+				if (e.getJetSki())
 					jetSkiUsersCount++;
 			}
 			score += rank4Count < location.getrank4Req() ? location.getrank4Req() - rank4Count : 0;
@@ -157,7 +157,7 @@ public class HeuristicMeasure {
 			for (int j = 0; j < employees.length; j++) {
 				// J first because looping vertically first (through employees each day)
 				Employee emp = employees[j][i];
-				if (emp.isBoatDriver()) {
+				if (emp.getBoatDriver()) {
 					if (!employeeQualificationsCount.containsKey("boatDrivers")) {
 						employeeQualificationsCount.put("boatDrivers", 1);
 					} else {
@@ -165,7 +165,7 @@ public class HeuristicMeasure {
 								employeeQualificationsCount.get("boatDrivers") + 1);
 					}
 				}
-				if (emp.isBoatCrewman()) {
+				if (emp.getBoatCrewman()) {
 					if (!employeeQualificationsCount.containsKey("boatCrewmen")) {
 						employeeQualificationsCount.put("boatCrewmen", 1);
 					} else {
@@ -173,7 +173,7 @@ public class HeuristicMeasure {
 								employeeQualificationsCount.get("boatCrewmen") + 1);
 					}
 				}
-				if (emp.isjetSkiUser()) {
+				if (emp.getJetSki()) {
 					if (!employeeQualificationsCount.containsKey("jetSkiUsers")) {
 						employeeQualificationsCount.put("jetSkiUsers", 1);
 					} else {
