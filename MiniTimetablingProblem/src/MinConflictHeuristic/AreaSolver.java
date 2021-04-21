@@ -20,7 +20,7 @@ public class AreaSolver {
 		HeuristicMeasure hm = new HeuristicMeasure();
 		int noChangeCount = 0;
 		int heuristicScore = hm.heuristicScore(currentArea);
-		while (heuristicScore != 0 && noChangeCount < 20000) {
+		while (heuristicScore != 0 && noChangeCount < 10000) {
 			for (int i = 0; i < locations.size(); i++) {
 				Location l = locations.get(i);
 				Employee[][] timetable = l.getTimetable();
@@ -28,7 +28,7 @@ public class AreaSolver {
 				int[] violationPosition = getRankOrQualViolationPosition(l);
 				int rankOrQualAttemptCounter = 0;
 				// 200 attempts at trying to solve each location's conflicts
-				while (violationPosition != null && rankOrQualAttemptCounter < 500000) {
+				while (violationPosition != null && rankOrQualAttemptCounter < 10000) {
 					Location lCopy;
 					if (Math.random() > 0.5) {
 						lCopy = switchEmployeeTT(violationPosition[0], violationPosition[1], l);
@@ -41,6 +41,7 @@ public class AreaSolver {
 						lCopy = switchEmployeeStack(violationPosition[0], violationPosition[1], l);
 					}
 					if (hm.locationScore(lCopy) < hm.locationScore(l)) {
+						System.out.println("Change made");
 						l = lCopy;
 						locations.set(i, l);
 						// Peeks rather than pops in function so if employee used then must be removed:
@@ -55,10 +56,11 @@ public class AreaSolver {
 					rankOrQualAttemptCounter++;
 				}
 			}
+			
 			// 2000 Attempts to minimise the area's conflicts per iteration
 			int[] areaViolationPosition = getAreaConstraintViolationPosition();
 			int doubleBookedAttemptCount = 0;
-			while (areaViolationPosition != null && doubleBookedAttemptCount < 500000) {
+			while (areaViolationPosition != null && doubleBookedAttemptCount < 10000) {
 				Location lCopy;
 				if (Math.random() > 0.5) {
 					lCopy = switchEmployeeTT(areaViolationPosition[0], areaViolationPosition[1],
@@ -79,6 +81,7 @@ public class AreaSolver {
 				locationsCopy.set(areaViolationPosition[2], lCopy);
 				Area areaCopy = new Area(locationsCopy, employees);
 				if (hm.heuristicScore(areaCopy) < hm.heuristicScore(currentArea)) {
+					System.out.println("Change made1");
 					locations.set(areaViolationPosition[2], lCopy);
 					currentArea.setLocations(locations);
 					noChangeCount = 0;
@@ -90,6 +93,7 @@ public class AreaSolver {
 				doubleBookedAttemptCount++;
 			}
 			heuristicScore = hm.heuristicScore(currentArea);
+			noChangeCount++;
 		}
 		for (int i = 0; i < locations.size(); i++) {
 			locations.set(i, sortEmployees(locations.get(i)));
@@ -363,19 +367,19 @@ public class AreaSolver {
 		int randomStartPointI = (int) Math.random() * employeesPerDay;
 		int randomStartPointJ = (int) Math.random() * daysInWeek;
 		for (int i = 0; i < daysInWeek; i++) {
-			List<Employee> timetable = new ArrayList<>();
+			List<Employee> employees = new ArrayList<>();
 			// Need location index to return which location the constraint violation is in,
 			// along with the position of the violation within that location's timetable.
 			int locationIndex = 0;
 			for (Location l : currentArea.getLocations()) {
 				Employee[][] table = l.getTimetable();
 				for (int j = 0; j < table.length; j++) {
-					if (timetable.contains(
+					if (employees.contains(
 							table[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek])) {
 						return new int[] { (j + randomStartPointJ) % employeesPerDay,
 								(i + randomStartPointI) % daysInWeek, locationIndex };
 					} else {
-						timetable.add(
+						employees.add(
 								table[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]);
 					}
 				}
@@ -389,23 +393,24 @@ public class AreaSolver {
 		Map<Employee, Integer> workingDaysCount = new HashMap<>();
 		int employeesPerDay = 6;
 		int daysInWeek = 7;
-		for (int i = 0; i < currentArea.getLocations().get(0).getTimetable().length; i++) {
+		for (int i = 0; i < daysInWeek; i++) {
 			int locationIndex = 0;
-			for (Location l : currentArea.getLocations()) {
+			for (int k = 0; k < 5; k++) {
+				Location l = currentArea.getLocations().get(k);
 				Employee[][] table = l.getTimetable();
 				for (int j = 0; j < table.length; j++) {
 					if (workingDaysCount.containsKey(table[j][i])) {
 						int value = workingDaysCount.get(table[j][i]);
 						if (value == 5) {
-							return new int[] { j, i, locationIndex };
+							return new int[] { j, i, k };
 						} else {
+							value += 1;
 							workingDaysCount.put(table[j][i], value);
 						}
 					} else {
 						workingDaysCount.put(table[j][i], 1);
 					}
 				}
-				locationIndex++;
 			}
 		}
 		return null;

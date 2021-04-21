@@ -16,12 +16,11 @@ public class HeuristicMeasure {
 		int count = 0;
 		for (Location l : area.getLocations()) {
 			count += rankAndQualificationMissing(l);
-			System.out.println("Rank and qual missing" + rankAndQualificationMissing(l));
 		}
 		count += employeesDoubleBookedCount(area);
-		System.out.println("Employees double booked count" + employeesDoubleBookedCount(area));
+		System.out.println("Empl double booked: " + employeesDoubleBookedCount(area));
 		count += fullTimeEmployeesNotWorking5Days(area);
-		System.out.println("Full time not w 5 days: " + fullTimeEmployeesNotWorking5Days(area));
+		System.out.println("Full time: " + fullTimeEmployeesNotWorking5Days(area));
 		return count;
 	}
 	
@@ -89,35 +88,27 @@ public class HeuristicMeasure {
 	private int fullTimeEmployeesNotWorking5Days(Area area) {
 		int count = 0;
 		Map<Employee, Integer> employeeCount = new HashMap<>();
-		for (int i = 0; i < area.getLocations().get(0).getTimetable().length; i++) {
+		for (int i = 0; i < area.getLocations().get(0).getTimetable()[0].length; i++) {
 			// Need second hash to make sure employees aren't counted as working
 			// multiple days when they are working twice on the same day
-			Map<Employee, Integer> employeePerDayCount = new HashMap<>();
-			for (Location l : area.getLocations()) {
+			List<Employee> employeePerDay = new ArrayList<>();
+			for (int k = 0; k < 5; k++) {
+				Location l = area.getLocations().get(k);
 				Employee[][] table = l.getTimetable();
 				for (int j = 0; j < table.length; j++) {
-					Employee emp = table[j][j];
-					if (emp.isfullTime()) {
-						if (!employeePerDayCount.containsKey(emp)) {
-							employeePerDayCount.put(emp, 1);
-							if (employeeCount.containsKey(emp)) {
-								employeeCount.put(emp, employeeCount.get(emp) + 1);
-							} else {
-								employeeCount.put(emp, 1);
-							}
+					if (employeeCount.containsKey(table[j][i])) {
+						int value = employeeCount.get(table[j][i]);
+						if (value == 5) {
+							count++;
+						} else {
+							value += 1;
+							employeeCount.put(table[j][i], value);
 						}
+					} else {
+						employeeCount.put(table[j][i], 1);
 					}
 				}
 			}
-		}
-		Iterator<?> it = employeeCount.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			int value = (int) pair.getValue();
-			if (value != 5) {
-				count += value - 5 < 0 ? -value : value;
-			}
-			it.remove(); // avoids a ConcurrentModificationException
 		}
 		return count;
 	}

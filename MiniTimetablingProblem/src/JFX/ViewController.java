@@ -141,6 +141,22 @@ public class ViewController {
 			populateTT(a);
 			pushToStack(as.getEmployeesFreeEachDay());
 		}
+		freeEmployees = new ArrayList<Stack<Employee>>();
+		for (int i = 0; i < 7; i++) {
+			freeEmployees.add(new Stack<Employee>());
+		}
+		for (int i = areas.size() -1; i >= 0; i--) {
+			Area a = areas.get(i);
+			AreaSolver as = new AreaSolver(a, freeEmployees);
+			a = as.attemptSolve();
+			System.out.println("Area Solved");
+			solvedAreas.add(a);
+			Main.violationCount += hs.heuristicScore(a);
+			setHardViolationCount();
+			setAreaPointer();
+			populateTT(a);
+			pushToStack(as.getEmployeesFreeEachDay());
+		}
 		System.out.println("All areas solved");
 	}
 
