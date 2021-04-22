@@ -123,6 +123,7 @@
                         <Button layoutX="970.0" layoutY="33.0" mnemonicParsing="false" onAction="#employeesView" text="View Employees" />
                         <Label layoutX="14.0" layoutY="78.0" text="Soft Constraint Violations" />
                         <Label fx:id="softViolationCount" layoutX="189.0" layoutY="78.0" text="_" />
+                        <Button layoutX="970.0" layoutY="74.0" mnemonicParsing="false" onAction="#locationsView" prefHeight="24.0" prefWidth="124.0" text="View Locations" />
                      </children>
                   </AnchorPane>
               </content>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="423.0" prefWidth="848.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.DescriptionViewController">
+   <children>
+      <SplitPane orientation="VERTICAL" prefHeight="424.0" prefWidth="770.0">
+         <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="422.0" prefWidth="819.0">
+               <children>
+                  <TableView fx:id="locations" layoutX="23.0" layoutY="102.0" prefHeight="205.0" prefWidth="800.0">
+                     <columns>
+                        <TableColumn fx:id="ID" text="ID" />
+                        <TableColumn fx:id="employeesRequired" prefWidth="100.0" text="Employees" />
+                        <TableColumn fx:id="rank4" prefWidth="100.0" text="Rank 4" />
+                        <TableColumn fx:id="rank3" prefWidth="100.0" text="Rank 3" />
+                        <TableColumn fx:id="rank2" prefWidth="100.0" text="Rank 2" />
+                        <TableColumn fx:id="boatDrivs" prefWidth="100.0" text="Boat Drivers" />
+                        <TableColumn fx:id="crewmen" prefWidth="100.0" text="Crewmen" />
+                        <TableColumn fx:id="jetSki" prefWidth="120.0" text="Jet Ski Drivers" />
+                     </columns>
+                  </TableView>
+                  <MenuBar layoutY="1.0" prefHeight="27.0" prefWidth="862.0">
+                     <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="Close" />
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="Delete" />
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="About" />
+                           </items>
+                        </Menu>
+                     </menus>
+                  </MenuBar>
+                  <Label layoutX="280.0" layoutY="44.0" text="Locations in area">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="44.0" layoutY="74.0" text="Requirements">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="33.0" layoutY="347.0" mnemonicParsing="false" onAction="#mainView" text="Return to timetable view" />
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+   </children>
+</VBox>

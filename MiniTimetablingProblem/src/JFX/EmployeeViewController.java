@@ -47,17 +47,31 @@ public class EmployeeViewController {
 	}
 	
 	public ObservableList<Employee> getEmployees(ArrayList<Employee> employees){
+		sortEmployees(employees);
 		ObservableList<Employee> employees1 = FXCollections.observableArrayList();
 		for (Employee e : employees) {
 			employees1.add(e);
 		}
+		
 		return employees1;
+	}
+
+	private void sortEmployees(ArrayList<Employee> employees2) {
+		for (int i = 0; i < employees2.size() -1; i++) {
+			for (int j = i; j < employees2.size();  j++) {
+				if (employees2.get(i).getName().charAt(4) > employees2.get(j).getName().charAt(4)) {
+					Employee temp = employees2.get(i);
+					employees2.set(i, employees2.get(j));
+					employees2.set(j, temp);
+				}
+			}
+		}
 	}
 
 	@FXML
 	public void mainView(ActionEvent e) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("fxmlfile.fxml"));
+		loader.setLocation(getClass().getResource("TimetablesView.fxml"));
 		Parent mainViewParent = loader.load();
 		Scene mainViewScene = new Scene(mainViewParent);
 

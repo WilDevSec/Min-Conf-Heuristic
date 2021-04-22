@@ -305,7 +305,6 @@ public class ViewController {
 		Scene employeeViewScene = new Scene(employeeViewParent);
 
 		EmployeeViewController controller = loader.getController();
-		System.out.println(Boolean.toString(solvedAreas.get(0).getEmployees().get(0).getBoatCrewman()));
 		controller.initialise(solvedAreas.get(areaBookmark));
 		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		window.setScene(employeeViewScene);
@@ -326,8 +325,17 @@ public class ViewController {
 	}
 
 	@FXML
-	public void detailsView(ActionEvent e) {
-
+	public void locationsView(ActionEvent e) throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("Description.fxml"));
+		Parent descriptionViewParent = loader.load();
+		Scene descriptionViewScene = new Scene(descriptionViewParent);
+		
+		DescriptionViewController controller = loader.getController();
+		controller.initialise(solvedAreas.get(areaBookmark));
+		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		window.setScene(descriptionViewScene);
+		window.show();
 	}
 
 	public void setHardViolationCount() {
@@ -350,6 +358,8 @@ public class ViewController {
 	public void populateSolved() {
 		solvedAreas = Main.solvedAreasPublic;
 		populateTT(solvedAreas.get(areaBookmark));
+		setHardViolationCount();
+		setSoftViolationCount();
 	}
 	
 }
