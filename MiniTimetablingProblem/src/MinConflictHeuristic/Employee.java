@@ -8,7 +8,6 @@ public class Employee {
 	private int rank;
 	private boolean boatDriver, boatCrewman;
 	private boolean jetSki, fullTime;
-	private SimpleBooleanProperty boatDr, boatCr, jetS, fullT;
 
 	public Employee(String name, int rank, boolean boatDriver, boolean boatCrewman, boolean jetSki, boolean fullTime) {
 		this.name = name;
@@ -17,10 +16,6 @@ public class Employee {
 		this.boatCrewman = boatCrewman;
 		this.jetSki = jetSki;
 		this.fullTime = fullTime;
-		this.boatDr = (new SimpleBooleanProperty(boatDriver));
-		this.boatCr = new SimpleBooleanProperty(boatCrewman);
-		this.jetS = (new SimpleBooleanProperty(jetSki));
-		this.fullT = new SimpleBooleanProperty(fullTime);
 	}
 	
 	public int getRank() {

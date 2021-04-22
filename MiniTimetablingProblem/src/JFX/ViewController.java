@@ -151,21 +151,24 @@ public class ViewController {
 		for (int i = 0; i < 7; i++) {
 			freeEmployees.add(new Stack<Employee>());
 		}
-		for (int i = areas.size() - 1; i >= 0; i--) {
-			Area a = areas.get(i);
+		for (int i = solvedAreas.size() - 1; i >= 0; i--) {
+			Area a = solvedAreas.get(i);
 			AreaSolver as = new AreaSolver(a, freeEmployees);
 			a = as.attemptSolve();
 			System.out.println("Area Solved");
-			solvedAreas.add(a);
 			Main.violationCount += hs.heuristicScore(a);
 			Main.softViolationCount += sh.heuristicScore(a);
 			setHardViolationCount();
 			setAreaPointer();
 			Area aSorted = sortEmployees(a);
-			
+			solvedAreas.set(i, aSorted);
 			populateTT(aSorted);
 			pushToStack(as.getEmployeesFreeEachDay());
 		}
+		Main.solvedAreasPublic = solvedAreas;
+		Main.violationCount = 0;
+		////
+		setHardViolationCount();
 		setSoftViolationCount();
 		System.out.println("All areas solved");
 	}
@@ -180,9 +183,11 @@ public class ViewController {
 			AreaOptimiser ao = new AreaOptimiser(a);
 			a = ao.attemptOptimise();
 			populateTT(a);
+			solvedAreas.set(i,  a);
 			Main.softViolationCount += sh.heuristicScore(a);
 			System.out.println("Area optimised");
 		}
+		Main.solvedAreasPublic = solvedAreas;
 		setSoftViolationCount();
 	}
 
@@ -198,8 +203,6 @@ public class ViewController {
 						if ((tt[m][k].getName().charAt(4) < (tt[l][k].getName().charAt(4)))) {
 							Employee temp = tt[l][k];
 							tt[l][k] = tt[m][k];
-							System.out.println("Employee to switch" + tt[l][k]);
-							System.out.println("Other emp to switch" + tt[m][k]);
 							tt[m][k] = temp;
 						}
 					}
@@ -210,9 +213,7 @@ public class ViewController {
 			l.setTimetable(tt);
 			locations.set(j, l);
 		}
-		System.out.println("6969" + a.getLocations().get(0).getTimetable()[0][0].getName());
 		Area aSorted = new Area(locations, a.getEmployees());
-		System.out.println("sorted" + aSorted.getLocations().get(0).getTimetable()[0][0].getName());
 		return aSorted;
 	}
 
@@ -304,11 +305,11 @@ public class ViewController {
 		Scene employeeViewScene = new Scene(employeeViewParent);
 
 		EmployeeViewController controller = loader.getController();
+		System.out.println(Boolean.toString(solvedAreas.get(0).getEmployees().get(0).getBoatCrewman()));
 		controller.initialise(solvedAreas.get(areaBookmark));
 		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		window.setScene(employeeViewScene);
 		window.show();
-
 	}
 
 	@FXML
@@ -345,4 +346,12 @@ public class ViewController {
 		}
 		setAreaPointer();
 	}
+
+	public void populateSolved() {
+		solvedAreas = Main.solvedAreasPublic;
+		populateTT(solvedAreas.get(areaBookmark));
+	}
+	
 }
+
+

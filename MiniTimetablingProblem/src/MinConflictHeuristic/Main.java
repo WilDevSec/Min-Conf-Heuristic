@@ -14,6 +14,7 @@ public class Main extends Application{
 
 	public static int violationCount = 0;
 	public static int softViolationCount = 0;
+	public static List<Area> solvedAreasPublic;
 	
 	@Override
 	public void start(Stage stage) throws Exception {
