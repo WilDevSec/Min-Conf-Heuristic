@@ -28,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class ViewController {
@@ -207,7 +208,7 @@ public class ViewController {
 					}
 				}
 			}
-			Location l = new Location(loc.getLocationID(), loc.getrank4Req(), loc.getrank3Req(), loc.getrank2Req(),
+			Location l = new Location(loc.getLocationID(), loc.getRank4Req(), loc.getRank3Req(), loc.getRank2Req(),
 					loc.getBoatDriversReq(), loc.getCrewmenReq(), loc.getJetSkiUsersReq());
 			l.setTimetable(tt);
 			locations.set(j, l);
@@ -331,7 +332,12 @@ public class ViewController {
 		ArrayList<Location> locations = new ArrayList<>();
 		Area a = new Area(locations, employees);
 		solvedAreas.add(a);
+		Main.solvedAreasPublic = solvedAreas;
 		setAreaPointer();
+	}
+	
+	protected void getSelected(MouseEvent e) {
+//		int index = location1.getSelectionModel().getSelectedCells();
 	}
 
 	public void setHardViolationCount() {

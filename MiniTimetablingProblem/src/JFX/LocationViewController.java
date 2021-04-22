@@ -26,14 +26,12 @@ public class LocationViewController {
 	private TableView<Location> locations; 
 	@FXML
 	private TableColumn<Location, String> ID;
-	@FXML 
-	private TableColumn<Location, Integer> employeesRequired;
 	@FXML
 	private TableColumn<Location, Integer> rank4;
 	@FXML
-	private TableColumn<Location, Boolean> rank3;
+	private TableColumn<Location, Integer> rank3;
 	@FXML
-	private TableColumn<Location, Boolean> rank2;
+	private TableColumn<Location, Integer> rank2;
 	@FXML
 	private TableColumn<Location, Boolean> crewmen;
 	@FXML
@@ -45,8 +43,8 @@ public class LocationViewController {
 	public void initialise(Area area) {
 		ID.setCellValueFactory(new PropertyValueFactory<Location, String>("locationID"));
 		rank4.setCellValueFactory(new PropertyValueFactory<Location, Integer>("rank4Req"));
-		rank3.setCellValueFactory(new PropertyValueFactory<Location, Boolean>("rank3Req"));
-		rank2.setCellValueFactory(new PropertyValueFactory<Location, Boolean>("rank2Req"));
+		rank3.setCellValueFactory(new PropertyValueFactory<Location, Integer>("rank3Req"));
+		rank2.setCellValueFactory(new PropertyValueFactory<Location, Integer>("rank2Req"));
 		boatDrivs.setCellValueFactory(new PropertyValueFactory<Location, Boolean>("boatDriversReq"));
 		crewmen.setCellValueFactory(new PropertyValueFactory<Location, Boolean>("crewmenReq"));
 		jetSki.setCellValueFactory(new PropertyValueFactory<Location, Boolean>("jetSkiUsersReq"));
@@ -76,6 +74,18 @@ public class LocationViewController {
 		window.show();
 	}
 
-	
+	@FXML
+	protected void createLocationView(ActionEvent e) throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("CreateLocation.fxml"));
+		Parent createLocViewParent = loader.load();
+		Scene createLocViewScene = new Scene(createLocViewParent);
+		
+		CreateEmployeeController controller = loader.getController();
+		controller.initialise();
+		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		window.setScene(createLocViewScene);
+		window.show();
+	}
 	
 }

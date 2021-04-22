@@ -56,8 +56,8 @@ public class HeuristicMeasure {
 				if (e.getJetSki())
 					jetSkiUsersCount++;
 			}
-			score += rank4Count < location.getrank4Req() ? location.getrank4Req() - rank4Count : 0;
-			score += rank2Count + rank3Count < location.getrank3Req() ? location.getrank3Req() - (rank3Count + rank2Count) : 0;
+			score += rank4Count < location.getRank4Req() ? location.getRank4Req() - rank4Count : 0;
+			score += rank2Count + rank3Count < location.getRank3Req() ? location.getRank3Req() - (rank3Count + rank2Count) : 0;
 			score += boatDriverCount < location.getBoatDriversReq() ? location.getBoatDriversReq() - boatDriverCount
 					: 0;
 			score += crewmenCount < location.getCrewmenReq() ? location.getCrewmenReq() - crewmenCount : 0;
@@ -133,16 +133,16 @@ public class HeuristicMeasure {
 				}
 			}
 			int rank4Count = employeesRanksCount.get(4);
-			if (rank4Count < location.getrank4Req()) {
-				sum += location.getrank4Req() - rank4Count;
+			if (rank4Count < location.getRank4Req()) {
+				sum += location.getRank4Req() - rank4Count;
 			}
 			int rank3Count = employeesRanksCount.get(3);
-			if (rank3Count < location.getrank3Req()) {
-				sum += location.getrank3Req() - rank3Count;
+			if (rank3Count < location.getRank3Req()) {
+				sum += location.getRank3Req() - rank3Count;
 			}
 			int rank2Count = employeesRanksCount.get(2);
-			if (rank2Count < location.getrank2Req()) {
-				sum += location.getrank2Req() - rank2Count;
+			if (rank2Count < location.getRank2Req()) {
+				sum += location.getRank2Req() - rank2Count;
 			}
 		}
 		return sum;

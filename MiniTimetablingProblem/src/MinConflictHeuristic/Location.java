@@ -2,10 +2,6 @@ package MinConflictHeuristic;
 
 public class Location {
 
-	// 7 days in a week and this is a weekly timetable
-	private final int DAYS_IN_TABLE = 7;
-	// Using 6 employees per day for every location - as explained in documentation.
-	private final int EMPLOYEES_PER_DAY = 6;
 	private Employee[][] timetable;
 	private int locationID, rank4Req, rank3Req, rank2Req, boatDriversReq, crewmenReq, jetSkiUsersReq;
 	
@@ -22,15 +18,15 @@ public class Location {
 	public int getLocationID() {
 		return locationID;
 	}
-	public int getrank4Req() {
+	public int getRank4Req() {
 		return rank4Req;
 	}
 	
-	public int getrank3Req() {
+	public int getRank3Req() {
 		return rank3Req;
 	}
 	
-	public int getrank2Req() {
+	public int getRank2Req() {
 		return rank2Req;
 	}
 	

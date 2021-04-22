@@ -30,4 +30,8 @@ public class Area {
 		employees.add(e);
 	}
 	
+	public void addLocation(Location l) {
+		locations.add(l);
+	}
+	
 }

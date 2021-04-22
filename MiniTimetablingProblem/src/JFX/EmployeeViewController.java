@@ -8,7 +8,6 @@ import MinConflictHeuristic.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,7 +22,7 @@ public class EmployeeViewController {
 
 	Area area;
 	@FXML
-	private TableView<Employee> employees; 
+	private TableView<Employee> employeeTable; 
 	@FXML
 	private TableColumn<Employee, String> name;
 	@FXML
@@ -46,7 +45,7 @@ public class EmployeeViewController {
 		jetSki.setCellValueFactory(new PropertyValueFactory<Employee, Boolean>("jetSki"));
 		fullTime.setCellValueFactory(new PropertyValueFactory<Employee, Boolean>("fullTime"));
 		
-		employees.setItems(getEmployees(area.getEmployees()));
+		employeeTable.setItems(getEmployees(area.getEmployees()));
 	}
 	
 	public ObservableList<Employee> getEmployees(ArrayList<Employee> employees){
@@ -98,6 +97,7 @@ public class EmployeeViewController {
 		window.setScene(createEmpViewScene);
 		window.show();
 	}
+	
 	
 }
 

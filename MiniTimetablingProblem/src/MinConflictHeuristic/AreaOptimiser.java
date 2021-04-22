@@ -163,7 +163,7 @@ public class AreaOptimiser {
 			Employee temp = copy[i][j];
 			copy[i][j] = copy[iPosition][jPosition];
 			copy[iPosition][jPosition] = temp;
-			Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(), l.getrank2Req(),
+			Location lCopy = new Location(l.getLocationID(), l.getRank4Req(), l.getRank3Req(), l.getRank2Req(),
 					l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
 			lCopy.setTimetable(copy);
 			return lCopy;
@@ -177,7 +177,7 @@ public class AreaOptimiser {
 			Employee employeeToSwitch = freeOnDay[index];
 			Employee[][] timetable = l.getTimetable();
 			timetable[i][j] = employeeToSwitch;
-			Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(), l.getrank2Req(),
+			Location lCopy = new Location(l.getLocationID(), l.getRank4Req(), l.getRank3Req(), l.getRank2Req(),
 					l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
 			lCopy.setTimetable(timetable);
 			return lCopy;

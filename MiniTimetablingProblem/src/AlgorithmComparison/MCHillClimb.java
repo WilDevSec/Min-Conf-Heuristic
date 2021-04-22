@@ -54,8 +54,8 @@ public class MCHillClimb {
 						Employee temp = copy[violationPosition[0]][violationPosition[1]];
 						copy[violationPosition[0]][violationPosition[1]] = copy[positionToSwitch[0]][positionToSwitch[1]];
 						copy[positionToSwitch[0]][positionToSwitch[1]] = temp;
-						Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(),
-								l.getrank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
+						Location lCopy = new Location(l.getLocationID(), l.getRank4Req(), l.getRank3Req(),
+								l.getRank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
 						lCopy.setTimetable(copy);
 						System.out.println("HScore of new location: " + hm.locationScore(lCopy));
 						System.out.println("HScore of old location: " + hm.locationScore(l));
@@ -72,8 +72,8 @@ public class MCHillClimb {
 						Employee employeeToSwitch = freeOnDay[index];
 						Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
 						copy[violationPosition[0]][violationPosition[1]] = employeeToSwitch;
-						Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(),
-								l.getrank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
+						Location lCopy = new Location(l.getLocationID(), l.getRank4Req(), l.getRank3Req(),
+								l.getRank2Req(), l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
 						lCopy.setTimetable(copy);
 						if (hm.locationScore(lCopy) < hm.locationScore(l)) {
 							l = lCopy;
@@ -105,8 +105,8 @@ public class MCHillClimb {
 					copy[areaViolationPosition[0]][areaViolationPosition[1]] = copy[positionToSwitch[0]][positionToSwitch[1]];
 					copy[positionToSwitch[0]][positionToSwitch[1]] = temp;
 					Location lCopy = new Location(locationWithViolation.getLocationID(),
-							locationWithViolation.getrank4Req(), locationWithViolation.getrank3Req(),
-							locationWithViolation.getrank2Req(), locationWithViolation.getBoatDriversReq(),
+							locationWithViolation.getRank4Req(), locationWithViolation.getRank3Req(),
+							locationWithViolation.getRank2Req(), locationWithViolation.getBoatDriversReq(),
 							locationWithViolation.getCrewmenReq(), locationWithViolation.getJetSkiUsersReq());
 					lCopy.setTimetable(copy);
 					if (hm.locationScore(lCopy) < hm.locationScore(locationWithViolation)) {
@@ -128,8 +128,8 @@ public class MCHillClimb {
 					Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
 					copy[areaViolationPosition[0]][areaViolationPosition[1]] = employeeToSwitch;
 					Location lCopy = new Location(locationWithViolation.getLocationID(),
-							locationWithViolation.getrank4Req(), locationWithViolation.getrank3Req(),
-							locationWithViolation.getrank2Req(), locationWithViolation.getBoatDriversReq(),
+							locationWithViolation.getRank4Req(), locationWithViolation.getRank3Req(),
+							locationWithViolation.getRank2Req(), locationWithViolation.getBoatDriversReq(),
 							locationWithViolation.getCrewmenReq(), locationWithViolation.getJetSkiUsersReq());
 					lCopy.setTimetable(copy);
 					if (hm.locationScore(locationWithViolation) > hm.locationScore(lCopy)) {
@@ -202,8 +202,8 @@ public class MCHillClimb {
 			 * of a rank 1 firstly, as they will be least likely to decrease any score by
 			 * switching out someone of another rank that is required.
 			 */
-			if (rank4Count < location.getrank4Req() || rank3Count < location.getrank3Req()
-					|| rank2Count < location.getrank2Req()) {
+			if (rank4Count < location.getRank4Req() || rank3Count < location.getRank3Req()
+					|| rank2Count < location.getRank2Req()) {
 				for (int j = 0; j < employeesPerDay; j++) {
 					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
 							.getRank() == 1) {
@@ -217,7 +217,7 @@ public class MCHillClimb {
 			 * deficit. May be cases where all employees of one rank are in the same
 			 * location on the same day
 			 */
-			if (rank4Count < location.getrank4Req()) {
+			if (rank4Count < location.getRank4Req()) {
 				for (int j = 0; j < employeesPerDay; j++) {
 					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
 							.getRank() != 4) {
@@ -226,7 +226,7 @@ public class MCHillClimb {
 					}
 				}
 			}
-			if (rank3Count < location.getrank3Req()) {
+			if (rank3Count < location.getRank3Req()) {
 				for (int j = 0; j < employeesPerDay; j++) {
 					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
 							.getRank() != 3) {
@@ -235,7 +235,7 @@ public class MCHillClimb {
 					}
 				}
 			}
-			if (rank2Count < location.getrank2Req()) {
+			if (rank2Count < location.getRank2Req()) {
 				for (int j = 0; j < employeesPerDay; j++) {
 					if (timetable[(j + randomStartPointJ) % employeesPerDay][(i + randomStartPointI) % daysInWeek]
 							.getRank() != 2) {

@@ -12,16 +12,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="423.0" prefWidth="848.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.LocationViewController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="423.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.LocationViewController">
    <children>
       <SplitPane orientation="VERTICAL" prefHeight="424.0" prefWidth="770.0">
          <items>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="422.0" prefWidth="819.0">
                <children>
-                  <TableView fx:id="locations" layoutX="23.0" layoutY="102.0" prefHeight="205.0" prefWidth="800.0">
+                  <TableView fx:id="locations" layoutX="23.0" layoutY="102.0" prefHeight="205.0" prefWidth="700.0">
                      <columns>
                         <TableColumn fx:id="ID" text="ID" />
-                        <TableColumn fx:id="employeesRequired" prefWidth="100.0" text="Employees" />
                         <TableColumn fx:id="rank4" prefWidth="100.0" text="Rank 4" />
                         <TableColumn fx:id="rank3" prefWidth="100.0" text="Rank 3" />
                         <TableColumn fx:id="rank2" prefWidth="100.0" text="Rank 2" />
@@ -60,6 +59,7 @@
                      </font>
                   </Label>
                   <Button layoutX="33.0" layoutY="347.0" mnemonicParsing="false" onAction="#mainView" text="Return to timetable view" />
+                  <Button layoutX="597.0" layoutY="347.0" mnemonicParsing="false" onAction="#createLocationView" text="Create Location" />
                </children>
             </AnchorPane>
          </items>

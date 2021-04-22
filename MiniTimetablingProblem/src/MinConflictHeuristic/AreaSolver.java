@@ -108,10 +108,10 @@ public class AreaSolver {
 		timetable2[iPosition][jPosition] = temp;
 	
 //		Employee[][] copy = Arrays.stream(timetable).map(Employee[]::clone).toArray(Employee[][]::new);
-		Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(), l.getrank2Req(),
+		Location lCopy = new Location(l.getLocationID(), l.getRank4Req(), l.getRank3Req(), l.getRank2Req(),
 				l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
 		lCopy.setTimetable(timetable);
-		Location lCopy2 = new Location(lToSwitch.getLocationID(), lToSwitch.getrank4Req(), lToSwitch.getrank3Req(), lToSwitch.getrank2Req(),
+		Location lCopy2 = new Location(lToSwitch.getLocationID(), lToSwitch.getRank4Req(), lToSwitch.getRank3Req(), lToSwitch.getRank2Req(),
 				lToSwitch.getBoatDriversReq(), lToSwitch.getCrewmenReq(), lToSwitch.getJetSkiUsersReq());
 		lCopy2.setTimetable(timetable2);
 		ArrayList<Location> locationsTemp = new ArrayList<>(locations);
@@ -129,7 +129,7 @@ public class AreaSolver {
 		Employee employeeToSwitch = freeOnDay[index];
 		Employee[][] timetable = l.getTimetable();
 		timetable[i][j] = employeeToSwitch;
-		Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(), l.getrank2Req(),
+		Location lCopy = new Location(l.getLocationID(), l.getRank4Req(), l.getRank3Req(), l.getRank2Req(),
 				l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
 		lCopy.setTimetable(timetable);
 		ArrayList<Location> locationsTemp = new ArrayList<>(locations);
@@ -142,7 +142,7 @@ public class AreaSolver {
 		Employee employeeToSwitch = employeesPreviousAreas.get(j).peek();
 		Employee[][] timetable = l.getTimetable();
 		timetable[i][j] = employeeToSwitch;
-		Location lCopy = new Location(l.getLocationID(), l.getrank4Req(), l.getrank3Req(), l.getrank2Req(),
+		Location lCopy = new Location(l.getLocationID(), l.getRank4Req(), l.getRank3Req(), l.getRank2Req(),
 				l.getBoatDriversReq(), l.getCrewmenReq(), l.getJetSkiUsersReq());
 		lCopy.setTimetable(timetable);
 		ArrayList<Location> locationsTemp = new ArrayList<>(locations);
@@ -165,8 +165,8 @@ public class AreaSolver {
 				}
 			}
 		}
-		Location l = new Location(location.getLocationID(), location.getrank4Req(), location.getrank3Req(),
-				location.getrank2Req(), location.getBoatDriversReq(), location.getCrewmenReq(),
+		Location l = new Location(location.getLocationID(), location.getRank4Req(), location.getRank3Req(),
+				location.getRank2Req(), location.getBoatDriversReq(), location.getCrewmenReq(),
 				location.getJetSkiUsersReq());
 		l.setTimetable(timetable);
 		return l;
@@ -244,9 +244,9 @@ public class AreaSolver {
 		int daysInWeek = 7;
 		int randomStartPointI = (int) (Math.random() * employeesPerDay);
 		int randomStartPointJ = (int) (Math.random() * daysInWeek);
-		int rank4Req = location.getrank4Req();
-		int rank3Req = location.getrank3Req();
-		int rank2Req = location.getrank2Req();
+		int rank4Req = location.getRank4Req();
+		int rank3Req = location.getRank3Req();
+		int rank2Req = location.getRank2Req();
 		int bDrReq = location.getBoatDriversReq();
 		int bCrReq = location.getCrewmenReq();
 		int jsReq = location.getJetSkiUsersReq();
