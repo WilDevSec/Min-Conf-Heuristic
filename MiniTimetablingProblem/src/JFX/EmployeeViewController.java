@@ -77,7 +77,7 @@ public class EmployeeViewController {
 		Parent mainViewParent = loader.load();
 		Scene mainViewScene = new Scene(mainViewParent);
 
-		ViewController controller = loader.getController();
+		TimetablesViewController controller = loader.getController();
 		controller.populateSolved();
 		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		window.setScene(mainViewScene);

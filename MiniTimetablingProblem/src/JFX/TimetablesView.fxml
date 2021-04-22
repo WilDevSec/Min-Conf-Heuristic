@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="908.0" prefWidth="1333.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.ViewController">
+<VBox prefHeight="908.0" prefWidth="1333.0" stylesheets="@bootstrap2.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.TimetablesViewController">
     <children>
         <Label text="RNLI Timetable Generator" />
       <MenuBar>
@@ -49,7 +49,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="825.0" prefWidth="1211.0">
                      <children>
-                        <TableView fx:id="location1" layoutX="212.0" layoutY="106.0" prefHeight="219.0" prefWidth="744.0">
+                        <TableView fx:id="location1" layoutX="212.0" layoutY="106.0" prefHeight="219.0" prefWidth="744.0" style="-fx-background-color: #ffe7d3;">
                            <columns>
                               <TableColumn fx:id="mon1" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue1" prefWidth="150.0" text="Tue" />
@@ -74,7 +74,7 @@
                               <Font size="12.0" />
                            </font>
                         </Button>
-                        <TableView fx:id="location2" layoutX="14.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0">
+                        <TableView fx:id="location2" layoutX="14.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0" style="-fx-background-color: #ffe7d3;">
                            <columns>
                               <TableColumn fx:id="mon2" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue2" prefWidth="150.0" text="Tue" />
@@ -85,7 +85,7 @@
                               <TableColumn fx:id="sun2" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView fx:id="location3" layoutX="616.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0">
+                        <TableView fx:id="location3" layoutX="616.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0" style="-fx-background-color: #ffe7d3;">
                            <columns>
                               <TableColumn fx:id="mon3" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue3" prefWidth="150.0" text="Tue" />
@@ -96,7 +96,7 @@
                               <TableColumn fx:id="sun3" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView fx:id="location4" layoutX="14.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0">
+                        <TableView fx:id="location4" layoutX="14.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0" style="-fx-background-color: #ffe7d3;">
                            <columns>
                               <TableColumn fx:id="mon4" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue4" prefWidth="150.0" text="Tue" />
@@ -107,7 +107,7 @@
                               <TableColumn fx:id="sun4" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView fx:id="location5" layoutX="616.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0">
+                        <TableView fx:id="location5" layoutX="616.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0" style="-fx-background-color: #ffe7d3;">
                            <columns>
                               <TableColumn fx:id="mon5" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue5" prefWidth="150.0" text="Tue" />
@@ -119,11 +119,11 @@
                            </columns>
                         </TableView>
                         <Label layoutX="14.0" layoutY="50.0" text="Hard Constraint Violations:" />
-                        <Label fx:id="hardViolationCount" layoutX="200.0" layoutY="50.0" text="_" />
+                        <Label fx:id="hardViolationCount" layoutX="200.0" layoutY="50.0" style="-fx-background-color: #ccfccd;" text="_" />
                         <Label fx:id="areaPointer" layoutX="706.0" layoutY="33.0" text="_" />
                         <Button layoutX="970.0" layoutY="33.0" mnemonicParsing="false" onAction="#employeesView" text="View Employees" />
                         <Label layoutX="14.0" layoutY="78.0" text="Soft Constraint Violations" />
-                        <Label fx:id="softViolationCount" layoutX="189.0" layoutY="78.0" text="_" />
+                        <Label fx:id="softViolationCount" layoutX="189.0" layoutY="78.0" style="-fx-background-color: #bb0a1e;" text="_" />
                         <Button layoutX="970.0" layoutY="74.0" mnemonicParsing="false" onAction="#locationsView" prefHeight="24.0" prefWidth="124.0" text="View Locations" />
                      </children>
                   </AnchorPane>

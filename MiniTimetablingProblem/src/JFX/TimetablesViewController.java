@@ -31,7 +31,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class ViewController {
+public class TimetablesViewController {
 
 	@FXML
 	private Label areaPointer;
@@ -375,6 +375,7 @@ public class ViewController {
 		populateTT(solvedAreas.get(Main.areaBookmark));
 		setHardViolationCount();
 		setSoftViolationCount();
+		setAreaPointer();
 	}
 	
 }

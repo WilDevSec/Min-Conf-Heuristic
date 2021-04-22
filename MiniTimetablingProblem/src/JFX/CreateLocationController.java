@@ -10,27 +10,31 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class CreateLocationController {
 
-	@FXML private TextField ID;
-	@FXML private ChoiceBox<Integer> rankIn;
-	@FXML private CheckBox boatDrivIn;
-	@FXML private CheckBox boatCrewIn;
-	@FXML private CheckBox jetSkiIn;
-	@FXML private CheckBox fulltimeIn;
+	@FXML private ChoiceBox<Integer> rank4In;
+	@FXML private ChoiceBox<Integer> rank3In;
+	@FXML private ChoiceBox<Integer> rank2In;
+	@FXML private ChoiceBox<Integer> boatDrIn;
+	@FXML private ChoiceBox<Integer> boatCrIn;
+	@FXML private ChoiceBox<Integer> jetSkIn;
+	
 	
 	
 	public void initialise() {
-		rankIn.getItems().addAll(1, 2, 3, 4);
+		rank4In.getItems().addAll(0, 1, 2, 3, 4, 5, 6);
+		rank3In.getItems().addAll(0, 1, 2, 3, 4, 5, 6);
+		rank2In.getItems().addAll(0, 1, 2, 3, 4, 5, 6);
+		boatDrIn.getItems().addAll(0, 1, 2, 3, 4, 5, 6);
+		boatCrIn.getItems().addAll(0, 1, 2, 3, 4, 5, 6);
+		jetSkIn.getItems().addAll(0, 1, 2, 3, 4, 5, 6);
 	}
 	
 	@FXML
-	public void employeesView(ActionEvent e) throws IOException {
+	public void locationsView(ActionEvent e) throws IOException {
 		Main.solvedAreasPublic.get(Main.areaBookmark).addLocation(makeLocation());
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("Locations.fxml"));
@@ -45,14 +49,16 @@ public class CreateLocationController {
 	}
 	
 	protected Location makeLocation() {
-//		String name = nameIn.getText();
-		int rank = rankIn.getValue();
-		boolean boatDriver = boatDrivIn.isArmed();
-		boolean boatCrew = boatCrewIn.isArmed();
-		boolean jetSki = jetSkiIn.isArmed();
-		boolean fulltime = fulltimeIn.isArmed();
-//		Employee emp = new Employee(name, rank, boatDriver, boatCrew, jetSki, fulltime);
-		return null;
+		int id = Main.solvedAreasPublic.get(Main.areaBookmark).getLocations().size();
+		int rank4 = rank4In.getValue();
+		int rank3 = rank3In.getValue();
+		int rank2 = rank2In.getValue();
+		int boatDr = boatDrIn.getValue();
+		int boatCr = boatCrIn.getValue();
+		int jetSk = jetSkIn.getValue();
+		
+		Location loc = new Location(id, rank4, rank3, rank2, boatDr, boatCr, jetSk);
+		return loc;
 	}
 	
 

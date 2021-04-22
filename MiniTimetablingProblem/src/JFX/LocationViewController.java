@@ -67,7 +67,7 @@ public class LocationViewController {
 		Parent mainViewParent = loader.load();
 		Scene mainViewScene = new Scene(mainViewParent);
 
-		ViewController controller = loader.getController();
+		TimetablesViewController controller = loader.getController();
 		controller.populateSolved();
 		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		window.setScene(mainViewScene);
@@ -81,7 +81,7 @@ public class LocationViewController {
 		Parent createLocViewParent = loader.load();
 		Scene createLocViewScene = new Scene(createLocViewParent);
 		
-		CreateEmployeeController controller = loader.getController();
+		CreateLocationController controller = loader.getController();
 		controller.initialise();
 		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		window.setScene(createLocViewScene);

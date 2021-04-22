@@ -47,10 +47,10 @@ public class CreateEmployeeController {
 	protected Employee makeEmployee() {
 		String name = nameIn.getText();
 		int rank = rankIn.getValue();
-		boolean boatDriver = boatDrivIn.isArmed();
-		boolean boatCrew = boatCrewIn.isArmed();
-		boolean jetSki = jetSkiIn.isArmed();
-		boolean fulltime = fulltimeIn.isArmed();
+		boolean boatDriver = boatDrivIn.isSelected();
+		boolean boatCrew = boatCrewIn.isSelected();
+		boolean jetSki = jetSkiIn.isSelected();
+		boolean fulltime = fulltimeIn.isSelected();
 		Employee emp = new Employee(name, rank, boatDriver, boatCrew, jetSki, fulltime);
 		return emp;
 	}
