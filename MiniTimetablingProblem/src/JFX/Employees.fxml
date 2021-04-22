@@ -60,6 +60,7 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
                   <Button layoutX="27.0" layoutY="17.0" mnemonicParsing="false" onAction="#mainView" text="Back to timetable view" />
+                  <Button layoutX="661.0" layoutY="22.0" mnemonicParsing="false" onAction="#createEmployeeView" text="Create Employee" />
                </children>
             </AnchorPane>
         </items>

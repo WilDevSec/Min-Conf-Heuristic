@@ -8,6 +8,7 @@ import MinConflictHeuristic.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 
 public class EmployeeViewController {
 
+	Area area;
 	@FXML
 	private TableView<Employee> employees; 
 	@FXML
@@ -36,6 +38,7 @@ public class EmployeeViewController {
 	private TableColumn<Employee, Boolean> fullTime;
 	
 	public void initialise(Area area) {
+		this.area = area;
 		name.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
 		rank.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("rank"));
 		boatDriver.setCellValueFactory(new PropertyValueFactory<Employee, Boolean>("boatDriver"));
@@ -82,6 +85,19 @@ public class EmployeeViewController {
 		window.show();
 	}
 	
+	@FXML
+	protected void createEmployeeView(ActionEvent e) throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("CreateEmployee.fxml"));
+		Parent createEmpViewParent = loader.load();
+		Scene createEmpViewScene = new Scene(createEmpViewParent);
+		
+		CreateEmployeeController controller = loader.getController();
+		controller.initialise();
+		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		window.setScene(createEmpViewScene);
+		window.show();
+	}
 	
 }
 

@@ -120,7 +120,6 @@ public class ViewController {
 	private TableColumn<Row, String> sun5;
 
 	ReadData rd;
-	private static int areaBookmark = 0;
 
 	private List<Area> solvedAreas = new ArrayList<>();
 	ArrayList<Stack<Employee>> freeEmployees = new ArrayList<>();
@@ -269,22 +268,23 @@ public class ViewController {
 		sat5.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
 		sun5.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
 
-		Location location01 = area.getLocations().get(0);
-		Employee[][] timetable1 = location01.getTimetable();
-		Location location02 = area.getLocations().get(1);
-		Employee[][] timetable2 = location02.getTimetable();
-		Location location03 = area.getLocations().get(2);
-		Employee[][] timetable3 = location03.getTimetable();
-		Location location04 = area.getLocations().get(3);
-		Employee[][] timetable4 = location04.getTimetable();
-		Location location05 = area.getLocations().get(4);
-		Employee[][] timetable5 = location05.getTimetable();
-
-		location1.setItems(getRows(timetable1));
-		location2.setItems(getRows(timetable2));
-		location3.setItems(getRows(timetable3));
-		location4.setItems(getRows(timetable4));
-		location5.setItems(getRows(timetable5));
+		if (area.getLocations().size() > 4) {
+			Location location01 = area.getLocations().get(0);
+			Employee[][] timetable1 = location01.getTimetable();
+			Location location03 = area.getLocations().get(2);
+			Employee[][] timetable3 = location03.getTimetable();
+			Location location04 = area.getLocations().get(3);
+			Employee[][] timetable4 = location04.getTimetable();
+			Location location05 = area.getLocations().get(4);
+			Employee[][] timetable5 = location05.getTimetable();
+			Location location02 = area.getLocations().get(1);
+			Employee[][] timetable2 = location02.getTimetable();
+			location1.setItems(getRows(timetable1));
+			location2.setItems(getRows(timetable2));
+			location3.setItems(getRows(timetable3));
+			location4.setItems(getRows(timetable4));
+			location5.setItems(getRows(timetable5));
+		}
 	}
 
 	public ObservableList<Row> getRows(Employee[][] timetable) {
@@ -305,37 +305,33 @@ public class ViewController {
 		Scene employeeViewScene = new Scene(employeeViewParent);
 
 		EmployeeViewController controller = loader.getController();
-		controller.initialise(solvedAreas.get(areaBookmark));
+		controller.initialise(solvedAreas.get(Main.areaBookmark));
 		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		window.setScene(employeeViewScene);
 		window.show();
 	}
 
 	@FXML
-	public void nextArea(Event e) {
-		if (areaBookmark < 60) {
-			areaBookmark++;
-			populateTT(solvedAreas.get(areaBookmark));
-		}
-		setAreaPointer();
-	}
-
-	public void setAreaPointer() {
-		areaPointer.setText(Integer.toString(areaBookmark));
-	}
-
-	@FXML
 	public void locationsView(ActionEvent e) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("Description.fxml"));
+		loader.setLocation(getClass().getResource("Locations.fxml"));
 		Parent descriptionViewParent = loader.load();
 		Scene descriptionViewScene = new Scene(descriptionViewParent);
 		
-		DescriptionViewController controller = loader.getController();
-		controller.initialise(solvedAreas.get(areaBookmark));
+		LocationViewController controller = loader.getController();
+		controller.initialise(solvedAreas.get(Main.areaBookmark));
 		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		window.setScene(descriptionViewScene);
 		window.show();
+	}
+	
+	@FXML
+	public void createArea(Event e) {
+		ArrayList<Employee> employees = new ArrayList<>();
+		ArrayList<Location> locations = new ArrayList<>();
+		Area a = new Area(locations, employees);
+		solvedAreas.add(a);
+		setAreaPointer();
 	}
 
 	public void setHardViolationCount() {
@@ -346,18 +342,31 @@ public class ViewController {
 		softViolationCount.setText(Integer.toString(Main.softViolationCount));
 	}
 
+	public void setAreaPointer() {
+		areaPointer.setText(Integer.toString(Main.areaBookmark));
+	}
+	
+	@FXML
+	public void nextArea(Event e) {
+		if (Main.areaBookmark < solvedAreas.size() - 1) {
+			Main.areaBookmark++;
+			populateTT(solvedAreas.get(Main.areaBookmark));
+		}
+		setAreaPointer();
+	}
+	
 	@FXML
 	public void previousArea(Event e) {
-		if (areaBookmark > 0) {
-			areaBookmark--;
-			populateTT(solvedAreas.get(areaBookmark));
+		if (Main.areaBookmark > 0) {
+			Main.areaBookmark--;
+			populateTT(solvedAreas.get(Main.areaBookmark));
 		}
 		setAreaPointer();
 	}
 
 	public void populateSolved() {
 		solvedAreas = Main.solvedAreasPublic;
-		populateTT(solvedAreas.get(areaBookmark));
+		populateTT(solvedAreas.get(Main.areaBookmark));
 		setHardViolationCount();
 		setSoftViolationCount();
 	}

@@ -26,6 +26,8 @@ public class Area {
 		this.locations = locations;
 	}
 	
-	
+	public void addEmployee(Employee e) {
+		employees.add(e);
+	}
 	
 }
