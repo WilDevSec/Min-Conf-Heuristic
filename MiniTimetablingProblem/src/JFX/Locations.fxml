@@ -12,16 +12,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="423.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.LocationViewController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.LocationViewController">
    <children>
-      <SplitPane orientation="VERTICAL" prefHeight="424.0" prefWidth="770.0">
+      <SplitPane dividerPositions="0.8563685636856369" orientation="VERTICAL" prefHeight="519.0" prefWidth="762.0">
          <items>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="422.0" prefWidth="819.0">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="377.0" prefWidth="760.0" style="-fx-background-color: #59deff;">
                <children>
-                  <TableView fx:id="locations" layoutX="23.0" layoutY="102.0" prefHeight="205.0" prefWidth="700.0">
+                  <TableView fx:id="locations" layoutX="23.0" layoutY="102.0" prefHeight="212.0" prefWidth="700.0" style="-fx-background-color: #ffff99;">
                      <columns>
                         <TableColumn fx:id="ID" text="ID" />
-                        <TableColumn fx:id="rank4" prefWidth="100.0" text="Rank 4" />
+                        <TableColumn fx:id="rank4" prefWidth="100.0" text="Senior" />
                         <TableColumn fx:id="rank3" prefWidth="100.0" text="Rank 3" />
                         <TableColumn fx:id="rank2" prefWidth="100.0" text="Rank 2" />
                         <TableColumn fx:id="boatDrivs" prefWidth="100.0" text="Boat Drivers" />
@@ -48,18 +48,22 @@
                         </Menu>
                      </menus>
                   </MenuBar>
-                  <Label layoutX="280.0" layoutY="44.0" text="Locations in area">
+                  <Label layoutX="257.0" layoutY="44.0" text="Locations in area">
                      <font>
-                        <Font size="24.0" />
+                        <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label layoutX="44.0" layoutY="74.0" text="Requirements">
+                  <Label layoutX="108.0" layoutY="74.0" text="Requirements:">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Button layoutX="33.0" layoutY="347.0" mnemonicParsing="false" onAction="#mainView" text="Return to timetable view" />
-                  <Button layoutX="597.0" layoutY="347.0" mnemonicParsing="false" onAction="#createLocationView" text="Create Location" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="132.0" prefWidth="762.0" style="-fx-background-color: #fc899f;">
+               <children>
+                  <Button layoutX="38.0" layoutY="16.0" mnemonicParsing="false" onAction="#mainView" style="-fx-background-color: #ffff99;" text="Return to timetable view" />
+                  <Button layoutX="559.0" layoutY="13.0" mnemonicParsing="false" onAction="#createLocationView" style="-fx-background-color: #ffff99;" text="Create Location" />
                </children>
             </AnchorPane>
          </items>

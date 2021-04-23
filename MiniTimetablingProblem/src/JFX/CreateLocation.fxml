@@ -16,7 +16,7 @@
    <children>
       <SplitPane dividerPositions="0.9917808219178083" orientation="VERTICAL" prefHeight="433.0" prefWidth="528.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="310.0" prefWidth="526.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="310.0" prefWidth="526.0" style="-fx-background-color: #59deff;">
                <children>
                   <MenuBar layoutY="1.0" prefHeight="27.0" prefWidth="650.0">
                     <menus>
@@ -37,30 +37,30 @@
                       </Menu>
                     </menus>
                   </MenuBar>
-                  <Label layoutX="216.0" layoutY="39.0" text="Add a Location">
+                  <Label layoutX="205.0" layoutY="40.0" text="Add a Location">
                      <font>
-                        <Font size="25.0" />
+                        <Font name="System Bold" size="25.0" />
                      </font>
                   </Label>
                   <Label layoutX="245.0" layoutY="94.0" text="Requirements:" />
-                  <Button layoutX="277.0" layoutY="302.0" mnemonicParsing="false" onAction="#locationsView" text="Submit">
+                  <Button layoutX="277.0" layoutY="302.0" mnemonicParsing="false" onAction="#locationsView" style="-fx-background-color: #ffff99;" text="Submit">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Label layoutX="47.0" layoutY="110.0" text="Rank 4:" />
-                  <ChoiceBox fx:id="rank4In" layoutX="35.0" layoutY="134.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="rank3In" layoutX="35.0" layoutY="202.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="rank2In" layoutX="35.0" layoutY="266.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="boatDrIn" layoutX="422.0" layoutY="134.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="boatCrIn" layoutX="422.0" layoutY="202.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="jetSkIn" layoutX="422.0" layoutY="266.0" prefWidth="150.0" />
+                  <Label layoutX="47.0" layoutY="110.0" text="Senior:" />
+                  <ChoiceBox fx:id="rank4In" layoutX="35.0" layoutY="134.0" prefWidth="150.0" style="-fx-background-color: #ffff99;" />
+                  <ChoiceBox fx:id="rank3In" layoutX="35.0" layoutY="202.0" prefWidth="150.0" style="-fx-background-color: #ffff99;" />
+                  <ChoiceBox fx:id="rank2In" layoutX="35.0" layoutY="266.0" prefWidth="150.0" style="-fx-background-color: #ffff99;" />
+                  <ChoiceBox fx:id="boatDrIn" layoutX="422.0" layoutY="134.0" prefWidth="150.0" style="-fx-background-color: #ffff99;" />
+                  <ChoiceBox fx:id="boatCrIn" layoutX="422.0" layoutY="202.0" prefWidth="150.0" style="-fx-background-color: #ffff99;" />
+                  <ChoiceBox fx:id="jetSkIn" layoutX="422.0" layoutY="266.0" prefWidth="150.0" style="-fx-background-color: #ffff99;" />
                   <Label layoutX="47.0" layoutY="181.0" text="Rank3" />
                   <Label layoutX="47.0" layoutY="244.0" text="Rank2" />
                   <Label layoutX="432.0" layoutY="110.0" text="Boat Drivers" />
                   <Label layoutX="432.0" layoutY="181.0" text="Boat Crewmen" />
                   <Label layoutX="432.0" layoutY="244.0" text="Jet Ski Users" />
-                  <Button layoutX="37.0" layoutY="314.0" mnemonicParsing="false" text="Return" />
+                  <Button layoutX="37.0" layoutY="314.0" mnemonicParsing="false" style="-fx-background-color: #fc899f;" text="Return" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="619.0" />

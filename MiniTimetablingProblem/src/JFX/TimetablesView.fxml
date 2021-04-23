@@ -63,7 +63,7 @@
                         </TableView>
                         <Label layoutX="486.0" layoutY="38.0" text="Timetables for area:" underline="true">
                            <font>
-                              <Font name="System Bold Italic" size="19.0" />
+                              <Font name="System Bold" size="19.0" />
                            </font></Label>
                         <Button layoutX="78.0" layoutY="203.0" mnemonicParsing="false" onAction="#previousArea" prefHeight="24.0" prefWidth="101.0" style="-fx-background-color: #ffff99;" text="Previous Area">
                            <font>

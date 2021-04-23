@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="855.0" prefWidth="864.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.EmployeeViewController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="825.0" prefWidth="864.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.EmployeeViewController">
    <children>
       <MenuBar>
         <menus>
@@ -33,13 +33,13 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane dividerPositions="0.9113372093023255" orientation="VERTICAL" prefHeight="798.0" prefWidth="864.0">
+      <SplitPane dividerPositions="0.9271356783919598" orientation="VERTICAL" prefHeight="798.0" prefWidth="864.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="722.0" prefWidth="864.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="735.0" prefWidth="864.0" style="-fx-background-color: #59deff;">
                      <children>
-                        <TableView fx:id="employeeTable" layoutX="36.0" layoutY="52.0" prefHeight="667.0" prefWidth="780.0">
+                        <TableView fx:id="employeeTable" layoutX="36.0" layoutY="52.0" prefHeight="667.0" prefWidth="780.0" style="-fx-background-color: #ffff99;">
                           <columns>
                             <TableColumn fx:id="name" prefWidth="130.0" text="Name" />
                             <TableColumn fx:id="rank" prefWidth="130.0" text="Rank" />
@@ -51,16 +51,16 @@
                         </TableView>
                         <Label layoutX="315.0" layoutY="14.0" text="Employees in area">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="System Bold" size="24.0" />
                            </font></Label>
                      </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #fc899f;">
                <children>
-                  <Button layoutX="27.0" layoutY="17.0" mnemonicParsing="false" onAction="#mainView" text="Back to timetable view" />
-                  <Button layoutX="661.0" layoutY="22.0" mnemonicParsing="false" onAction="#createEmployeeView" text="Create Employee" />
+                  <Button layoutX="27.0" layoutY="17.0" mnemonicParsing="false" onAction="#mainView" style="-fx-background-color: #ffff99;" text="Back to timetable view" />
+                  <Button layoutX="666.0" layoutY="16.0" mnemonicParsing="false" onAction="#createEmployeeView" style="-fx-background-color: #ffff99;" text="Create Employee" />
                </children>
             </AnchorPane>
         </items>
