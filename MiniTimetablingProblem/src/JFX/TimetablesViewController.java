@@ -177,6 +177,7 @@ public class TimetablesViewController {
 		setAreaPointer();
 		setHardViolationCount();
 		setSoftViolationCount();
+		warnEmployeesPassed();
 		System.out.println("All areas solved");
 	}
 
@@ -359,6 +360,26 @@ public class TimetablesViewController {
 
 	public void setAreaPointer() {
 		areaPointer.setText(Integer.toString(Main.areaBookmark + 1));
+	}
+	
+	private void warnEmployeesPassed() {
+		int areaSelect = 0;
+		for (Area a : areas) {
+			for (Location l : a.getLocations()) {
+				for (Employee[] e: l.getTimetable()) {
+					for (Employee ee : e) {
+						if (ee.getFromArea() != areaSelect) {
+							try {
+								Integer.parseInt(ee.getName().substring(1,2));
+							} catch (NumberFormatException ex) {
+								ee.setName("A"+ ee.getFromArea() + ee.getName());
+							}
+						}
+					}
+				}
+			}
+			areaSelect++;
+		}
 	}
 	
 	@FXML

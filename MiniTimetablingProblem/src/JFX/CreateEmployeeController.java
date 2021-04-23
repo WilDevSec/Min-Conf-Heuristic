@@ -51,7 +51,7 @@ public class CreateEmployeeController {
 		boolean boatCrew = boatCrewIn.isSelected();
 		boolean jetSki = jetSkiIn.isSelected();
 		boolean fulltime = fulltimeIn.isSelected();
-		Employee emp = new Employee(name, rank, boatDriver, boatCrew, jetSki, fulltime);
+		Employee emp = new Employee(name, rank, boatDriver, boatCrew, jetSki, fulltime, Main.areaBookmark);
 		return emp;
 	}
 	

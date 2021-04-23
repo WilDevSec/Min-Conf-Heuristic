@@ -42,6 +42,7 @@ public class ReadData {
 	private ArrayList<Employee> InitialiseEmployees() {
 		ArrayList<String> employeesString = CSVIO.readCSV("/home/will/Studies/Diss/Dataset/employeeList.csv");
 		ArrayList<Employee> employees = new ArrayList<Employee>();
+		int employeeCount = 1;
 		for (String s : employeesString) {
 			String[] employeeAsArray = s.split(",");
 			String name = employeeAsArray[0];
@@ -50,8 +51,10 @@ public class ReadData {
 			boolean boatCrewman = Boolean.parseBoolean(employeeAsArray[3]);
 			boolean jetSkiUser = Boolean.parseBoolean(employeeAsArray[4]);
 			boolean fullTime = Boolean.parseBoolean(employeeAsArray[5]);
-			Employee e = new Employee(name, rank, boatDriver, boatCrewman, jetSkiUser, fullTime);
+			int areaFrom = employeeCount / 60;
+			Employee e = new Employee(name, rank, boatDriver, boatCrewman, jetSkiUser, fullTime, areaFrom);
 			employees.add(e);
+			employeeCount++;
 		}
 		return employees;
 	}
