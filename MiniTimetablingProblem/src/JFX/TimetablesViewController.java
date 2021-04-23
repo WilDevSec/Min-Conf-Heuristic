@@ -122,15 +122,22 @@ public class TimetablesViewController {
 
 	ReadData rd;
 
-	private List<Area> solvedAreas = new ArrayList<>();
+	private List<Area> areas = new ArrayList<>();
 	ArrayList<Stack<Employee>> freeEmployees = new ArrayList<>();
+	ArrayList<Area> areasInitialised = new ArrayList<>();
 
+	@FXML 
+	public void testData(Event e) {
+		rd = new ReadData();
+		areas = rd.getAllAreas();
+		Main.solvedAreasPublic = areas;
+	}
+	
 	@FXML
 	public void generateTT(Event e) {
-		rd = new ReadData();
 		HeuristicMeasure hs = new HeuristicMeasure();
 		SoftHeuristic sh = new SoftHeuristic();
-		ArrayList<Area> areas = rd.getAllAreas();
+		ArrayList<Area> areasNew = new ArrayList<>();
 		for (int i = 0; i < 7; i++) {
 			freeEmployees.add(new Stack<Employee>());
 		}
@@ -141,9 +148,8 @@ public class TimetablesViewController {
 			System.out.println("Area Randomly Populated");
 			a = as.attemptSolve();
 			System.out.println("Area Solved");
-			solvedAreas.add(a);
+			areasNew.add(a);
 			setHardViolationCount();
-			setAreaPointer();
 			populateTT(a);
 			pushToStack(as.getEmployeesFreeEachDay());
 		}
@@ -151,23 +157,24 @@ public class TimetablesViewController {
 		for (int i = 0; i < 7; i++) {
 			freeEmployees.add(new Stack<Employee>());
 		}
-		for (int i = solvedAreas.size() - 1; i >= 0; i--) {
-			Area a = solvedAreas.get(i);
+		for (int i = areasNew.size() - 1; i >= 0; i--) {
+			Area a = areasNew.get(i);
 			AreaSolver as = new AreaSolver(a, freeEmployees);
 			a = as.attemptSolve();
 			System.out.println("Area Solved");
 			Main.violationCount += hs.heuristicScore(a);
 			Main.softViolationCount += sh.heuristicScore(a);
 			setHardViolationCount();
-			setAreaPointer();
 			Area aSorted = sortEmployees(a);
-			solvedAreas.set(i, aSorted);
+			areasNew.set(i, aSorted);
 			populateTT(aSorted);
 			pushToStack(as.getEmployeesFreeEachDay());
 		}
-		Main.solvedAreasPublic = solvedAreas;
+		areas = areasNew;
+		Main.solvedAreasPublic = areasNew;
 		Main.violationCount = 0;
-		////
+		Main.timetablesGenerated = true;
+		setAreaPointer();
 		setHardViolationCount();
 		setSoftViolationCount();
 		System.out.println("All areas solved");
@@ -178,16 +185,16 @@ public class TimetablesViewController {
 		SoftHeuristic sh = new SoftHeuristic();
 		// Reset to 0 before counting again after optimisation
 		Main.softViolationCount = 0;
-		for (int i = 0; i < solvedAreas.size(); i++) {
-			Area a = solvedAreas.get(i);
+		for (int i = 0; i < areas.size(); i++) {
+			Area a = areas.get(i);
 			AreaOptimiser ao = new AreaOptimiser(a);
 			a = ao.attemptOptimise();
 			populateTT(a);
-			solvedAreas.set(i,  a);
+			areas.set(i,  a);
 			Main.softViolationCount += sh.heuristicScore(a);
 			System.out.println("Area optimised");
 		}
-		Main.solvedAreasPublic = solvedAreas;
+		Main.solvedAreasPublic = areas;
 		setSoftViolationCount();
 	}
 
@@ -229,62 +236,64 @@ public class TimetablesViewController {
 	}
 
 	public void populateTT(Area area) {
-		mon1.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
-		tue1.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
-		wed1.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
-		thu1.setCellValueFactory(new PropertyValueFactory<Row, String>("thu"));
-		fri1.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
-		sat1.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
-		sun1.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
+		if (Main.timetablesGenerated) {
+			mon1.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
+			tue1.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
+			wed1.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
+			thu1.setCellValueFactory(new PropertyValueFactory<Row, String>("thu"));
+			fri1.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
+			sat1.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
+			sun1.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
 
-		mon2.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
-		tue2.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
-		wed2.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
-		thu2.setCellValueFactory(new PropertyValueFactory<Row, String>("thu"));
-		fri2.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
-		sat2.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
-		sun2.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
+			mon2.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
+			tue2.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
+			wed2.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
+			thu2.setCellValueFactory(new PropertyValueFactory<Row, String>("thu"));
+			fri2.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
+			sat2.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
+			sun2.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
 
-		mon3.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
-		tue3.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
-		wed3.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
-		thu3.setCellValueFactory(new PropertyValueFactory<Row, String>("thu"));
-		fri3.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
-		sat3.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
-		sun3.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
+			mon3.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
+			tue3.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
+			wed3.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
+			thu3.setCellValueFactory(new PropertyValueFactory<Row, String>("thu"));
+			fri3.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
+			sat3.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
+			sun3.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
 
-		mon4.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
-		tue4.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
-		wed4.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
-		thu4.setCellValueFactory(new PropertyValueFactory<Row, String>("thu"));
-		fri4.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
-		sat4.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
-		sun4.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
+			mon4.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
+			tue4.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
+			wed4.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
+			thu4.setCellValueFactory(new PropertyValueFactory<Row, String>("thu"));
+			fri4.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
+			sat4.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
+			sun4.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
 
-		mon5.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
-		tue5.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
-		wed5.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
-		thu5.setCellValueFactory(new PropertyValueFactory<Row, String>("thu"));
-		fri5.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
-		sat5.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
-		sun5.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
+			mon5.setCellValueFactory(new PropertyValueFactory<Row, String>("mon"));
+			tue5.setCellValueFactory(new PropertyValueFactory<Row, String>("tue"));
+			wed5.setCellValueFactory(new PropertyValueFactory<Row, String>("wed"));
+			thu5.setCellValueFactory(new PropertyValueFactory<Row, String>("thu"));
+			fri5.setCellValueFactory(new PropertyValueFactory<Row, String>("fri"));
+			sat5.setCellValueFactory(new PropertyValueFactory<Row, String>("sat"));
+			sun5.setCellValueFactory(new PropertyValueFactory<Row, String>("sun"));
 
-		if (area.getLocations().size() > 4) {
-			Location location01 = area.getLocations().get(0);
-			Employee[][] timetable1 = location01.getTimetable();
-			Location location03 = area.getLocations().get(2);
-			Employee[][] timetable3 = location03.getTimetable();
-			Location location04 = area.getLocations().get(3);
-			Employee[][] timetable4 = location04.getTimetable();
-			Location location05 = area.getLocations().get(4);
-			Employee[][] timetable5 = location05.getTimetable();
-			Location location02 = area.getLocations().get(1);
-			Employee[][] timetable2 = location02.getTimetable();
-			location1.setItems(getRows(timetable1));
-			location2.setItems(getRows(timetable2));
-			location3.setItems(getRows(timetable3));
-			location4.setItems(getRows(timetable4));
-			location5.setItems(getRows(timetable5));
+			if (area.getLocations().size() > 4) {
+				Location location01 = area.getLocations().get(0);
+				Employee[][] timetable1 = location01.getTimetable();
+				Location location03 = area.getLocations().get(2);
+				Employee[][] timetable3 = location03.getTimetable();
+				Location location04 = area.getLocations().get(3);
+				Employee[][] timetable4 = location04.getTimetable();
+				Location location05 = area.getLocations().get(4);
+				Employee[][] timetable5 = location05.getTimetable();
+				Location location02 = area.getLocations().get(1);
+				Employee[][] timetable2 = location02.getTimetable();
+				location1.setItems(getRows(timetable1));
+				location2.setItems(getRows(timetable2));
+				location3.setItems(getRows(timetable3));
+				location4.setItems(getRows(timetable4));
+				location5.setItems(getRows(timetable5));
+			}
 		}
 	}
 
@@ -306,7 +315,7 @@ public class TimetablesViewController {
 		Scene employeeViewScene = new Scene(employeeViewParent);
 
 		EmployeeViewController controller = loader.getController();
-		controller.initialise(solvedAreas.get(Main.areaBookmark));
+		controller.initialise(areas.get(Main.areaBookmark));
 		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		window.setScene(employeeViewScene);
 		window.show();
@@ -320,7 +329,7 @@ public class TimetablesViewController {
 		Scene descriptionViewScene = new Scene(descriptionViewParent);
 		
 		LocationViewController controller = loader.getController();
-		controller.initialise(solvedAreas.get(Main.areaBookmark));
+		controller.initialise(areas.get(Main.areaBookmark));
 		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		window.setScene(descriptionViewScene);
 		window.show();
@@ -331,8 +340,8 @@ public class TimetablesViewController {
 		ArrayList<Employee> employees = new ArrayList<>();
 		ArrayList<Location> locations = new ArrayList<>();
 		Area a = new Area(locations, employees);
-		solvedAreas.add(a);
-		Main.solvedAreasPublic = solvedAreas;
+		areas.add(a);
+		Main.solvedAreasPublic = areas;
 		setAreaPointer();
 	}
 	
@@ -349,14 +358,14 @@ public class TimetablesViewController {
 	}
 
 	public void setAreaPointer() {
-		areaPointer.setText(Integer.toString(Main.areaBookmark));
+		areaPointer.setText(Integer.toString(Main.areaBookmark + 1));
 	}
 	
 	@FXML
 	public void nextArea(Event e) {
-		if (Main.areaBookmark < solvedAreas.size() - 1) {
+		if (Main.areaBookmark < areas.size() - 1) {
 			Main.areaBookmark++;
-			populateTT(solvedAreas.get(Main.areaBookmark));
+			populateTT(areas.get(Main.areaBookmark));
 		}
 		setAreaPointer();
 	}
@@ -365,14 +374,14 @@ public class TimetablesViewController {
 	public void previousArea(Event e) {
 		if (Main.areaBookmark > 0) {
 			Main.areaBookmark--;
-			populateTT(solvedAreas.get(Main.areaBookmark));
+			populateTT(areas.get(Main.areaBookmark));
 		}
 		setAreaPointer();
 	}
 
 	public void populateSolved() {
-		solvedAreas = Main.solvedAreasPublic;
-		populateTT(solvedAreas.get(Main.areaBookmark));
+		areas = Main.solvedAreasPublic;
+		populateTT(areas.get(Main.areaBookmark));
 		setHardViolationCount();
 		setSoftViolationCount();
 		setAreaPointer();

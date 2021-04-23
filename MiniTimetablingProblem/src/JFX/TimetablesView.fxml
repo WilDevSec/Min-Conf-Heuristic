@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="908.0" prefWidth="1333.0" stylesheets="@bootstrap2.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.TimetablesViewController">
+<VBox prefHeight="908.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.TimetablesViewController">
     <children>
         <Label text="RNLI Timetable Generator" />
       <MenuBar>
@@ -36,20 +36,21 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane dividerPositions="0.08768971332209106" prefHeight="839.0" prefWidth="1188.0">
+      <SplitPane dividerPositions="0.09819494584837545" prefHeight="826.0" prefWidth="1330.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="162.0" prefWidth="164.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="162.0" prefWidth="164.0" style="-fx-background-color: #fc899f;">
                <children>
-                  <Button layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#generateTT" prefHeight="24.0" prefWidth="80.0" text="Generate" />
-                  <Button layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#optimiseTT" prefHeight="24.0" prefWidth="80.0" text="Optimise" />
-                  <Button layoutX="10.0" layoutY="174.0" mnemonicParsing="false" onAction="#createArea" text="New Area" />
+                  <Button layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#generateTT" prefHeight="24.0" prefWidth="111.0" style="-fx-background-color: #ffff99;" text="Generate" />
+                  <Button layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#optimiseTT" prefHeight="24.0" prefWidth="111.0" style="-fx-background-color: #ffff99;" text="Optimise" />
+                  <Button layoutX="10.0" layoutY="174.0" mnemonicParsing="false" onAction="#createArea" prefHeight="24.0" prefWidth="111.0" style="-fx-background-color: #ffff99;" text="New Area" />
+                  <Button layoutX="10.0" layoutY="359.0" mnemonicParsing="false" onAction="#testData" prefHeight="24.0" prefWidth="111.0" style="-fx-background-color: #ffff99;" text="Test Data" />
                </children>
             </AnchorPane>
             <ScrollPane prefHeight="410.0" prefWidth="1002.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="825.0" prefWidth="1211.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="825.0" prefWidth="1211.0" style="-fx-background-color: #59deff;">
                      <children>
-                        <TableView fx:id="location1" layoutX="212.0" layoutY="106.0" prefHeight="219.0" prefWidth="744.0" style="-fx-background-color: #ffe7d3;">
+                        <TableView fx:id="location1" layoutX="212.0" layoutY="106.0" prefHeight="219.0" prefWidth="744.0" style="-fx-background-color: #ffff99;">
                            <columns>
                               <TableColumn fx:id="mon1" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue1" prefWidth="150.0" text="Tue" />
@@ -60,21 +61,21 @@
                               <TableColumn fx:id="sun1" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <Label layoutX="501.0" layoutY="31.0" text="RNLI timetables for area:" underline="true">
+                        <Label layoutX="486.0" layoutY="38.0" text="Timetables for area:" underline="true">
                            <font>
-                              <Font size="15.0" />
+                              <Font name="System Bold Italic" size="19.0" />
                            </font></Label>
-                        <Button layoutX="78.0" layoutY="203.0" mnemonicParsing="false" onAction="#previousArea" prefHeight="24.0" prefWidth="101.0" text="Previous Area">
+                        <Button layoutX="78.0" layoutY="203.0" mnemonicParsing="false" onAction="#previousArea" prefHeight="24.0" prefWidth="101.0" style="-fx-background-color: #ffff99;" text="Previous Area">
                            <font>
                               <Font size="12.0" />
                            </font>
                         </Button>
-                        <Button layoutX="978.0" layoutY="191.0" mnemonicParsing="false" onAction="#nextArea" prefHeight="24.0" prefWidth="101.0" text="Next Area">
+                        <Button layoutX="978.0" layoutY="191.0" mnemonicParsing="false" onAction="#nextArea" prefHeight="24.0" prefWidth="101.0" style="-fx-background-color: #ffff99;" text="Next Area">
                            <font>
                               <Font size="12.0" />
                            </font>
                         </Button>
-                        <TableView fx:id="location2" layoutX="14.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0" style="-fx-background-color: #ffe7d3;">
+                        <TableView fx:id="location2" layoutX="14.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
                            <columns>
                               <TableColumn fx:id="mon2" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue2" prefWidth="150.0" text="Tue" />
@@ -85,7 +86,7 @@
                               <TableColumn fx:id="sun2" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView fx:id="location3" layoutX="616.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0" style="-fx-background-color: #ffe7d3;">
+                        <TableView fx:id="location3" layoutX="616.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
                            <columns>
                               <TableColumn fx:id="mon3" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue3" prefWidth="150.0" text="Tue" />
@@ -96,7 +97,7 @@
                               <TableColumn fx:id="sun3" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView fx:id="location4" layoutX="14.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0" style="-fx-background-color: #ffe7d3;">
+                        <TableView fx:id="location4" layoutX="14.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
                            <columns>
                               <TableColumn fx:id="mon4" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue4" prefWidth="150.0" text="Tue" />
@@ -107,7 +108,7 @@
                               <TableColumn fx:id="sun4" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView fx:id="location5" layoutX="616.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0" style="-fx-background-color: #ffe7d3;">
+                        <TableView fx:id="location5" layoutX="616.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
                            <columns>
                               <TableColumn fx:id="mon5" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue5" prefWidth="150.0" text="Tue" />
@@ -119,18 +120,27 @@
                            </columns>
                         </TableView>
                         <Label layoutX="14.0" layoutY="50.0" text="Hard Constraint Violations:" />
-                        <Label fx:id="hardViolationCount" layoutX="200.0" layoutY="50.0" style="-fx-background-color: #ccfccd;" text="_" />
-                        <Label fx:id="areaPointer" layoutX="706.0" layoutY="33.0" text="_" />
-                        <Button layoutX="970.0" layoutY="33.0" mnemonicParsing="false" onAction="#employeesView" text="View Employees" />
+                        <Label fx:id="hardViolationCount" layoutX="208.0" layoutY="47.0" style="-fx-background-color: #fa677f;" text="_">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Label>
+                        <Label fx:id="areaPointer" layoutX="712.0" layoutY="40.0" text="_">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Label>
+                        <Button layoutX="970.0" layoutY="33.0" mnemonicParsing="false" onAction="#employeesView" style="-fx-background-color: #ffff99;" text="View Employees" />
                         <Label layoutX="14.0" layoutY="78.0" text="Soft Constraint Violations" />
-                        <Label fx:id="softViolationCount" layoutX="189.0" layoutY="78.0" style="-fx-background-color: #bb0a1e;" text="_" />
-                        <Button layoutX="970.0" layoutY="74.0" mnemonicParsing="false" onAction="#locationsView" prefHeight="24.0" prefWidth="124.0" text="View Locations" />
+                        <Label fx:id="softViolationCount" layoutX="190.0" layoutY="76.0" style="-fx-background-color: #ccfccd;" stylesheets="@./bootstrap2.css" text="_">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Label>
+                        <Button layoutX="970.0" layoutY="74.0" mnemonicParsing="false" onAction="#locationsView" prefHeight="24.0" prefWidth="124.0" style="-fx-background-color: #ffff99;" text="View Locations" />
                      </children>
                   </AnchorPane>
               </content>
             </ScrollPane>
         </items>
       </SplitPane>
-      <HBox prefHeight="50.0" prefWidth="1188.0" />
+      <HBox prefHeight="50.0" prefWidth="1188.0" style="-fx-background-color: #fc899f;" />
     </children>
 </VBox>

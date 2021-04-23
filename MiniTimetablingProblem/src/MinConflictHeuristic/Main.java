@@ -16,6 +16,7 @@ public class Main extends Application{
 	public static int softViolationCount = 0;
 	public static List<Area> solvedAreasPublic;
 	public static int areaBookmark = 0;
+	public static boolean timetablesGenerated = false;
 	
 	@Override
 	public void start(Stage stage) throws Exception {
