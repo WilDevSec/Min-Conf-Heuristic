@@ -16,13 +16,9 @@ public class HeuristicMeasure {
 		int count = 0;
 		for (Location l : area.getLocations()) {
 			count += rankAndQualificationMissing(l);
-			System.out.println("Rank and qual for a location:" + rankAndQualificationMissing(l));
 		}
 		count += employeesDoubleBookedCount(area);
-		System.out.println("Empl double booked: " + employeesDoubleBookedCount(area));
 		count += fullTimeEmployeesNotWorking5Days(area);
-		System.out.println("Full time: " + fullTimeEmployeesNotWorking5Days(area));
-		System.out.println("Over all count: " + count);
 		return count;
 	}
 	

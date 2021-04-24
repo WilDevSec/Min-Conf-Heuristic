@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="495.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.SwitchEmployeeController">
+   <children>
+      <SplitPane dividerPositions="0.9938398357289527" orientation="VERTICAL" prefHeight="509.0" prefWidth="517.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #59deff;">
+               <children>
+                  <MenuBar prefHeight="27.0" prefWidth="598.0">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Close" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Edit">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Delete" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+                  <Label layoutX="133.0" layoutY="51.0" text="Switch Employees">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="53.0" layoutY="91.0" text="First Employee">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="52.0" layoutY="273.0" text="Second Employee">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="area1" layoutX="53.0" layoutY="158.0" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #ffff99;" />
+                  <Label layoutX="53.0" layoutY="142.0" text="Area" />
+                  <ChoiceBox fx:id="loc1" layoutX="53.0" layoutY="217.0" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #ffff99;" />
+                  <ChoiceBox fx:id="row1" layoutX="346.0" layoutY="158.0" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #ffff99;" />
+                  <Label layoutX="53.0" layoutY="201.0" text="Location" />
+                  <Label layoutX="346.0" layoutY="142.0" text="Row" />
+                  <ChoiceBox fx:id="day1" layoutX="346.0" layoutY="217.0" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #ffff99;" />
+                  <Label layoutX="347.0" layoutY="201.0" text="Day" />
+                  <ChoiceBox fx:id="area2" layoutX="51.0" layoutY="329.0" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #ffff99;" />
+                  <Label layoutX="53.0" layoutY="313.0" text="Area" />
+                  <ChoiceBox fx:id="loc2" layoutX="51.0" layoutY="388.0" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #ffff99;" />
+                  <ChoiceBox fx:id="row2" layoutX="346.0" layoutY="329.0" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #ffff99;" />
+                  <Label layoutX="53.0" layoutY="372.0" text="Location" />
+                  <Label layoutX="346.0" layoutY="313.0" text="Row" />
+                  <ChoiceBox fx:id="day2" layoutX="346.0" layoutY="388.0" prefHeight="24.0" prefWidth="80.0" style="-fx-background-color: #ffff99;" />
+                  <Label layoutX="347.0" layoutY="372.0" text="Day" />
+                  <Button layoutX="214.0" layoutY="376.0" mnemonicParsing="false" onAction="#mainView" style="-fx-background-color: #ffff99;" text="Submit" />
+                  <Button layoutX="20.0" layoutY="436.0" mnemonicParsing="false" style="-fx-background-color: #fc899f;" text="Return" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="6.0" prefWidth="515.0" />
+        </items>
+      </SplitPane>
+   </children>
+</VBox>

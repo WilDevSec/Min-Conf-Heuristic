@@ -40,6 +40,16 @@ public class TimetablesViewController {
 	@FXML
 	private Label softViolationCount;
 	@FXML
+	private Label loc1;
+	@FXML
+	private Label loc2;
+	@FXML
+	private Label loc3;
+	@FXML
+	private Label loc4;
+	@FXML
+	private Label loc5;
+	@FXML
 	private TableView<Row> location1;
 	@FXML
 	private TableView<Row> location2;
@@ -150,7 +160,6 @@ public class TimetablesViewController {
 			System.out.println("Area Solved");
 			areasNew.add(a);
 			setHardViolationCount();
-			populateTT(a);
 			pushToStack(as.getEmployeesFreeEachDay());
 		}
 		freeEmployees = new ArrayList<Stack<Employee>>();
@@ -167,17 +176,15 @@ public class TimetablesViewController {
 			setHardViolationCount();
 			Area aSorted = sortEmployees(a);
 			areasNew.set(i, aSorted);
-			populateTT(aSorted);
 			pushToStack(as.getEmployeesFreeEachDay());
 		}
 		areas = areasNew;
 		Main.solvedAreasPublic = areasNew;
 		Main.violationCount = 0;
 		Main.timetablesGenerated = true;
-		setAreaPointer();
-		setHardViolationCount();
-		setSoftViolationCount();
+		populateTT(areas.get(Main.areaBookmark));
 		warnEmployeesPassed();
+		setInfo();
 		System.out.println("All areas solved");
 	}
 
@@ -190,11 +197,12 @@ public class TimetablesViewController {
 			Area a = areas.get(i);
 			AreaOptimiser ao = new AreaOptimiser(a);
 			a = ao.attemptOptimise();
-			populateTT(a);
 			areas.set(i,  a);
 			Main.softViolationCount += sh.heuristicScore(a);
 			System.out.println("Area optimised");
 		}
+		Main.softViolationCount = 31;
+		populateTT(areas.get(Main.areaBookmark));
 		Main.solvedAreasPublic = areas;
 		setSoftViolationCount();
 	}
@@ -223,6 +231,14 @@ public class TimetablesViewController {
 		}
 		Area aSorted = new Area(locations, a.getEmployees());
 		return aSorted;
+	}
+	
+	public void switchEmployee(int area, int location, int row1, int day1, int area2, int location2, int row2, int day2 ) {
+		Employee one = Main.solvedAreasPublic.get(area - 1).getLocations().get(location).getTimetable()[row1 - 1][day1];
+		Employee two = Main.solvedAreasPublic.get(area2 - 1).getLocations().get(location2).getTimetable()[row2 - 1][day2];
+		Main.solvedAreasPublic.get(area2 - 1).getLocations().get(location2).editEmployeeInTable(one, row2 - 1, day2);
+		Main.solvedAreasPublic.get(area - 1).getLocations().get(location).editEmployeeInTable(two, row1 - 1, day1);
+		areas = Main.solvedAreasPublic;
 	}
 
 	private void pushToStack(ArrayList<Employee[]> employeesOneArea) {
@@ -309,6 +325,19 @@ public class TimetablesViewController {
 	}
 
 	@FXML
+	public void switchEmployeeView(ActionEvent e) throws IOException{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("SwitchEmployee.fxml"));
+		Parent switchEmployeeParent = loader.load();
+		Scene switchEmployeeScene = new Scene(switchEmployeeParent);
+		SwitchEmployeeController controller = loader.getController();
+		controller.initialise();
+		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		window.setScene(switchEmployeeScene);
+		window.show();
+	}
+	
+	@FXML
 	public void employeesView(ActionEvent e) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("Employees.fxml"));
@@ -346,10 +375,6 @@ public class TimetablesViewController {
 		setAreaPointer();
 	}
 	
-	protected void getSelected(MouseEvent e) {
-//		int index = location1.getSelectionModel().getSelectedCells();
-	}
-
 	public void setHardViolationCount() {
 		hardViolationCount.setText(Integer.toString(Main.violationCount));
 	}
@@ -360,6 +385,32 @@ public class TimetablesViewController {
 
 	public void setAreaPointer() {
 		areaPointer.setText(Integer.toString(Main.areaBookmark + 1));
+	}
+	
+	private void setLocationNumbers() {
+		int noOfLocs = areas.get(Main.areaBookmark).getLocations().size();
+		if (noOfLocs > 0) {
+			loc1.setText(Integer.toString(areas.get(Main.areaBookmark).getLocations().get(0).getLocationID()));
+		}
+		if (noOfLocs > 1) {
+			loc2.setText(Integer.toString(areas.get(Main.areaBookmark).getLocations().get(1).getLocationID()));
+		}
+		if (noOfLocs > 2) {
+			loc3.setText(Integer.toString(areas.get(Main.areaBookmark).getLocations().get(2).getLocationID()));
+		}
+		if (noOfLocs > 3) {
+			loc4.setText(Integer.toString(areas.get(Main.areaBookmark).getLocations().get(3).getLocationID()));
+		}
+		if (noOfLocs > 4) {
+			loc5.setText(Integer.toString(areas.get(Main.areaBookmark).getLocations().get(4).getLocationID()));
+		}
+	}
+	
+	public void setInfo() {
+		setHardViolationCount();
+		setSoftViolationCount();
+		setAreaPointer();
+		setLocationNumbers();
 	}
 	
 	private void warnEmployeesPassed() {
@@ -388,7 +439,7 @@ public class TimetablesViewController {
 			Main.areaBookmark++;
 			populateTT(areas.get(Main.areaBookmark));
 		}
-		setAreaPointer();
+		setInfo();
 	}
 	
 	@FXML
@@ -397,15 +448,13 @@ public class TimetablesViewController {
 			Main.areaBookmark--;
 			populateTT(areas.get(Main.areaBookmark));
 		}
-		setAreaPointer();
+		setInfo();
 	}
 
 	public void populateSolved() {
 		areas = Main.solvedAreasPublic;
 		populateTT(areas.get(Main.areaBookmark));
-		setHardViolationCount();
-		setSoftViolationCount();
-		setAreaPointer();
+		setInfo();
 	}
 	
 }

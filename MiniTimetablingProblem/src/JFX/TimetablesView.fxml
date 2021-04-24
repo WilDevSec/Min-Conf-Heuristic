@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="908.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.TimetablesViewController">
+<VBox prefHeight="970.0" prefWidth="1351.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JFX.TimetablesViewController">
     <children>
         <Label text="RNLI Timetable Generator" />
       <MenuBar>
@@ -36,9 +36,9 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane dividerPositions="0.09819494584837545" prefHeight="826.0" prefWidth="1330.0">
+      <SplitPane dividerPositions="0.09819494584837545" prefHeight="890.0" prefWidth="1351.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="162.0" prefWidth="164.0" style="-fx-background-color: #fc899f;">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="882.0" prefWidth="145.0" style="-fx-background-color: #fc899f;">
                <children>
                   <Button layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#generateTT" prefHeight="24.0" prefWidth="111.0" style="-fx-background-color: #ffff99;" text="Generate" />
                   <Button layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#optimiseTT" prefHeight="24.0" prefWidth="111.0" style="-fx-background-color: #ffff99;" text="Optimise" />
@@ -46,9 +46,9 @@
                   <Button layoutX="10.0" layoutY="359.0" mnemonicParsing="false" onAction="#testData" prefHeight="24.0" prefWidth="111.0" style="-fx-background-color: #ffff99;" text="Test Data" />
                </children>
             </AnchorPane>
-            <ScrollPane prefHeight="410.0" prefWidth="1002.0">
+            <ScrollPane prefHeight="854.0" prefWidth="1358.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="825.0" prefWidth="1211.0" style="-fx-background-color: #59deff;">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="876.0" prefWidth="1211.0" style="-fx-background-color: #59deff;">
                      <children>
                         <TableView fx:id="location1" layoutX="212.0" layoutY="106.0" prefHeight="219.0" prefWidth="744.0" style="-fx-background-color: #ffff99;">
                            <columns>
@@ -75,7 +75,7 @@
                               <Font size="12.0" />
                            </font>
                         </Button>
-                        <TableView fx:id="location2" layoutX="14.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
+                        <TableView fx:id="location2" layoutX="14.0" layoutY="348.0" prefHeight="228.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
                            <columns>
                               <TableColumn fx:id="mon2" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue2" prefWidth="150.0" text="Tue" />
@@ -86,7 +86,7 @@
                               <TableColumn fx:id="sun2" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView fx:id="location3" layoutX="616.0" layoutY="338.0" prefHeight="228.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
+                        <TableView fx:id="location3" layoutX="616.0" layoutY="348.0" prefHeight="228.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
                            <columns>
                               <TableColumn fx:id="mon3" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue3" prefWidth="150.0" text="Tue" />
@@ -97,7 +97,7 @@
                               <TableColumn fx:id="sun3" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView fx:id="location4" layoutX="14.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
+                        <TableView fx:id="location4" layoutX="14.0" layoutY="599.0" prefHeight="231.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
                            <columns>
                               <TableColumn fx:id="mon4" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue4" prefWidth="150.0" text="Tue" />
@@ -108,7 +108,7 @@
                               <TableColumn fx:id="sun4" prefWidth="150.0" text="Sun" />
                            </columns>
                         </TableView>
-                        <TableView fx:id="location5" layoutX="616.0" layoutY="575.0" prefHeight="231.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
+                        <TableView fx:id="location5" layoutX="616.0" layoutY="599.0" prefHeight="231.0" prefWidth="581.0" style="-fx-background-color: #ffff99;">
                            <columns>
                               <TableColumn fx:id="mon5" prefWidth="150.0" text="Mon" />
                               <TableColumn fx:id="tue5" prefWidth="150.0" text="Tue" />
@@ -135,12 +135,18 @@
                               <Font size="16.0" />
                            </font></Label>
                         <Button layoutX="970.0" layoutY="74.0" mnemonicParsing="false" onAction="#locationsView" prefHeight="24.0" prefWidth="124.0" style="-fx-background-color: #ffff99;" text="View Locations" />
+                        <Label fx:id="loc2" layoutX="311.0" layoutY="333.0" text="_" />
+                        <Label fx:id="loc3" layoutX="914.0" layoutY="333.0" text="_" />
+                        <Label fx:id="loc4" layoutX="315.0" layoutY="583.0" text="_" />
+                        <Label fx:id="loc5" layoutX="914.0" layoutY="583.0" text="_" />
+                        <Label fx:id="loc1" layoutX="581.0" layoutY="90.0" text="_" />
+                        <Button layoutX="49.0" layoutY="302.0" mnemonicParsing="false" onAction="#switchEmployeeView" style="-fx-background-color: #ffff99;" text="Switch Employees" />
                      </children>
                   </AnchorPane>
               </content>
             </ScrollPane>
         </items>
       </SplitPane>
-      <HBox prefHeight="50.0" prefWidth="1188.0" style="-fx-background-color: #fc899f;" />
+      <HBox prefHeight="84.0" prefWidth="1511.0" style="-fx-background-color: #fc899f;" />
     </children>
 </VBox>
